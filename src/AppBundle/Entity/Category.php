@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -37,6 +38,17 @@ class Category
 	 * @ORM\Column(type="integer")
 	 */
 	private $rank;
+
+	/**
+	 * @var Product[]
+	 * @ORM\OneToMany(targetEntity="Product", mappedBy="category")
+	 */
+	private $products;
+
+	public function __construct()
+	{
+		$this->products = new ArrayCollection();
+	}
 
 	/**
 	 * @return int
@@ -107,6 +119,24 @@ class Category
 	public function setRank($rank)
 	{
 		$this->rank = $rank;
+		return $this;
+	}
+
+	/**
+	 * @return Product[]
+	 */
+	public function getProducts()
+	{
+		return $this->products;
+	}
+
+	/**
+	 * @param Product[] $products
+	 * @return self
+	 */
+	public function setProducts($products)
+	{
+		$this->products = $products;
 		return $this;
 	}
 

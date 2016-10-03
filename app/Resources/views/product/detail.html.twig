@@ -1,6 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <ol class="breadcrumb">
+        {% if product.category %}
+        <li><a href="#">{{ product.category.title }}</a></li>
+        {% endif %}
+        <li class="active">{{ product.title }}</li>
+    </ol>
     <h1> {{ product.title }}</h1>
     <img src="{{ product.image }}" />
 {% endblock %}
