@@ -1,5 +1,6 @@
 <?php
 namespace AppBundle\Controller;
+use AppBundle\Entity\Category;
 use AppBundle\Entity\Product;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -29,6 +30,12 @@ class ProductController extends Controller
 
 		return $this->render("product/detail.html.twig", [
 			"product" => $product,
+			"categories" => $this->getDoctrine()->getRepository(Category::class)->findBy(
+				[],
+				[
+					"rank" => "desc",
+				]
+			),
 		]);
 
 	}

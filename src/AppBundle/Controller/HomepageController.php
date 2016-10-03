@@ -1,5 +1,6 @@
 <?php
 namespace AppBundle\Controller;
+use AppBundle\Entity\Category;
 use AppBundle\Entity\Product;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,6 +26,12 @@ class HomepageController extends Controller
 					"rank" => "desc"
 				],
 				20
+			),
+			"categories" => $this->getDoctrine()->getRepository(Category::class)->findBy(
+				[],
+				[
+					"rank" => "desc",
+				]
 			),
 		]);
 	}
