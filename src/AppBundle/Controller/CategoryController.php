@@ -20,30 +20,18 @@ class CategoryController extends Controller
 
     public function categoryDetailAction(Request $request)
     {
-        $category = $this->getDoctrine()->getRepository(Category::class)->findOneBy([
-            "id" => $request->attributes->get("id"),
-        ]);
+        $categoryId = $request->attributes->get("id");
+
+        $category = $this->getDoctrine()->getRepository(Category::class)->find($categoryId);
+
         if (!$category) {
             throw new NotFoundHttpException("Category neexistuje");
         }
 
         return $this->render("category/detail.html.twig", [
             "category" => $category,
-            "products" => $this->getDoctrine()->getRepository(Product::class)->findBy(
-                [
-                    "categoryId" => $request->attributes->get("id"),
-                ],
-                [
-                    "rank" => "desc"
-                ],
-                20
-            ),
-            "categories" => $this->getDoctrine()->getRepository(Category::class)->findBy(
-                [],
-                [
-                    "rank" => "desc",
-                ]
-            ),
+            "products" => $this->getDoctrine()->getRepository(Product::class)->findByCategoryIdOrderedByRank($categoryId),
+            "categories" => $this->getDoctrine()->getRepository(Category::class)->findAllOrderedByRank(),
         ]);
     }
 }

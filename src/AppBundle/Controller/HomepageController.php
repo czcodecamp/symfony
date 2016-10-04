@@ -4,6 +4,7 @@ use AppBundle\Entity\Category;
 use AppBundle\Entity\Product;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -15,24 +16,13 @@ class HomepageController extends Controller
 	/**
 	 * @Route("/", name="homepage")
 	 * @param Request $request
-	 * @return \Symfony\Component\HttpFoundation\Response
+	 * @return Response
 	 */
 	public function homepageAction(Request $request)
 	{
 		return $this->render("homepage/homepage.html.twig", [
-			"products" => $this->getDoctrine()->getRepository(Product::class)->findBy(
-				[],
-				[
-					"rank" => "desc"
-				],
-				20
-			),
-			"categories" => $this->getDoctrine()->getRepository(Category::class)->findBy(
-				[],
-				[
-					"rank" => "desc",
-				]
-			),
+			"products" => $this->getDoctrine()->getRepository(Product::class)->findOrderedByRank(),
+			"categories" => $this->getDoctrine()->getRepository(Category::class)->findAllOrderedByRank(),
 		]);
 	}
 
@@ -40,7 +30,7 @@ class HomepageController extends Controller
 	/**
 	 * @Route("/hello", name="hello")
 	 * @param Request $request
-	 * @return \Symfony\Component\HttpFoundation\Response
+	 * @return Response
 	 */
 	public function helloAction(Request $request)
 	{

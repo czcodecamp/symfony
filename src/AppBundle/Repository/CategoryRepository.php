@@ -12,4 +12,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class CategoryRepository extends EntityRepository
 {
+    public function findAllOrderedByRank()
+    {
+        return $this->findBy(
+            [],
+            [
+                "rank" => "desc",
+            ]
+        );
+    }
 }
