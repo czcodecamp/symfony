@@ -3,7 +3,7 @@
 {% block body %}
     <ol class="breadcrumb">
         {% if product.category %}
-        <li><a href="#">{{ product.category.title }}</a></li>
+        <li><a href="{{ path("category_detail", {"id": product.category.id }) }}">{{ product.category.title }}</a></li>
         {% endif %}
         <li class="active">{{ product.title }}</li>
     </ol>
