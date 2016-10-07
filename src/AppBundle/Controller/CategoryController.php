@@ -1,5 +1,6 @@
 <?php
 namespace AppBundle\Controller;
+
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Product;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -8,42 +9,40 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-
 /**
  * @author Jan Klat <jenik@klatys.cz>
  */
-class ProductController extends Controller
+class CategoryController extends Controller
 {
-
 	/**
-	 * @Route("/product/{slug}", name="product_detail")
-	 * @Template("product/detail.html.twig")
+	 * @Route("/vyber/{slug}", name="category_detail")
+	 * @Template("category/detail.html.twig")
 	 *
 	 * @param Request $request
 	 * @return array
 	 */
-	public function productDetailAction(Request $request)
+	public function categoryDetail(Request $request)
 	{
-		$product = $this->getDoctrine()->getRepository(Product::class)->findOneBy([
+		$category = $this->getDoctrine()->getRepository(Category::class)->findOneBy([
 			"slug" => $request->attributes->get("slug"),
 		]);
-		if (!$product) {
-			throw new NotFoundHttpException("Produkt neexistuje");
+
+		if (!$category) {
+			throw new NotFoundHttpException("Kategorie neexistuje");
 		}
 
 		return [
-			"product" => $product,
+			"products" => $this->getDoctrine()->getRepository(Product::class)->findByCategory($category),
 			"categories" => $this->getDoctrine()->getRepository(Category::class)->findBy(
 				[
-					"parentCategoryId" => $product->getFirstCategory() ? $product->getFirstCategory()->getId() : null,
+					"parentCategoryId" => $category->getId(),
 				],
 				[
 					"rank" => "desc",
 				]
 			),
-			"category" => $product->getFirstCategory(),
+			"category" => $category,
 		];
-
 	}
 
 }
