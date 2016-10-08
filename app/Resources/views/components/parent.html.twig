@@ -1,0 +1,4 @@
+{% if ancestor.parent %}
+    {% include 'components/parent.html.twig' with {'ancestor': ancestor.parent} %}
+{% endif %}
+<li><a href="{{ path("category_detail", {"id": ancestor.id }) }}">{{ ancestor.title }}</a></li>

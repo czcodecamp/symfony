@@ -24,6 +24,7 @@ class ProductController extends Controller
 	{
 	    $slug = $request->attributes->get("slug");
 
+	    /** @var Product $product */
 		$product = $this->getDoctrine()->getRepository(Product::class)->findBySlug($slug);
 		if (!$product) {
 			throw new NotFoundHttpException("Produkt neexistuje");
@@ -31,7 +32,8 @@ class ProductController extends Controller
 
 		return $this->render("product/detail.html.twig", [
 			"product" => $product,
-			"categories" => $this->getDoctrine()->getRepository(Category::class)->findAllOrderedByRank(),
+            "ancestor" => $product->getCategory(),
+			"categories" => $this->getDoctrine()->getRepository(Category::class)->childrenHierarchy(),
 		]);
 
 	}

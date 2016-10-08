@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Controller;
 use AppBundle\Entity\Category;
+use AppBundle\Entity\CategoryClosure;
 use AppBundle\Entity\Product;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +23,7 @@ class HomepageController extends Controller
 	{
 		return $this->render("homepage/homepage.html.twig", [
 			"products" => $this->getDoctrine()->getRepository(Product::class)->findOrderedByRank(),
-			"categories" => $this->getDoctrine()->getRepository(Category::class)->findAllOrderedByRank(),
+			"categories" => $this->getDoctrine()->getRepository(Category::class)->childrenHierarchy(),
 		]);
 	}
 

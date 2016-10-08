@@ -31,7 +31,8 @@ class CategoryController extends Controller
         return $this->render("category/detail.html.twig", [
             "category" => $category,
             "products" => $this->getDoctrine()->getRepository(Product::class)->findByCategoryIdOrderedByRank($categoryId),
-            "categories" => $this->getDoctrine()->getRepository(Category::class)->findAllOrderedByRank(),
+            "ancestor" => $category,
+            "categories" => $this->getDoctrine()->getRepository(Category::class)->childrenHierarchy(),
         ]);
     }
 }

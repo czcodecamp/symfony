@@ -1,9 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <ol class="breadcrumb">
-        <li class="active">{{ category.title }}</li>
-    </ol>
+    {% include 'components/breadcrumb.html.twig' %}
     <h1>{{ category.title }}</h1>
     <div class="row">
         {% include 'components/list.html.twig' %}

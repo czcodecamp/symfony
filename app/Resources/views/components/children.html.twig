@@ -1,0 +1,16 @@
+{% if category is defined %}
+    <li class="list-group-item">
+        {% for i in 1..category.level %}
+            &nbsp;&nbsp;&nbsp;&nbsp;
+        {% endfor %}
+        {% if category.__children|length > 0 %}
+            +
+        {% endif %}
+        <a href="{{ path("category_detail", {"id": category.id }) }}">{{ category.title }}</a>
+    </li>
+    {% if category.__children is defined %}
+        {% for child in category.__children %}
+            {% include 'components/children.html.twig' with {'category': child} %}
+        {% endfor %}
+    {% endif %}
+{% endif %}

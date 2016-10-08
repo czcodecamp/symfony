@@ -1,0 +1,11 @@
+<ol class="breadcrumb">
+    {% if ancestor.parent %}
+        {% include 'components/parent.html.twig' with {'ancestor': ancestor.parent} %}
+    {% endif %}
+    {% if product is defined %}
+        <li><a href="{{ path("category_detail", {"id": ancestor.id }) }}">{{ ancestor.title }}</a></li>
+        <li class="active">{{ product.name }}</li>
+    {% else %}
+        <li class="active">{{ ancestor.title }}</li>
+    {% endif %}
+</ol>

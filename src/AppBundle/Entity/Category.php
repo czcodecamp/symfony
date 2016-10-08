@@ -2,11 +2,14 @@
 namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @author Jan Klat <jenik@klatys.cz>
  *
+ * @Gedmo\Tree(type="closure")
+ * @Gedmo\TreeClosure(class="AppBundle\Entity\CategoryClosure")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CategoryRepository")
  * @ORM\Table("categories")
  */
@@ -44,6 +47,27 @@ class Category
 	 * @ORM\OneToMany(targetEntity="Product", mappedBy="category")
 	 */
 	private $products;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @Gedmo\TreeLevel
+     * @var int
+     */
+    private $level;
+
+    /**
+     * @Gedmo\TreeParent
+     * @ORM\JoinColumn(referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="children")
+     * @var Category
+     */
+    private $parent;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Category", mappedBy="parent")
+     * @var Category[]
+     */
+    private $children;
 
 	public function __construct()
 	{
@@ -140,4 +164,57 @@ class Category
 		return $this;
 	}
 
+    /**
+     * @return mixed
+     */
+    public function getLevel()
+    {
+        return $this->level;
+    }
+
+    /**
+     * @param mixed $level
+     * @return Category
+     */
+    public function setLevel($level)
+    {
+        $this->level = $level;
+        return $this;
+    }
+
+    /**
+     * @return Category
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * @param Category $parent
+     * @return Category
+     */
+    public function setParent(Category $parent): Category
+    {
+        $this->parent = $parent;
+        return $this;
+    }
+
+    /**
+     * @return Category[]
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+    /**
+     * @param Category[] $children
+     * @return Category
+     */
+    public function setChildren($children) : Category
+    {
+        $this->children = $children;
+        return $this;
+    }
 }
