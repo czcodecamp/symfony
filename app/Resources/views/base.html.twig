@@ -15,6 +15,7 @@
     <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="/bootstrap/css/shop-homepage.css" rel="stylesheet">
+    <link href="/css/menu.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -59,8 +60,14 @@
     <div class="row">
 
         <div class="col-md-3">
-            <p class="lead">Menu</p>
-            {% include "components/menu.html.twig" %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">Menu</h4>
+                </div>
+                <div class="panel-collapse collapse in">
+                {% include "components/menu.html.twig" with {'level': 0} %}
+                </div>
+            </div>
         </div>
 
         <div class="col-md-9">

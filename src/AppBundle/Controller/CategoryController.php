@@ -31,16 +31,21 @@ class CategoryController extends Controller
 			throw new NotFoundHttpException("Kategorie neexistuje");
 		}
 
+		$openCategories = [];
 		$breadcrumbs = [];
 		$categoryParent = $category;
+		$openCategories[] = $categoryParent->getId();
 		while ($categoryParent = $categoryParent->getParent()) {
+			$openCategories[] = $categoryParent->getId();
 			array_unshift($breadcrumbs, new Breadcrumb($categoryParent->getTitle(), $categoryParent->getSlug()));
 		}
 
 		return $this->render("category/detail.html.twig", [
 			"category" => $category,
-			"breadcrumbs" => $breadcrumbs,
 			"products" => $category->getProducts(),
+			"breadcrumbs" => $breadcrumbs,
+			"openCategories" => $openCategories,
+			"activeCategory" => $category->getId(),
 			"categories" => $this->getDoctrine()->getRepository(Category::class)->findBy(
 				[
 					"parentId" => null

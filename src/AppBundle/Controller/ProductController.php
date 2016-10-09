@@ -31,15 +31,19 @@ class ProductController extends Controller
 			throw new NotFoundHttpException("Produkt neexistuje");
 		}
 
+		$openCategories = [];
 		$breadcrumbs = [];
 		$category = $product->getCategory();
 		do {
+			$openCategories[] = $category->getId();
 			array_unshift($breadcrumbs, new Breadcrumb($category->getTitle(), $category->getSlug()));
 		} while ($category = $category->getParent());
 
 		return $this->render("product/detail.html.twig", [
 			"product" => $product,
 			"breadcrumbs" => $breadcrumbs,
+			"openCategories" => $openCategories,
+			"activeCategory" => $product->getCategory()->getId(),
 			"categories" => $this->getDoctrine()->getRepository(Category::class)->findBy(
 				[
 					"parentId" => null

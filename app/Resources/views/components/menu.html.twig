@@ -1,9 +1,12 @@
-<div class="list-group">
+<ul class="list-group{{ level == 0 ? ' list-group-collapse'}}">
 {% if categories is defined %}
     {% for category in categories %}
-        <a href="{{ path("category_detail", {"slug": category.slug }) }}" class="list-group-item">
-            {{ category.title }}
-        </a>
+    <li class="list-group-item{{ category.id == activeCategory ? ' active' }}">
+        <a href="{{ path("category_detail", {"slug": category.slug }) }}">{{ category.title }}</a>
+        {% if openCategories is defined and category.id in openCategories and category.categories is not empty %}
+        {% include "components/menu.html.twig" with {'categories': category.categories, 'openCategories': openCategories, 'level': level + 1, 'activeCategory': activeCategory} %}
+        {% endif %}
+    </li>
     {% endfor %}
 {% endif %}
-</div>
+</ul>
