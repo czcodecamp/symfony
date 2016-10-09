@@ -67,9 +67,27 @@ class Product
 	/**
 	 * @var Category
 	 * @ORM\ManyToOne(targetEntity="Category", inversedBy="products")
-	 * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+	 * @ORM\JoinColumn(name="category_id", referencedColumnName="category_id")
 	 */
 	private $category;
+
+	/**
+	 * @var Category[]
+	 * @ORM\ManyToMany(targetEntity="Category", inversedBy="products")
+	 * @ORM\JoinTable(name="products_categories",
+	 *      joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="product_id")},
+	 *      inverseJoinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="category_id")}
+	 *      )
+	 */
+	private $categories;
+
+	/**
+	 * Product constructor.
+	 */
+	public function __construct()
+	{
+		$this->categories = new ArrayCollection();
+	}
 
 	/**
 	 * @return int
@@ -227,9 +245,28 @@ class Product
 	 * @param Category $category
 	 * @return self
 	 */
-	public function setCategory($category)
+	public function setCategory(Category $category)
 	{
 		$this->category = $category;
 		return $this;
 	}
+
+	/**
+	 * @return Category[]
+	 */
+	public function getCategories()
+	{
+		return $this->categories;
+	}
+
+	/**
+	 * @param Category[] $categories
+	 * @return self
+	 */
+	public function setCategories($categories)
+	{
+		$this->categories = $categories;
+		return $this;
+	}
+
 }

@@ -17,9 +17,22 @@ class Category
 	 * @var int
 	 * @ORM\Id
 	 * @ORM\GeneratedValue
-	 * @ORM\Column(type="integer")
+	 * @ORM\Column(type="integer", name="category_id")
 	 */
 	private $id;
+
+	/**
+	 * @var int
+	 * @ORM\Column(type="integer", name="parent_id", nullable=true)
+	 */
+	private $parentId;
+
+	/**
+	 * @var Category
+	 * @ORM\ManyToOne(targetEntity="Category")
+	 * @ORM\JoinColumn(name="parent_id", referencedColumnName="category_id")
+	 */
+	private $parent;
 
 	/**
 	 * @var string
@@ -40,14 +53,21 @@ class Category
 	private $rank;
 
 	/**
+	 * @var Category[]
+	 * @ORM\OneToMany(targetEntity="Category", mappedBy="parent")
+	 */
+	private $categories;
+
+	/**
 	 * @var Product[]
-	 * @ORM\OneToMany(targetEntity="Product", mappedBy="category")
+	 * @ORM\ManyToMany(targetEntity="Product", mappedBy="categories")
 	 */
 	private $products;
 
 	public function __construct()
 	{
 		$this->products = new ArrayCollection();
+		$this->categories = new ArrayCollection();
 	}
 
 	/**
@@ -65,6 +85,42 @@ class Category
 	public function setId($id)
 	{
 		$this->id = $id;
+		return $this;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getParentId()
+	{
+		return $this->parentId;
+	}
+
+	/**
+	 * @param int $parentId
+	 * @return self
+	 */
+	public function setParentId($parentId)
+	{
+		$this->parentId = $parentId;
+		return $this;
+	}
+
+	/**
+	 * @return Category
+	 */
+	public function getParent()
+	{
+		return $this->parent;
+	}
+
+	/**
+	 * @param Category $parent
+	 * @return self
+	 */
+	public function setParent($parent)
+	{
+		$this->parent = $parent;
 		return $this;
 	}
 
@@ -119,6 +175,24 @@ class Category
 	public function setRank($rank)
 	{
 		$this->rank = $rank;
+		return $this;
+	}
+
+	/**
+	 * @return Category[]
+	 */
+	public function getCategories()
+	{
+		return $this->categories;
+	}
+
+	/**
+	 * @param Category[] $categories
+	 * @return self
+	 */
+	public function setCategories($categories)
+	{
+		$this->categories = $categories;
 		return $this;
 	}
 
