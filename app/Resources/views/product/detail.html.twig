@@ -8,6 +8,6 @@
         <li class="active">{{ product.title }}</li>
     </ol>
     <h1> {{ product.title }}</h1>
-    <img src="{{ product.image }}" />
+    <img src="{{ asset(product.image) }}" />
     <h2>{{ product.price }} Kč</h2>
 {% endblock %}
