@@ -60,7 +60,7 @@ class Category
 
 	/**
 	 * @var Product[]
-	 * @ORM\OneToMany(targetEntity="Product", mappedBy="category")
+	 * @ORM\ManyToMany(targetEntity="Product", mappedBy="categories")
 	 */
 	private $products;
 

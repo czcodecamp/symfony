@@ -59,17 +59,19 @@ class Product
 	private $rank;
 
 	/**
-	 * @var int
-	 * @ORM\Column(type="integer", name="category_id")
+	 * @var Category[]
+	 * @ORM\ManyToMany(targetEntity="Category", inversedBy="products")
+	 * @ORM\JoinTable(name="categories")
 	 */
-	private $categoryId;
+	private $categories;
 
 	/**
-	 * @var Category
-	 * @ORM\ManyToOne(targetEntity="Category", inversedBy="products")
-	 * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+	 * Product constructor.
 	 */
-	private $category;
+	public function __construct()
+	{
+		$this->categories = new ArrayCollection();
+	}
 
 	/**
 	 * @return int
@@ -198,38 +200,21 @@ class Product
 	}
 
 	/**
-	 * @return int
+	 * @return Category[]
 	 */
-	public function getCategoryId()
+	public function getCategories()
 	{
-		return $this->categoryId;
+		return $this->categories;
 	}
 
 	/**
-	 * @param int $categoryId
+	 * @param Category[] $categories
 	 * @return self
 	 */
-	public function setCategoryId($categoryId)
+	public function setCategories($categories)
 	{
-		$this->categoryId = $categoryId;
+		$this->categories = $categories;
 		return $this;
 	}
 
-	/**
-	 * @return Category
-	 */
-	public function getCategory()
-	{
-		return $this->category;
-	}
-
-	/**
-	 * @param Category $category
-	 * @return self
-	 */
-	public function setCategory($category)
-	{
-		$this->category = $category;
-		return $this;
-	}
 }
