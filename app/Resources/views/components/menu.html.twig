@@ -1,7 +1,9 @@
 <div class="list-group">
 {% if categories is defined %}
-        {% for category in categories %}
-                <a href="#" class="list-group-item">{{ category.title }}</a>
-        {% endfor %}
+    {% for category in categories %}
+        <a href="{{ path("category_detail", {"slug": category.slug }) }}" class="list-group-item">
+            {{ category.title }}
+        </a>
+    {% endfor %}
 {% endif %}
 </div>

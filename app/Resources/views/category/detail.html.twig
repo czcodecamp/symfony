@@ -5,9 +5,10 @@
         {% for breadcrumb in breadcrumbs %}
         <li><a href="{{ path("category_detail", {"slug": breadcrumb.slug }) }}">{{ breadcrumb.title }}</a></li>
         {% endfor %}
-        <li class="active">{{ product.title }}</li>
+        <li class="active">{{ category.title }}</li>
     </ol>
-    <h1> {{ product.title }}</h1>
-    <img src="{{ asset(product.image) }}" />
-    <h2>{{ product.price }} Kč</h2>
+    <h1> {{ category.title }}</h1>
+    <div class="row">
+        {% include 'components/list.html.twig' %}
+    </div>
 {% endblock %}
