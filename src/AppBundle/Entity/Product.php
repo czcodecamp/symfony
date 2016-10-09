@@ -59,6 +59,19 @@ class Product
 	private $rank;
 
 	/**
+	 * @var int
+	 * @ORM\Column(type="integer", name="category_id")
+	 */
+	private $categoryId;
+
+	/**
+	 * @var Category
+	 * @ORM\ManyToOne(targetEntity="Category", inversedBy="products")
+	 * @ORM\JoinColumn(name="category_id", referencedColumnName="category_id")
+	 */
+	private $category;
+
+	/**
 	 * @var Category[]
 	 * @ORM\ManyToMany(targetEntity="Category", inversedBy="products")
 	 * @ORM\JoinTable(name="products_categories",
@@ -199,6 +212,42 @@ class Product
 	public function setRank($rank)
 	{
 		$this->rank = $rank;
+		return $this;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getCategoryId()
+	{
+		return $this->categoryId;
+	}
+
+	/**
+	 * @param int $categoryId
+	 * @return self
+	 */
+	public function setCategoryId($categoryId)
+	{
+		$this->categoryId = $categoryId;
+		return $this;
+	}
+
+	/**
+	 * @return Category
+	 */
+	public function getCategory()
+	{
+		return $this->category;
+	}
+
+	/**
+	 * @param Category $category
+	 * @return self
+	 */
+	public function setCategory(Category $category)
+	{
+		$this->category = $category;
 		return $this;
 	}
 

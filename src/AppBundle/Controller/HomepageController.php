@@ -1,9 +1,11 @@
 <?php
 namespace AppBundle\Controller;
+
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Product;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -15,7 +17,7 @@ class HomepageController extends Controller
 	/**
 	 * @Route("/", name="homepage")
 	 * @param Request $request
-	 * @return \Symfony\Component\HttpFoundation\Response
+	 * @return Response
 	 */
 	public function homepageAction(Request $request)
 	{
@@ -28,7 +30,9 @@ class HomepageController extends Controller
 				20
 			),
 			"categories" => $this->getDoctrine()->getRepository(Category::class)->findBy(
-				[],
+				[
+					"parentId" => null
+				],
 				[
 					"rank" => "desc",
 				]
@@ -40,7 +44,7 @@ class HomepageController extends Controller
 	/**
 	 * @Route("/hello", name="hello")
 	 * @param Request $request
-	 * @return \Symfony\Component\HttpFoundation\Response
+	 * @return Response
 	 */
 	public function helloAction(Request $request)
 	{

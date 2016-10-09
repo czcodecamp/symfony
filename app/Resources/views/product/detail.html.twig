@@ -2,11 +2,12 @@
 
 {% block body %}
     <ol class="breadcrumb">
-        {% if product.category %}
-        <li><a href="#">{{ product.category.title }}</a></li>
-        {% endif %}
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="#">{{ breadcrumb.title }}</a></li>
+        {% endfor %}
         <li class="active">{{ product.title }}</li>
     </ol>
     <h1> {{ product.title }}</h1>
     <img src="{{ product.image }}" />
+    <h2>{{ product.price }} Kč</h2>
 {% endblock %}
