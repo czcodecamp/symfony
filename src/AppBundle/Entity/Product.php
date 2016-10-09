@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @author Jan Klat <jenik@klatys.cz>
  *
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProductRepository")
- * @ORM\Table(name="products")
  */
 class Product
 {
@@ -17,7 +16,7 @@ class Product
 	 * @var int
 	 * @ORM\Id
 	 * @ORM\GeneratedValue
-	 * @ORM\Column(type="integer", name="product_id")
+	 * @ORM\Column(type="integer")
 	 */
 	private $id;
 
@@ -58,31 +57,11 @@ class Product
 	private $rank;
 
 	/**
-	 * @var Category[]
-	 * @ORM\ManyToMany(targetEntity="Category", inversedBy="products")
-	 * @ORM\JoinTable(name="products_categories",
-	 *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="product_id")},
-	 *     inverseJoinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="category_id")}
-	 * )
-	 */
-	private $categories;
-
-	/**
 	 * @return int
 	 */
 	public function getId()
 	{
 		return $this->id;
-	}
-
-	/**
-	 * @param int $id
-	 * @return self
-	 */
-	public function setId($id)
-	{
-		$this->id = $id;
-		return $this;
 	}
 
 	/**
@@ -191,32 +170,5 @@ class Product
 	{
 		$this->rank = $rank;
 		return $this;
-	}
-
-	/**
-	 * @return Category[]
-	 */
-	public function getCategories()
-	{
-		return $this->categories;
-	}
-
-	/**
-	 * @param Category[] $categories
-	 * @return self
-	 */
-	public function setCategories($categories)
-	{
-		$this->categories = $categories;
-		return $this;
-	}
-
-	/**
-	 * @return Category|null
-	 */
-	public function getFirstCategory()
-	{
-		$categories = $this->getCategories();
-		return $categories[0];
 	}
 }

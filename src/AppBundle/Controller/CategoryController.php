@@ -35,7 +35,7 @@ class CategoryController extends Controller
 			"products" => $this->getDoctrine()->getRepository(Product::class)->findByCategory($category),
 			"categories" => $this->getDoctrine()->getRepository(Category::class)->findBy(
 				[
-					"parentCategoryId" => $category->getId(),
+					"parentCategory" => $category,
 				],
 				[
 					"rank" => "desc",

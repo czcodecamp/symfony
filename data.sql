@@ -20,13 +20,13 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
-# Dump of table categories
+# Dump of table category
 # ------------------------------------------------------------
 
-LOCK TABLES `categories` WRITE;
-/*!40000 ALTER TABLE `categories` DISABLE KEYS */;
+LOCK TABLES `category` WRITE;
+/*!40000 ALTER TABLE `category` DISABLE KEYS */;
 
-INSERT INTO `categories` (`category_id`, `parent_category_id`, `top_category_id`, `title`, `slug`, `rank`, `lft`, `rgt`, `level`)
+INSERT INTO `category` (`id`, `parent_category_id`, `top_category_id`, `title`, `slug`, `rank`, `left`, `right`, `level`)
 VALUES
 	(1,NULL,1,'Nábytek','nabytek',853,0,13,0),
 	(2,1,1,'Sedací soupravy','sedaci-soupravy',370,1,6,1),
@@ -47,17 +47,17 @@ VALUES
 	(17,15,15,'Hifi věže','hifi-veze',261,31,32,1),
 	(18,15,15,'Blu-ray přehrávače','blu-ray-prehravace',245,33,34,1);
 
-/*!40000 ALTER TABLE `categories` ENABLE KEYS */;
+/*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
-# Dump of table products
+# Dump of table product
 # ------------------------------------------------------------
 
-LOCK TABLES `products` WRITE;
-/*!40000 ALTER TABLE `products` DISABLE KEYS */;
+LOCK TABLES `product` WRITE;
+/*!40000 ALTER TABLE `product` DISABLE KEYS */;
 
-INSERT INTO `products` (`product_id`, `title`, `image`, `slug`, `description`, `price`, `rank`)
+INSERT INTO `product` (`id`, `title`, `image`, `slug`, `description`, `price`, `rank`)
 VALUES
 	(1245717,'SCONTO CENTRO Psací stůl','https://zrks.cz/storage/img/20150429/458x258_75c47da75229482f87a677dfce1b2b75.jpg','sconto-centro-psaci-stul','moderní psací stůl\noptimální využití pro domácí kancelář\nvčetně komody a úložného prostoru\nkomoda 1 zásuvka a dvířka\notevřený regál s policí\nnožky a úchyty v barvě kovu\ndodáváno v demontu\nBarevné provedení: \n\ndub sonoma / bílá\n\nRozměry (š x v x h): \n\n85 x',3999,579),
 	(1318256,'SCONTO KUBA Psací stůl','https://zrks.cz/storage/img/20150728/458x258_9b7d2f55c6c83a43bfd18adb50aaca3d.jpg','sconto-kuba-psaci-stul','psací stůl\n3 zásuvky a 1 dvířka\npovrch odolný proti poškrábání\nsnadná údržba\nBarevné provedení: \n\n00.buk\n01.olše\n02.třešeň\n03.javor\n04.nocce\n\nRozměry ( š x v x h): \n\n138 x 75 x 68 cm',2699,547),
@@ -104,17 +104,17 @@ VALUES
 	(1687945,'Selfie tyč s bluetooth dálkovým ovládáním - dodání do 2 dnů','https://zrks.cz/storage/img/20160922/458x258_df459c940a0d4c043eef3cf0416ba7ed.jpg','selfie-tyc-s-bluetooth-dalkovym-ovladanim-dodani-do-2-dnu','',325,864),
 	(1688572,'Mobilní telefon vždy při ruce: Barevná sportovní pouzdra zn. Free Knight','https://zrks.cz/storage/img/20161006/458x258_c4b4527950082a2cf32ea8a930dac454.jpg','mobilni-telefon-vzdy-pri-ruce-barevna-sportovni-pouzdra-zn-free-knight','',399,899);
 
-/*!40000 ALTER TABLE `products` ENABLE KEYS */;
+/*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
-# Dump of table products_categories
+# Dump of table product_category
 # ------------------------------------------------------------
 
-LOCK TABLES `products_categories` WRITE;
-/*!40000 ALTER TABLE `products_categories` DISABLE KEYS */;
+LOCK TABLES `product_category` WRITE;
+/*!40000 ALTER TABLE `product_category` DISABLE KEYS */;
 
-INSERT INTO `products_categories` (`product_id`, `category_id`)
+INSERT INTO `product_category` (`product_id`, `category_id`)
 VALUES
 	(1245717,7),
 	(1318256,7),
@@ -161,7 +161,7 @@ VALUES
 	(1687945,13),
 	(1688572,14);
 
-/*!40000 ALTER TABLE `products_categories` ENABLE KEYS */;
+/*!40000 ALTER TABLE `product_category` ENABLE KEYS */;
 UNLOCK TABLES;
 
 

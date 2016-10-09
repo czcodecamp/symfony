@@ -1,14 +1,12 @@
 <?php
 namespace AppBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @author Jan Klat <jenik@klatys.cz>
  *
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CategoryRepository")
- * @ORM\Table("categories")
  */
 class Category
 {
@@ -17,7 +15,7 @@ class Category
 	 * @var int
 	 * @ORM\Id
 	 * @ORM\GeneratedValue
-	 * @ORM\Column(type="integer", name="category_id")
+	 * @ORM\Column(type="integer")
 	 */
 	private $id;
 
@@ -42,20 +40,12 @@ class Category
 	/**
 	 * @var Category
 	 * @ORM\ManyToOne(targetEntity="Category")
-	 * @ORM\JoinColumn(name="parent_category_id", referencedColumnName="category_id")
 	 */
 	private $parentCategory;
 
 	/**
-	 * @var int
-	 * @ORM\Column(type="integer", nullable=true)
-	 */
-	private $parentCategoryId;
-
-	/**
 	 * @var Category
 	 * @ORM\ManyToOne(targetEntity="Category")
-	 * @ORM\JoinColumn(name="top_category_id", referencedColumnName="category_id")
 	 */
 	private $topCategory;
 
@@ -63,17 +53,11 @@ class Category
 	 * @var int
 	 * @ORM\Column(type="integer")
 	 */
-	private $topCategoryId;
-
-	/**
-	 * @var int
-	 * @ORM\Column(type="integer", name="lft")
-	 */
 	private $left;
 
 	/**
 	 * @var int
-	 * @ORM\Column(type="integer", name="rgt")
+	 * @ORM\Column(type="integer")
 	 */
 	private $right;
 
@@ -89,16 +73,6 @@ class Category
 	public function getId()
 	{
 		return $this->id;
-	}
-
-	/**
-	 * @param int $id
-	 * @return self
-	 */
-	public function setId($id)
-	{
-		$this->id = $id;
-		return $this;
 	}
 
 	/**
@@ -167,27 +141,9 @@ class Category
 	 * @param Category $parentCategory
 	 * @return self
 	 */
-	public function setParentCategory($parentCategory)
+	public function setParentCategory(Category $parentCategory)
 	{
 		$this->parentCategory = $parentCategory;
-		return $this;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getParentCategoryId()
-	{
-		return $this->parentCategoryId;
-	}
-
-	/**
-	 * @param int $parentCategoryId
-	 * @return self
-	 */
-	public function setParentCategoryId($parentCategoryId)
-	{
-		$this->parentCategoryId = $parentCategoryId;
 		return $this;
 	}
 
@@ -203,27 +159,9 @@ class Category
 	 * @param Category $topCategory
 	 * @return self
 	 */
-	public function setTopCategory($topCategory)
+	public function setTopCategory(Category $topCategory)
 	{
 		$this->topCategory = $topCategory;
-		return $this;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getTopCategoryId()
-	{
-		return $this->topCategoryId;
-	}
-
-	/**
-	 * @param int $topCategoryId
-	 * @return self
-	 */
-	public function setTopCategoryId($topCategoryId)
-	{
-		$this->topCategoryId = $topCategoryId;
 		return $this;
 	}
 

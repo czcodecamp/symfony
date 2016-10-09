@@ -17,9 +17,12 @@ class ProductRepository extends EntityRepository
 	{
 		return $this->_em->createQuery('SELECT p
 			FROM AppBundle\Entity\Product p
-			JOIN p.categories c
+			JOIN AppBundle\Entity\ProductCategory pc WITH p = pc.product
+			JOIN AppBundle\Entity\Category c WITH pc.category = c
 			WHERE c.left >= :lft and c.right <= :rgt
-		')->setParameter("lft", $category->getLeft())
+			GROUP BY p
+		')
+			->setParameter("lft", $category->getLeft())
 			->setParameter("rgt", $category->getRight())
 			->getResult();
 	}

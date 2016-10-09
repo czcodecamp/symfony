@@ -1,6 +1,6 @@
 <div class="list-group">
 {% if category is defined %}
-    {% if category.topCategoryId != category.parentCategoryId and category.topCategoryId != category.id and category.topCategory != null %}
+    {% if category.topCategory != category.parentCategory and category.topCategory != category and category.topCategory != null %}
     <a href="{{ path("category_detail", {"slug": category.topCategory.slug }) }}" class="list-group-item">{{ category.topCategory.menuTitle }}</a>
     {% endif %}
     {% if category.parentCategory != null %}
