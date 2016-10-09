@@ -47,6 +47,12 @@ class Category
 	private $rank;
 
 	/**
+	 * @var Category[]
+	 * @ORM\OneToMany(targetEntity="Category", mappedBy="parent")
+	 */
+	private $categories;
+
+	/**
 	 * @var Product[]
 	 * @ORM\OneToMany(targetEntity="Product", mappedBy="category")
 	 */
@@ -55,6 +61,7 @@ class Category
 	public function __construct()
 	{
 		$this->products = new ArrayCollection();
+		$this->categories = new ArrayCollection();
 	}
 
 	/**
@@ -144,6 +151,24 @@ class Category
 	public function setRank($rank)
 	{
 		$this->rank = $rank;
+		return $this;
+	}
+
+	/**
+	 * @return Category[]
+	 */
+	public function getCategories()
+	{
+		return $this->categories;
+	}
+
+	/**
+	 * @param Category[] $categories
+	 * @return self
+	 */
+	public function setCategories($categories)
+	{
+		$this->categories = $categories;
 		return $this;
 	}
 
