@@ -61,7 +61,10 @@ class Product
 	/**
 	 * @var Category[]
 	 * @ORM\ManyToMany(targetEntity="Category", inversedBy="products")
-	 * @ORM\JoinTable(name="categories")
+	 * @ORM\JoinTable(name="products_categories",
+	 *      joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="product_id")},
+	 *      inverseJoinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="category_id")}
+	 *      )
 	 */
 	private $categories;
 

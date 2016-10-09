@@ -17,7 +17,7 @@ class Category
 	 * @var int
 	 * @ORM\Id
 	 * @ORM\GeneratedValue
-	 * @ORM\Column(type="integer")
+	 * @ORM\Column(type="integer", name="category_id")
 	 */
 	private $id;
 
@@ -30,7 +30,7 @@ class Category
 	/**
 	 * @var Category
 	 * @ORM\ManyToOne(targetEntity="Category")
-	 * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+	 * @ORM\JoinColumn(name="parent_id", referencedColumnName="category_id")
 	 */
 	private $parent;
 
