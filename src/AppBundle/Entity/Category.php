@@ -22,6 +22,13 @@ class Category
 	private $id;
 
 	/**
+	 * @var int
+	 * @ORM\ManyToOne(targetEntity="Category")
+	 * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+	 */
+	private $parent;
+
+	/**
 	 * @var string
 	 * @ORM\Column(type="string")
 	 */
@@ -65,6 +72,24 @@ class Category
 	public function setId($id)
 	{
 		$this->id = $id;
+		return $this;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getParent()
+	{
+		return $this->parent;
+	}
+
+	/**
+	 * @param int $parent
+	 * @return self
+	 */
+	public function setParent($parent)
+	{
+		$this->parent = $parent;
 		return $this;
 	}
 
