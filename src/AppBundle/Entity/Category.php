@@ -1,14 +1,12 @@
 <?php
 namespace AppBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @author Jan Klat <jenik@klatys.cz>
  *
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CategoryRepository")
- * @ORM\Table("categories")
  */
 class Category
 {
@@ -40,15 +38,34 @@ class Category
 	private $rank;
 
 	/**
-	 * @var Product[]
-	 * @ORM\OneToMany(targetEntity="Product", mappedBy="category")
+	 * @var Category
+	 * @ORM\ManyToOne(targetEntity="Category")
 	 */
-	private $products;
+	private $parentCategory;
 
-	public function __construct()
-	{
-		$this->products = new ArrayCollection();
-	}
+	/**
+	 * @var Category
+	 * @ORM\ManyToOne(targetEntity="Category")
+	 */
+	private $topCategory;
+
+	/**
+	 * @var int
+	 * @ORM\Column(type="integer")
+	 */
+	private $left;
+
+	/**
+	 * @var int
+	 * @ORM\Column(type="integer")
+	 */
+	private $right;
+
+	/**
+	 * @var int
+	 * @ORM\Column(type="integer")
+	 */
+	private $level;
 
 	/**
 	 * @return int
@@ -56,16 +73,6 @@ class Category
 	public function getId()
 	{
 		return $this->id;
-	}
-
-	/**
-	 * @param int $id
-	 * @return self
-	 */
-	public function setId($id)
-	{
-		$this->id = $id;
-		return $this;
 	}
 
 	/**
@@ -123,21 +130,109 @@ class Category
 	}
 
 	/**
-	 * @return Product[]
+	 * @return Category
 	 */
-	public function getProducts()
+	public function getParentCategory()
 	{
-		return $this->products;
+		return $this->parentCategory;
 	}
 
 	/**
-	 * @param Product[] $products
+	 * @param Category $parentCategory
 	 * @return self
 	 */
-	public function setProducts($products)
+	public function setParentCategory(Category $parentCategory)
 	{
-		$this->products = $products;
+		$this->parentCategory = $parentCategory;
 		return $this;
+	}
+
+	/**
+	 * @return Category
+	 */
+	public function getTopCategory()
+	{
+		return $this->topCategory;
+	}
+
+	/**
+	 * @param Category $topCategory
+	 * @return self
+	 */
+	public function setTopCategory(Category $topCategory)
+	{
+		$this->topCategory = $topCategory;
+		return $this;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getLeft()
+	{
+		return $this->left;
+	}
+
+	/**
+	 * @param int $left
+	 * @return self
+	 */
+	public function setLeft($left)
+	{
+		$this->left = $left;
+		return $this;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getRight()
+	{
+		return $this->right;
+	}
+
+	/**
+	 * @param int $right
+	 * @return self
+	 */
+	public function setRight($right)
+	{
+		$this->right = $right;
+		return $this;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getLevel()
+	{
+		return $this->level;
+	}
+
+	/**
+	 * @param int $level
+	 * @return self
+	 */
+	public function setLevel($level)
+	{
+		$this->level = $level;
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getMenuTitle()
+	{
+		return str_repeat("-", $this->getLevel()) . " " . $this->getTitle();
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isLowestLevel()
+	{
+		return ($this->getRight() - $this->getLeft()) === 1;
 	}
 
 }
