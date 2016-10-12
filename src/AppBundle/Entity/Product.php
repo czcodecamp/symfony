@@ -2,14 +2,12 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @author Jan Klat <jenik@klatys.cz>
  *
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProductRepository")
- * @ORM\Table(name="products")
  */
 class Product
 {
@@ -18,7 +16,7 @@ class Product
 	 * @var int
 	 * @ORM\Id
 	 * @ORM\GeneratedValue
-	 * @ORM\Column(type="integer", name="product_id")
+	 * @ORM\Column(type="integer")
 	 */
 	private $id;
 
@@ -59,34 +57,11 @@ class Product
 	private $rank;
 
 	/**
-	 * @var int
-	 * @ORM\Column(type="integer", name="category_id")
-	 */
-	private $categoryId;
-
-	/**
-	 * @var Category
-	 * @ORM\ManyToOne(targetEntity="Category", inversedBy="products")
-	 * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
-	 */
-	private $category;
-
-	/**
 	 * @return int
 	 */
 	public function getId()
 	{
 		return $this->id;
-	}
-
-	/**
-	 * @param int $id
-	 * @return self
-	 */
-	public function setId($id)
-	{
-		$this->id = $id;
-		return $this;
 	}
 
 	/**
@@ -194,42 +169,6 @@ class Product
 	public function setRank($rank)
 	{
 		$this->rank = $rank;
-		return $this;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getCategoryId()
-	{
-		return $this->categoryId;
-	}
-
-	/**
-	 * @param int $categoryId
-	 * @return self
-	 */
-	public function setCategoryId($categoryId)
-	{
-		$this->categoryId = $categoryId;
-		return $this;
-	}
-
-	/**
-	 * @return Category
-	 */
-	public function getCategory()
-	{
-		return $this->category;
-	}
-
-	/**
-	 * @param Category $category
-	 * @return self
-	 */
-	public function setCategory($category)
-	{
-		$this->category = $category;
 		return $this;
 	}
 }
