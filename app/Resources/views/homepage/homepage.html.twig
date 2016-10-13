@@ -4,5 +4,9 @@
     <div class="row">
         {% include 'components/list.html.twig' %}
     </div>
+
+    <div class="navigation text-center">
+        {{ knp_pagination_render(products) }}
+    </div>
 {% endblock %}
 
