@@ -70,6 +70,7 @@ class CategoryController extends Controller
 				]
 			),
 			"category" => $category,
+            "breadcrumb" => $this->getDoctrine()->getRepository(Category::class)->getParents($category)
 		];
 	}
 }
