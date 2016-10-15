@@ -1,14 +1,27 @@
-{% for product in products %}
-    <div class="col-sm-4 col-lg-4 col-md-4">
-        <a href="{{ path("product_detail", {"slug": product.slug }) }}">
-            <div class="thumbnail">
-                <img src="{{ product.image }}" alt="{{ product.title }}">
-                <div class="caption">
-                    <h4 class="pull-right">{{ product.price }} Kč</h4>
-                    </h4>
-                    <p>{{ product.title }}</p>
+<p>
+    Sort by:
+    {{ knp_pagination_sortable(pagination, 'Title', 'p.title') }}
+    {{ knp_pagination_sortable(pagination, 'Rank', 'p.rank') }}
+</p>
+
+<div class="clearfix">
+    {% for product in pagination %}
+        <div class="col-sm-4 col-lg-4 col-md-4">
+            <a href="{{ path("product_detail", {"slug": product.slug }) }}">
+                <div class="thumbnail">
+                    <img src="{{ product.image }}" alt="{{ product.title }}">
+                    <div class="caption">
+                        <h4 class="pull-right">{{ product.price }} Kč</h4>
+                        </h4>
+                        <p>{{ product.title }}</p>
+                    </div>
                 </div>
-            </div>
-            </a>
-    </div>
-{% endfor %}
+                </a>
+        </div>
+    {% endfor %}
+</div>
+
+{# display navigation #}
+<p>
+    {{ knp_pagination_render(pagination) }}
+</p>
