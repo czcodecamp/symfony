@@ -1,0 +1,20 @@
+{% if maxPages > 1 %}
+    <ul class="pagination pagination-sm pull-right">
+        {# `«` arrow  #}
+        <li {{ page == 1 ? 'class="disabled"' }}>
+            <a href="{{ path('homepage', {page: page-1 < 1 ? 1 : page-1}) }}">«</a>
+        </li>
+
+        {# Render each page number #}
+        {% for i in 1..maxPages %}
+            <li {{ page == i ? 'class="active"' }}>
+                <a href="{{ path('homepage', {page: i}) }}">{{ i }}</a>
+            </li>
+        {% endfor %}
+
+        {# `»` arrow #}
+        <li {{ page == maxPages ? 'class="disabled"' }}>
+            <a href="{{ path('homepage', {page: page+1 <= maxPages ? page+1 : page}) }}">»</a>
+        </li>
+    </ul>
+{% endif %}

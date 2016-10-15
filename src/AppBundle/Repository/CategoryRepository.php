@@ -12,4 +12,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class CategoryRepository extends EntityRepository
 {
+	public function getAllCategories()
+	{
+		return $this->findBy(
+			[],
+			[
+				"rank" => "desc",
+			]
+		);
+	}
 }

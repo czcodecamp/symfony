@@ -7,3 +7,13 @@ services:
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+  product_repository:
+      class: AppBundle\Repository\ProductRepository
+      factory: ["@doctrine.orm.entity_manager", getRepository]
+      arguments:
+          - AppBundle\Entity\ProductRepository
+  category_repository:
+      class: AppBundle\Repository\CategoryRepository
+      factory: ["@doctrine.orm.entity_manager", getRepository]
+      arguments:
+          - AppBundle\Entity\CategoryRepository
