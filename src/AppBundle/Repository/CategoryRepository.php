@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Category;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -12,4 +13,49 @@ use Doctrine\ORM\EntityRepository;
  */
 class CategoryRepository extends EntityRepository
 {
+
+	/**
+	 * @param string $slug
+	 * @return null|Category
+	 */
+	public function findOneBySlug($slug)
+	{
+		return $this->findOneBy(
+			[
+				"slug" => $slug
+			]
+		);
+	}
+
+	/**
+	 * @return Category[]
+	 */
+	public function findTopCategories()
+	{
+		return $this->findBy(
+			[
+				"level" => 0,
+			],
+			[
+				"rank" => "desc",
+			]
+		);
+	}
+
+	/**
+	 * @param Category $category
+	 * @return Category[]
+	 */
+	public function findByParentCategory(Category $category = null)
+	{
+		return $this->findBy(
+			[
+				"parentCategory" => $category,
+			],
+			[
+				"rank" => "desc",
+			]
+		);
+	}
+
 }

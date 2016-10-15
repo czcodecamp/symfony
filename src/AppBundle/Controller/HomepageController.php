@@ -18,21 +18,8 @@ class HomepageController extends Controller
 	public function homepageAction()
 	{
 		return [
-			"products" => $this->getDoctrine()->getRepository(Product::class)->findBy(
-				[],
-				[
-					"rank" => "desc"
-				],
-				21
-			),
-			"categories" => $this->getDoctrine()->getRepository(Category::class)->findBy(
-				[
-					"level" => 0,
-				],
-				[
-					"rank" => "desc",
-				]
-			),
+			"categories" => $this->getDoctrine()->getRepository(Category::class)->findTopCategories(),
+			"products" => $this->getDoctrine()->getRepository(Product::class)->findAllProducts(),
 		];
 	}
 

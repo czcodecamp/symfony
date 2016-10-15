@@ -10,6 +10,33 @@ class ProductRepository extends EntityRepository
 {
 
 	/**
+	 * @param string $slug
+	 * @return null|Product
+	 */
+	public function findOneBySlug($slug)
+	{
+		return $this->findOneBy(
+			[
+				"slug" => $slug
+			]
+		);
+	}
+
+	/**
+	 * @return Product[]
+	 */
+	public function findAllProducts()
+	{
+		return $this->findBy(
+			[],
+			[
+				"rank" => "desc"
+			],
+			21
+		);
+	}
+
+	/**
 	 * @param Category $category
 	 * @return Product[]
 	 */

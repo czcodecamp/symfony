@@ -23,25 +23,18 @@ class CategoryController extends Controller
 	 */
 	public function categoryDetail(Request $request)
 	{
-		$category = $this->getDoctrine()->getRepository(Category::class)->findOneBy([
-			"slug" => $request->attributes->get("slug"),
-		]);
+		$category = $this->getDoctrine()->getRepository(Category::class)->findOneBySlug(
+			$request->attributes->get("slug")
+		);
 
 		if (!$category) {
 			throw new NotFoundHttpException("Kategorie neexistuje");
 		}
 
 		return [
-			"products" => $this->getDoctrine()->getRepository(Product::class)->findByCategory($category),
-			"categories" => $this->getDoctrine()->getRepository(Category::class)->findBy(
-				[
-					"parentCategory" => $category,
-				],
-				[
-					"rank" => "desc",
-				]
-			),
 			"category" => $category,
+			"categories" => $this->getDoctrine()->getRepository(Category::class)->findByParentCategory($category),
+			"products" => $this->getDoctrine()->getRepository(Product::class)->findByCategory($category),
 		];
 	}
 

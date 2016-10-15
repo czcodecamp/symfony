@@ -24,24 +24,19 @@ class ProductController extends Controller
 	 */
 	public function productDetailAction(Request $request)
 	{
-		$product = $this->getDoctrine()->getRepository(Product::class)->findOneBy([
-			"slug" => $request->attributes->get("slug"),
-		]);
+		$product = $this->getDoctrine()->getRepository(Product::class)->findOneBySlug(
+			$request->attributes->get("slug")
+		);
 		if (!$product) {
 			throw new NotFoundHttpException("Produkt neexistuje");
 		}
 
 		return [
 			"product" => $product,
-			"categories" => $this->getDoctrine()->getRepository(Category::class)->findBy(
-				[
-					"parentCategoryId" => $product->getFirstCategory() ? $product->getFirstCategory()->getId() : null,
-				],
-				[
-					"rank" => "desc",
-				]
-			),
 			"category" => $product->getFirstCategory(),
+			"categories" => $this->getDoctrine()->getRepository(Category::class)->findByParentCategory(
+				$product->getFirstCategory() ?: null
+			),
 		];
 
 	}
