@@ -2,11 +2,9 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Product;
-use Doctrine\ORM\EntityManager;
+use AppBundle\Facade\ProductFacade;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
@@ -16,24 +14,19 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class ProductController
 {
-	/**
-	 * @var EntityManager
-	 */
-	private $entityManager;
+	private $productFacade;
 
-	public function __construct(EntityManager $entityManager)
+	public function __construct(ProductFacade $productFacade)
 	{
-		$this->entityManager = $entityManager;
+		$this->productFacade = $productFacade;
 	}
 	/**
 	 * @Route("/product/{slug}", name="product_detail")
 	 * @Template("product/detail.html.twig")
 	 */
-	public function productDetailAction(Request $request)
+	public function productDetailAction($slug)
 	{
-		$product = $this->entityManager->getRepository(Product::class)->findOneBy([
-			"slug" => $request->attributes->get("slug"),
-		]);
+		$product = $this->productFacade->getBySlug($slug);
 		if (!$product) {
 			throw new NotFoundHttpException("Produkt neexistuje");
 		}

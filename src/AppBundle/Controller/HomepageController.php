@@ -2,6 +2,8 @@
 namespace AppBundle\Controller;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Product;
+use AppBundle\Facade\CategoryFacade;
+use AppBundle\Facade\ProductFacade;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -13,11 +15,16 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class HomepageController
 {
 
-	private $entityManager;
+	private $productFacade;
+	private $categoryFacade;
 
-	public function __construct(EntityManager $entityManager) {
+	public function __construct(
+		ProductFacade $productFacade,
+		CategoryFacade $categoryFacade
+	) {
 
-		$this->entityManager = $entityManager;
+		$this->productFacade = $productFacade;
+		$this->categoryFacade = $categoryFacade;
 	}
 
 	/**
@@ -27,21 +34,8 @@ class HomepageController
 	public function homepageAction()
 	{
 		return [
-			"products" => $this->entityManager->getRepository(Product::class)->findBy(
-				[],
-				[
-					"rank" => "desc"
-				],
-				21
-			),
-			"categories" => $this->entityManager->getRepository(Category::class)->findBy(
-				[
-					"level" => 0,
-				],
-				[
-					"rank" => "desc",
-				]
-			),
+			"products" => $this->productFacade->getAll(),
+			"categories" => $this->categoryFacade->getTopLevelCategories(),
 		];
 	}
 

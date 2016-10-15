@@ -2,12 +2,10 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Category;
-use AppBundle\Entity\Product;
-use Doctrine\ORM\EntityManager;
+use AppBundle\Facade\CategoryFacade;
+use AppBundle\Facade\ProductFacade;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -16,39 +14,32 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class CategoryController
 {
-	/**
-	 * @var EntityManager
-	 */
-	private $entityManager;
+	private $categoryFacade;
+	private $productFacade;
 
-	public function __construct(EntityManager $entityManager) {
+	public function __construct(
+		CategoryFacade $categoryFacade,
+		ProductFacade $productFacade
+	) {
 
-		$this->entityManager = $entityManager;
+		$this->categoryFacade = $categoryFacade;
+		$this->productFacade = $productFacade;
 	}
 	/**
 	 * @Route("/vyber/{slug}", name="category_detail")
 	 * @Template("category/detail.html.twig")
 	 */
-	public function categoryDetail(Request $request)
+	public function categoryDetail($slug)
 	{
-		$category = $this->entityManager->getRepository(Category::class)->findOneBy([
-			"slug" => $request->attributes->get("slug"),
-		]);
+		$category = $this->categoryFacade->getBySlug($slug);
 
 		if (!$category) {
 			throw new NotFoundHttpException("Kategorie neexistuje");
 		}
 
 		return [
-			"products" => $this->entityManager->getRepository(Product::class)->findByCategory($category),
-			"categories" => $this->entityManager->getRepository(Category::class)->findBy(
-				[
-					"parentCategory" => $category,
-				],
-				[
-					"rank" => "desc",
-				]
-			),
+			"products" => $this->productFacade->findByCategory($category),
+			"categories" => $this->categoryFacade->getParentCategories($category),
 			"category" => $category,
 		];
 	}
