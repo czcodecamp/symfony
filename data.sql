@@ -23,6 +23,21 @@
 # Dump of table category
 # ------------------------------------------------------------
 
+DROP TABLE IF EXISTS `category`;
+
+CREATE TABLE `category` (
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`parent_category_id` int(11) NOT NULL,
+	`top_category_id` int(11) NOT NULL,
+  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `slug` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `rank` int(11) NOT NULL,
+	`left` int(11) NOT NULL,
+	`right` int(11) NOT NULL,
+	`level` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
 
@@ -53,6 +68,19 @@ UNLOCK TABLES;
 
 # Dump of table product
 # ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `product`;
+
+CREATE TABLE `product` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `image` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `slug` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `price` double NOT NULL,
+  `rank` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
@@ -110,6 +138,14 @@ UNLOCK TABLES;
 
 # Dump of table product_category
 # ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `product_category`;
+
+CREATE TABLE `product_category` (
+	`product_id` int(11) NOT NULL,
+	`category_id` int(11) NOT NULL,
+  PRIMARY KEY (`product_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 LOCK TABLES `product_category` WRITE;
 /*!40000 ALTER TABLE `product_category` DISABLE KEYS */;
