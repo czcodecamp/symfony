@@ -1,30 +1,37 @@
 <?php
+
 namespace AppBundle\Controller;
-use AppBundle\Entity\Category;
+
 use AppBundle\Entity\Product;
+use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
 /**
  * @author Jan Klat <jenik@klatys.cz>
+ * @Route(service="app.controller.product_controller")
  */
-class ProductController extends Controller
+class ProductController
 {
+	/**
+	 * @var EntityManager
+	 */
+	private $entityManager;
 
+	public function __construct(EntityManager $entityManager)
+	{
+		$this->entityManager = $entityManager;
+	}
 	/**
 	 * @Route("/product/{slug}", name="product_detail")
 	 * @Template("product/detail.html.twig")
-	 *
-	 * @param Request $request
-	 * @return array
 	 */
 	public function productDetailAction(Request $request)
 	{
-		$product = $this->getDoctrine()->getRepository(Product::class)->findOneBy([
+		$product = $this->entityManager->getRepository(Product::class)->findOneBy([
 			"slug" => $request->attributes->get("slug"),
 		]);
 		if (!$product) {

@@ -2,15 +2,24 @@
 namespace AppBundle\Controller;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Product;
+use Doctrine\ORM\EntityManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @author Jan Klat <jenik@klatys.cz>
+ * @Route(service="app.controller.homepage_controller")
  */
-class HomepageController extends Controller
+class HomepageController
 {
+
+	private $entityManager;
+
+	public function __construct(EntityManager $entityManager) {
+
+		$this->entityManager = $entityManager;
+	}
+
 	/**
 	 * @Route("/", name="homepage")
 	 * @Template("homepage/homepage.html.twig")
@@ -18,14 +27,14 @@ class HomepageController extends Controller
 	public function homepageAction()
 	{
 		return [
-			"products" => $this->getDoctrine()->getRepository(Product::class)->findBy(
+			"products" => $this->entityManager->getRepository(Product::class)->findBy(
 				[],
 				[
 					"rank" => "desc"
 				],
 				21
 			),
-			"categories" => $this->getDoctrine()->getRepository(Category::class)->findBy(
+			"categories" => $this->entityManager->getRepository(Category::class)->findBy(
 				[
 					"level" => 0,
 				],

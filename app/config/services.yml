@@ -4,6 +4,13 @@ parameters:
 #    parameter_name: value
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+  app.controller.category_controller:
+    class: AppBundle\Controller\CategoryController
+    arguments: ['@doctrine.orm.entity_manager']
+  app.controller.homepage_controller:
+    class: AppBundle\Controller\HomepageController
+    arguments: ['@doctrine.orm.entity_manager']
+  app.controller.product_controller:
+    class: AppBundle\Controller\ProductController
+    arguments: ['@doctrine.orm.entity_manager']
+
