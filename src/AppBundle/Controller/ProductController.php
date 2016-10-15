@@ -33,17 +33,7 @@ class ProductController extends Controller
 
 		return [
 			"product" => $product,
-			"categories" => $this->getDoctrine()->getRepository(Category::class)->findBy(
-				[
-					"parentCategoryId" => $product->getFirstCategory() ? $product->getFirstCategory()->getId() : null,
-				],
-				[
-					"rank" => "desc",
-				]
-			),
-			"category" => $product->getFirstCategory(),
 		];
-
 	}
 
 }
