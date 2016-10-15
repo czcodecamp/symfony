@@ -5,6 +5,7 @@ use AppBundle\Entity\Product;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @author Jan Klat <jenik@klatys.cz>
@@ -12,18 +13,28 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomepageController extends Controller
 {
 	/**
-	 * @Route("/", name="homepage")
+	 * @Route("/{page}", name="homepage")
 	 * @Template("homepage/homepage.html.twig")
+     *
+     * @param Request $request
+     * @return array
 	 */
-	public function homepageAction()
+	public function homepageAction(Request $request)
 	{
+        $perPage = 6;
+        $currentPage = $request->attributes->get("page");
+        $totalProducts = $this->getDoctrine()->getRepository(Product::class)->findBy([]);
+        $totalPages = ceil(count($totalProducts)/$perPage);
+
+
 		return [
 			"products" => $this->getDoctrine()->getRepository(Product::class)->findBy(
 				[],
 				[
 					"rank" => "desc"
 				],
-				21
+                $perPage, // limit of products per page
+                $perPage * ($currentPage - 1) // offset of products
 			),
 			"categories" => $this->getDoctrine()->getRepository(Category::class)->findBy(
 				[
@@ -33,6 +44,8 @@ class HomepageController extends Controller
 					"rank" => "desc",
 				]
 			),
+            "totalPages" => $totalPages,
+            "currentPage" => $currentPage,
 		];
 	}
 
