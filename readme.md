@@ -3,6 +3,6 @@
 ## Used bundle
 
 ### KnpPaginatorBundle
-Pagination 
+Pagination  
 https://packagist.org/packages/knplabs/knp-paginator-bundle  
 https://github.com/KnpLabs/KnpPaginatorBundle
