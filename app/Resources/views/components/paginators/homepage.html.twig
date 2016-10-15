@@ -1,0 +1,21 @@
+{% if paginator is defined %}
+    <div class="text-center">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">                
+                <li class="{{ (paginator.isFirst) ? 'disabled' : '' }}">
+                    <a href="{{ (paginator.isFirst) ? "#" : path(app.request.attributes.get('_route'),{'page': paginator.activePage - 1}) }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                {% for i in 1..paginator.maxPageNumber %}
+                    <li class="{{ (i == paginator.activePage) ? 'active' : '' }}"><a href="{{ path(app.request.attributes.get('_route'),{'page': i}) }}">{{ i }}</a></li>  
+                    {% endfor %}
+                <li class="{{ (paginator.isLast) ? 'disabled' : '' }}">
+                    <a href="{{ (paginator.isLast) ? "#" : path(app.request.attributes.get('_route'),{'page': paginator.activePage + 1}) }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+{% endif %}
