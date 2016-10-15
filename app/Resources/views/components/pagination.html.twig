@@ -1,0 +1,11 @@
+<div class="col-sm-12 col-md-12 col-lg-12">
+    {% if totalPages > 1 %}
+        <ul class="pagination pagination-md">
+            {% for i in 1..totalPages %}
+                <li {{ currentPage==i ? "class=\"active\"" }}>
+                    <a href="{{ path("homepage", {"page":i}) }}">{{i}}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
