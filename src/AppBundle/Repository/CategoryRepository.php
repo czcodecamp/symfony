@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Category;
+use AppBundle\Entity\Product;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -12,4 +14,81 @@ use Doctrine\ORM\EntityRepository;
  */
 class CategoryRepository extends EntityRepository
 {
+
+	/**
+	 * @param string $slug
+	 * @return null|Category
+	 */
+	public function findOneBySlug($slug)
+	{
+		return $this->findOneBy(
+			[
+				"slug" => $slug
+			]
+		);
+	}
+
+	/**
+	 * @return Category[]
+	 */
+	public function findTopCategories()
+	{
+		return $this->findBy(
+			[
+				"level" => 0,
+			],
+			[
+				"rank" => "desc",
+			]
+		);
+	}
+
+	/**
+	 * @param Category $category
+	 * @return Category[]
+	 */
+	public function findByParentCategory(Category $category = null)
+	{
+		return $this->findBy(
+			[
+				"parentCategory" => $category,
+			],
+			[
+				"rank" => "desc",
+			]
+		);
+	}
+
+	/**
+	 * @param Product $product
+	 * @return Category|null
+	 */
+	public function findOneByProduct(Product $product)
+	{
+		return $this->_em->createQuery('SELECT c
+			FROM AppBundle\Entity\ProductCategory pc
+			JOIN AppBundle\Entity\Category c WITH pc.category = c
+			WHERE pc.product = :product
+			ORDER BY c.rank DESC
+		')
+			->setParameter("product", $product)
+			->setMaxResults(1)
+			->getSingleResult();
+	}
+
+	/**
+	 * @param Category $category
+	 * @return Category[]
+	 */
+	public function findBreadCrumbPath(Category $category)
+	{
+		return $this->_em->createQuery('SELECT c
+			FROM AppBundle\Entity\Category c
+			WHERE :left BETWEEN c.left AND c.right
+			ORDER BY c.left ASC
+		')
+			->setParameter("left", $category->getLeft())
+			->getResult();
+	}
+
 }

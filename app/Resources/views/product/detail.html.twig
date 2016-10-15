@@ -1,14 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <ol class="breadcrumb">
-        <li>
-            <a href="{{ path("category_detail", {"slug": product.firstCategory.slug}) }}">
-                {{ product.firstCategory.title }}
-            </a>
-        </li>
-        <li class="active">{{ product.title }}</li>
-    </ol>
+    {% include ":components:breadcrumb.html.twig" %}
     <h1> {{ product.title }}</h1>
     <img src="{{ product.image }}" />
 {% endblock %}

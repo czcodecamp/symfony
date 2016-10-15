@@ -2,6 +2,7 @@
 namespace AppBundle\Controller;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Product;
+use AppBundle\VO\BreadcrumbVO;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -19,29 +20,25 @@ class ProductController extends Controller
 	 * @Route("/product/{slug}", name="product_detail")
 	 * @Template("product/detail.html.twig")
 	 *
-	 * @param Request $request
+	 * @param string $slug
 	 * @return array
 	 */
-	public function productDetailAction(Request $request)
+	public function productDetailAction($slug)
 	{
-		$product = $this->getDoctrine()->getRepository(Product::class)->findOneBy([
-			"slug" => $request->attributes->get("slug"),
-		]);
+		$product = $this->getDoctrine()->getRepository(Product::class)->findOneBySlug($slug);
 		if (!$product) {
 			throw new NotFoundHttpException("Produkt neexistuje");
 		}
 
+		$category = $this->getDoctrine()->getRepository(Category::class)->findOneByProduct($product);
+
+		$breadcrumb = $this->getDoctrine()->getRepository(Category::class)->findBreadCrumbPath($category);
+
 		return [
 			"product" => $product,
-			"categories" => $this->getDoctrine()->getRepository(Category::class)->findBy(
-				[
-					"parentCategoryId" => $product->getFirstCategory() ? $product->getFirstCategory()->getId() : null,
-				],
-				[
-					"rank" => "desc",
-				]
-			),
-			"category" => $product->getFirstCategory(),
+			"category" => $category,
+			"categories" => $this->getDoctrine()->getRepository(Category::class)->findByParentCategory($category),
+			"breadcrumbVO" => BreadcrumbVO::create($breadcrumb, $product),
 		];
 
 	}

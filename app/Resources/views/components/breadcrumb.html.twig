@@ -1,0 +1,19 @@
+<ol class="breadcrumb">
+    <li>
+        <a href="{{ path("homepage") }}">Domů</a>
+    </li>
+    {% for category in breadcrumbVO.categories %}
+        {% if loop.last and not breadcrumbVO.isProduct %}
+            <li class="active">{{ category.title }}</li>
+        {% else %}
+            <li>
+                <a href="{{ path("category_detail", {"slug": category.slug}) }}">
+                    {{ category.title }}
+                </a>
+            </li>
+        {% endif %}
+    {% endfor %}
+    {% if breadcrumbVO.isProduct %}
+        <li class="active">{{ product.title }}</li>
+    {% endif %}
+</ol>
