@@ -19,14 +19,12 @@ class ProductController extends Controller
 	 * @Route("/product/{slug}", name="product_detail")
 	 * @Template("product/detail.html.twig")
 	 *
-	 * @param Request $request
+	 * @param string $slug
 	 * @return array
 	 */
-	public function productDetailAction(Request $request)
+	public function productDetailAction($slug)
 	{
-		$product = $this->getDoctrine()->getRepository(Product::class)->findOneBySlug(
-			$request->attributes->get("slug")
-		);
+		$product = $this->getDoctrine()->getRepository(Product::class)->findOneBySlug($slug);
 		if (!$product) {
 			throw new NotFoundHttpException("Produkt neexistuje");
 		}

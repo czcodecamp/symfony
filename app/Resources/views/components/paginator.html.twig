@@ -1,0 +1,50 @@
+{% set routeName = paginatorVO.routeName %}
+{% set thisPage = paginatorVO.page %}
+{% set maxPages = paginatorVO.maxPages %}
+{% set from = paginatorVO.from %}
+{% set to = paginatorVO.to %}
+{% set totalCount = paginatorVO.totalCount %}
+{% if maxPages > 1 %}
+    <ul class="pagination pagination-sm">
+        <li>
+            <a href="{{ path(routeName, {page: 1}) }}">First</a>
+        </li>
+
+        {# `«` arrow  #}
+        <li {{ thisPage == 1 ? 'class="disabled"' }}>
+            <a href="{{ path(routeName, {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
+        </li>
+
+        {# Render each page number #}
+        {% if maxPages <= 6 %}
+            {% for i in 1..maxPages %}
+                <li {{ thisPage == i ? 'class="active"' }}>
+                    <a href="{{ path(routeName, {page: i}) }}">{{ i }}</a>
+                </li>
+            {% endfor %}
+        {% else %}
+            {% set limit = 3 %}
+            {% for i in 1..limit %}
+                <li {{ thisPage == i ? 'class="active"' }}>
+                    <a href="{{ path(routeName, {page: i}) }}">{{ i }}</a>
+                </li>
+            {% endfor %}
+            <li>...</li>
+            {% for i in maxPages-limit..maxPages %}
+                <li {{ thisPage == i ? 'class="active"' }}>
+                    <a href="{{ path(routeName, {page: i}) }}">{{ i }}</a>
+                </li>
+            {% endfor %}
+        {% endif %}
+
+        {# `»` arrow #}
+        <li {{ thisPage == maxPages ? 'class="disabled"' }}>
+            <a href="{{ path(routeName, {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
+        </li>
+
+        <li>
+            <a href="{{ path(routeName, {page: maxPages}) }}">Last</a>
+        </li>
+        <li><span class="label label-default">{{ from }} - {{ to }} / {{ totalCount }}</span></li>
+    </ul>
+{% endif %}
