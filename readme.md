@@ -2,7 +2,7 @@
 
 ## Used bundle
 
-### SimplePaginationBundle
+### KnpPaginatorBundle
 Pagination
-https://packagist.org/packages/knplabs/knp-paginator-bundle
+https://packagist.org/packages/knplabs/knp-paginator-bundle  
 https://github.com/KnpLabs/KnpPaginatorBundle
