@@ -2,11 +2,13 @@
 
 {% block body %}
     <ol class="breadcrumb">
-        <li>
-            <a href="{{ path("category_detail", {"slug": product.firstCategory.slug}) }}">
-                {{ product.firstCategory.title }}
-            </a>
-        </li>
+        {% if category %}
+            <li>
+                <a href="{{ path("category_detail", {"slug": category.slug}) }}">
+                    {{ category.title }}
+                </a>
+            </li>
+        {% endif %}
         <li class="active">{{ product.title }}</li>
     </ol>
     <h1> {{ product.title }}</h1>

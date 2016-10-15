@@ -31,12 +31,11 @@ class ProductController extends Controller
 			throw new NotFoundHttpException("Produkt neexistuje");
 		}
 
+		$category = $this->getDoctrine()->getRepository(Category::class)->findOneByProduct($product);
 		return [
 			"product" => $product,
-			"category" => $product->getFirstCategory(),
-			"categories" => $this->getDoctrine()->getRepository(Category::class)->findByParentCategory(
-				$product->getFirstCategory() ?: null
-			),
+			"category" => $category,
+			"categories" => $this->getDoctrine()->getRepository(Category::class)->findByParentCategory($category),
 		];
 
 	}

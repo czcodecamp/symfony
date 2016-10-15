@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Category;
+use AppBundle\Entity\Product;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -56,6 +57,23 @@ class CategoryRepository extends EntityRepository
 				"rank" => "desc",
 			]
 		);
+	}
+
+	/**
+	 * @param Product $product
+	 * @return Category|null
+	 */
+	public function findOneByProduct(Product $product)
+	{
+		return $this->_em->createQuery('SELECT c
+			FROM AppBundle\Entity\ProductCategory pc
+			JOIN AppBundle\Entity\Category c WITH pc.category = c
+			WHERE pc.product = :product
+			ORDER BY c.rank DESC
+		')
+			->setParameter("product", $product)
+			->setMaxResults(1)
+			->getSingleResult();
 	}
 
 }
