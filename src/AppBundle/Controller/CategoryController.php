@@ -23,6 +23,7 @@ class CategoryController extends Controller
 	 */
 	public function categoryDetail(Request $request)
 	{
+
 		$category = $this->getDoctrine()->getRepository(Category::class)->findOneBy([
 			"slug" => $request->attributes->get("slug"),
 		]);
@@ -31,8 +32,21 @@ class CategoryController extends Controller
 			throw new NotFoundHttpException("Kategorie neexistuje");
 		}
 
+		if(!$thisPage = $request->get("page")) $thisPage = 1;
+
+	    $posts = $this->getDoctrine()->getRepository(Product::class)->findByCategory($category, $thisPage);
+	    $totalPostsReturned = $posts->getIterator()->count();
+	    $totalPosts = $posts->count();
+	    $iterator = $posts->getIterator();
+
+	    $limit = 5;
+	    $maxPages = ceil($totalPosts / $limit);
+
 		return [
-			"products" => $this->getDoctrine()->getRepository(Product::class)->findByCategory($category),
+			"thisPage" => $thisPage,
+			"products" => $iterator,
+			"maxPages" => $maxPages,
+			
 			"categories" => $this->getDoctrine()->getRepository(Category::class)->findBy(
 				[
 					"parentCategory" => $category,
