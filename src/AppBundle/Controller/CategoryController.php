@@ -31,8 +31,26 @@ class CategoryController extends Controller
 			throw new NotFoundHttpException("Kategorie neexistuje");
 		}
 
+		// paginator
+        $em = $this->get('doctrine.orm.entity_manager');
+        $dql = 'SELECT p
+			FROM AppBundle\Entity\Product p
+			JOIN AppBundle\Entity\ProductCategory pc WITH p = pc.product
+			JOIN AppBundle\Entity\Category c WITH pc.category = c
+			WHERE c.left >= :lft and c.right <= :rgt
+			GROUP BY p';
+        $query = $em->createQuery($dql)
+            ->setParameter("lft", $category->getLeft())
+            ->setParameter("rgt", $category->getRight());
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1) /*page number*/,
+            6 /*limit per page*/
+        );
+
 		return [
-			"products" => $this->getDoctrine()->getRepository(Product::class)->findByCategory($category),
+		    "pagination" => $pagination,
 			"categories" => $this->getDoctrine()->getRepository(Category::class)->findBy(
 				[
 					"parentCategory" => $category,
