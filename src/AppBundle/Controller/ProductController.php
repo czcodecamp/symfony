@@ -2,6 +2,7 @@
 namespace AppBundle\Controller;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Product;
+use AppBundle\VO\BreadcrumbVO;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -30,10 +31,14 @@ class ProductController extends Controller
 		}
 
 		$category = $this->getDoctrine()->getRepository(Category::class)->findOneByProduct($product);
+
+		$breadcrumb = $this->getDoctrine()->getRepository(Category::class)->findBreadCrumbPath($category);
+
 		return [
 			"product" => $product,
 			"category" => $category,
 			"categories" => $this->getDoctrine()->getRepository(Category::class)->findByParentCategory($category),
+			"breadcrumbVO" => BreadcrumbVO::create($breadcrumb, $product),
 		];
 
 	}

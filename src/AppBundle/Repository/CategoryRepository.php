@@ -76,4 +76,19 @@ class CategoryRepository extends EntityRepository
 			->getSingleResult();
 	}
 
+	/**
+	 * @param Category $category
+	 * @return Category[]
+	 */
+	public function findBreadCrumbPath(Category $category)
+	{
+		return $this->_em->createQuery('SELECT c
+			FROM AppBundle\Entity\Category c
+			WHERE :left BETWEEN c.left AND c.right
+			ORDER BY c.left ASC
+		')
+			->setParameter("left", $category->getLeft())
+			->getResult();
+	}
+
 }

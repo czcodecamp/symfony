@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Product;
 use AppBundle\Repository\ProductRepository;
+use AppBundle\VO\BreadcrumbVO;
 use AppBundle\VO\PaginatorVO;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -33,6 +34,8 @@ class CategoryController extends Controller
 			throw new NotFoundHttpException("Kategorie neexistuje");
 		}
 
+		$breadcrumb = $this->getDoctrine()->getRepository(Category::class)->findBreadCrumbPath($category);
+
 		$limit = ProductRepository::PRODUCTS_PER_PAGE;
 
 		$paginator = $this->getDoctrine()->getRepository(Product::class)->findByCategory(
@@ -48,6 +51,7 @@ class CategoryController extends Controller
 			"categories" => $this->getDoctrine()->getRepository(Category::class)->findByParentCategory($category),
 			"products" => $paginator->getIterator(),
 			"paginatorVO" => $paginatorVO,
+			"breadcrumbVO" => BreadcrumbVO::create($breadcrumb),
 		];
 	}
 
