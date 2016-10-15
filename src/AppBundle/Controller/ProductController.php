@@ -28,7 +28,14 @@ class ProductController extends Controller
 			throw new NotFoundHttpException("Produkt neexistuje");
 		}
 
+		$breadcrumbs = [
+			"homepage" => ["title" => "Úvodní stránka"],
+			"#notyet" => ["title" => $product->getCategory()->getTitle()],
+			"product_detail" => ["title" => $product->getTitle(), "slug" => $request->attributes->get("slug")]
+		];
+
 		return $this->render("product/detail.html.twig", [
+			"breadcrumbs" => $breadcrumbs,
 			"product" => $product,
 			"categories" => $this->getDoctrine()->getRepository(Category::class)->findBy(
 				[],

@@ -3,6 +3,9 @@
 {% block body %}
     <div class="row">
         <div class="col-md-12">
+            {% include 'components/breadcrumbs.html.twig' %}
+        </div>
+        <div class="col-md-12">
             {% include 'components/pagination.html.twig' with { 'page': page, 'maxPages': maxPages } %}
         </div>
         {% include 'components/list.html.twig' %}

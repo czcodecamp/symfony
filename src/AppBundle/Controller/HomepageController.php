@@ -36,11 +36,16 @@ class HomepageController extends Controller
 		$categoryRepository = $this->container->get('doctrine.orm.entity_manager')->getRepository
 		('AppBundle\Entity\Category');
 
+		$breadcrumbs = [
+			"homepage" => ["title" => "Úvodní stránka"]
+		];
+
 		return $this->render("homepage/homepage.html.twig", [
 			"page" => $page,
 			"maxPages" => $maxPages,
 			"products" => $paginatedProducts,
 			"categories" => $categoryRepository->getAllCategories(),
+			"breadcrumbs" => $breadcrumbs
 		]);
 	}
 

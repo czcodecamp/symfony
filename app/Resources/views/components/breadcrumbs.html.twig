@@ -1,0 +1,11 @@
+<ol class="breadcrumb" style="margin-bottom: 0;">
+    {% for key, value in breadcrumbs %}
+        {% if key starts with '#' %}
+            <li><a href="#" {% if loop.last %}class="active"{% endif %}>{{ value.title }}</a></li>
+        {% elseif value.slug is defined %}
+                <li><a href="{{ path(key, {slug: value.slug}) }}" {% if loop.last %}class="active"{% endif %}>{{ value.title }}</a></li>
+        {% else %}
+                <li><a href="{{ path(key) }}" {% if loop.last %}class="active"{% endif %}>{{ value.title }}</a></li>
+        {% endif %}
+    {% endfor %}
+</ol>
