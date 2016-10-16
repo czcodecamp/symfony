@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use AppBundle\Entity\Category;
 
 /**
  * CategoryRepository
@@ -12,4 +13,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class CategoryRepository extends EntityRepository
 {
+    public function getParents(Category $category)
+    {
+        return $this->_em->createQuery("
+            SELECT ancestor
+            FROM AppBundle\Entity\Category child, AppBundle\Entity\Category ancestor
+            WHERE child.left >= ancestor.left
+                AND child.left <= ancestor.right
+                AND child.id = :current
+            ORDER BY ancestor.left")
+            ->setParameter("current", $category->getId())
+            ->getResult();
+    }
 }

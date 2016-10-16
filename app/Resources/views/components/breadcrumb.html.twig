@@ -1,0 +1,12 @@
+<ol class="breadcrumb">
+    {% for current in breadcrumb %}
+        {% if current == category and product is not defined %}
+                <li class="active">{{ current.title }}</li>
+        {% else %}
+                <li><a href="{{ path("category_detail", {"slug": current.slug }) }}">{{ current.title }}</a></li>
+        {% endif %}
+    {% endfor %}
+    {% if product is defined %}
+        <li class="active">{{ product.title }}</li>
+    {% endif %}
+</ol>
