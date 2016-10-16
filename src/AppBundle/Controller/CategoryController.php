@@ -1,47 +1,54 @@
 <?php
+
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Category;
-use AppBundle\Entity\Product;
+use AppBundle\Facade\CategoryFacade;
+use AppBundle\Facade\ProductFacade;
+use AppBundle\Service\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @author Jan Klat <jenik@klatys.cz>
+ * @Route(service="app.controller.category_controller")
  */
-class CategoryController extends Controller
+class CategoryController
 {
+	private $categoryFacade;
+	private $productFacade;
+
+	public function __construct(
+		CategoryFacade $categoryFacade,
+		ProductFacade $productFacade
+	) {
+
+		$this->categoryFacade = $categoryFacade;
+		$this->productFacade = $productFacade;
+	}
 	/**
-	 * @Route("/vyber/{slug}", name="category_detail")
+	 * @Route("/vyber/{slug}/{page}", name="category_detail", requirements={"page": "\d+"}, defaults={"page": 1})
 	 * @Template("category/detail.html.twig")
-	 *
-	 * @param Request $request
-	 * @return array
 	 */
-	public function categoryDetail(Request $request)
+	public function categoryDetail($slug, $page)
 	{
-		$category = $this->getDoctrine()->getRepository(Category::class)->findOneBy([
-			"slug" => $request->attributes->get("slug"),
-		]);
+		$category = $this->categoryFacade->getBySlug($slug);
 
 		if (!$category) {
 			throw new NotFoundHttpException("Kategorie neexistuje");
 		}
 
+		$countByCategory = $this->productFacade->getCountByCategory($category);
+
+		$paginator = new Paginator($countByCategory, 6);
+		$paginator->setCurrentPage($page);
 		return [
-			"products" => $this->getDoctrine()->getRepository(Product::class)->findByCategory($category),
-			"categories" => $this->getDoctrine()->getRepository(Category::class)->findBy(
-				[
-					"parentCategory" => $category,
-				],
-				[
-					"rank" => "desc",
-				]
-			),
+			"products" => $this->productFacade->findByCategory($category, $paginator->getLimit(), $paginator->getOffset()),
+			"categories" => $this->categoryFacade->getParentCategories($category),
 			"category" => $category,
+			"currentPage" => $page,
+			"totalPages" => $paginator->getTotalPageCount(),
+			"pageRange" => $paginator->getPageRange(5),
 		];
 	}
 
