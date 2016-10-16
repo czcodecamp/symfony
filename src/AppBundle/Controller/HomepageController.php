@@ -1,12 +1,11 @@
 <?php
 namespace AppBundle\Controller;
-use AppBundle\Entity\Category;
-use AppBundle\Entity\Product;
 use AppBundle\Facade\CategoryFacade;
 use AppBundle\Facade\ProductFacade;
-use Doctrine\ORM\EntityManager;
+use AppBundle\Service\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @author Jan Klat <jenik@klatys.cz>
@@ -31,11 +30,19 @@ class HomepageController
 	 * @Route("/", name="homepage")
 	 * @Template("homepage/homepage.html.twig")
 	 */
-	public function homepageAction()
+	public function homepageAction(Request $request)
 	{
+		$page = intval($request->get('page', 1));
+		$count = $this->productFacade->countAllProducts();
+		$paginator = new Paginator($count, 6);
+		$paginator->setCurrentPage($page);
+
 		return [
-			"products" => $this->productFacade->getAll(),
+			"products" => $this->productFacade->getAll($paginator->getLimit(), $paginator->getOffset()),
 			"categories" => $this->categoryFacade->getTopLevelCategories(),
+			"currentPage" => $page,
+			"totalPages" => $paginator->getTotalPageCount(),
+			"pageRange" => $paginator->getPageRange(5),
 		];
 	}
 

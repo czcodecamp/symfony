@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Facade\CategoryFacade;
 use AppBundle\Facade\ProductFacade;
+use AppBundle\Service\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -26,10 +27,10 @@ class CategoryController
 		$this->productFacade = $productFacade;
 	}
 	/**
-	 * @Route("/vyber/{slug}", name="category_detail")
+	 * @Route("/vyber/{slug}/{page}", name="category_detail", requirements={"page": "\d+"}, defaults={"page": 1})
 	 * @Template("category/detail.html.twig")
 	 */
-	public function categoryDetail($slug)
+	public function categoryDetail($slug, $page)
 	{
 		$category = $this->categoryFacade->getBySlug($slug);
 
@@ -37,10 +38,17 @@ class CategoryController
 			throw new NotFoundHttpException("Kategorie neexistuje");
 		}
 
+		$countByCategory = $this->productFacade->getCountByCategory($category);
+
+		$paginator = new Paginator($countByCategory, 6);
+		$paginator->setCurrentPage($page);
 		return [
-			"products" => $this->productFacade->findByCategory($category),
+			"products" => $this->productFacade->findByCategory($category, $paginator->getLimit(), $paginator->getOffset()),
 			"categories" => $this->categoryFacade->getParentCategories($category),
 			"category" => $category,
+			"currentPage" => $page,
+			"totalPages" => $paginator->getTotalPageCount(),
+			"pageRange" => $paginator->getPageRange(5),
 		];
 	}
 
