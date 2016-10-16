@@ -4,5 +4,9 @@
     <div class="row">
         {% include 'components/list.html.twig' %}
     </div>
+        
+    <div class="row">
+        {% include 'components/paginator.html.twig' with {'actualPageLink': 'category_detail'} %}
+    </div>
 {% endblock %}
 
