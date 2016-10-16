@@ -1,0 +1,58 @@
+{% if attribute(paginator,'getPageCount') > 1 %}
+    <nav>
+        {% if category is defined %}
+              <ul class="pagination">
+                    {% if not attribute(paginator,'isFirst') %}
+                        <li>
+                                <a href="{{ path(actualPageLink, {"page": attribute(paginator,'getPage')-1, "slug": category.slug} )}}">
+                                        <span aria-hidden="true">Zpět</span>
+                                </a>
+                        </li>
+                    {% endif %}
+                    {% for i in showPage %}                   
+                            {% if i == 'gap' %}
+                                    <span class="gap">...</span>
+                            {% else %}	
+                                <li class="{% if i == attribute(paginator,'getPage') %}active{% endif %}">
+                                        <a href="{{ path(actualPageLink, {"page": i, "slug": category.slug} )}}">{{ i }}</a>
+                                </li>
+                            {% endif %}
+                    {% endfor %}
+                    {% if not attribute(paginator,'isLast') %}
+                        <li>
+                                <a href="{{ path(actualPageLink, {"page": attribute(paginator,'getPage')+1, "slug": category.slug} )}}">
+                                        <span>Další</span>
+                                </a>
+                        </li>
+                    {% endif %}
+            </ul>   
+        {% else %}
+              <ul class="pagination">
+                    {% if not attribute(paginator,'isFirst') %}
+                        <li>
+                                <a href="{{ path(actualPageLink, {"page": attribute(paginator,'getPage')-1} )}}">
+                                        <span aria-hidden="true">Zpět</span>
+                                </a>
+                        </li>
+                    {% endif %}
+                    {% for i in showPage %}                   
+                            {% if i == 'gap' %}
+                                    <span class="gap">...</span>
+                            {% else %}	
+                                <li class="{% if i == attribute(paginator,'getPage') %}active{% endif %}">
+                                        <a href="{{ path(actualPageLink, {"page": i} )}}">{{ i }}</a>
+                                </li>
+                            {% endif %}
+                    {% endfor %}
+                    {% if not attribute(paginator,'isLast') %}
+                        <li>
+                                <a href="{{ path(actualPageLink, {"page": attribute(paginator,'getPage')+1} )}}">
+                                        <span>Další</span>
+                                </a>
+                        </li>
+                    {% endif %}
+            </ul>            
+        {% endif%}
+
+    </nav>
+{% endif %}
