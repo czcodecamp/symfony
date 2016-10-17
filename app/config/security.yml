@@ -1,24 +1,27 @@
-# To get started with security, check out the documentation:
-# http://symfony.com/doc/current/book/security.html
 security:
+    encoders:
+        AppBundle\Entity\User:
+            algorithm: bcrypt
+            cost: 13 #cost is 13 by default, just so you know why and how to set it
 
-    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
-        in_memory:
-            memory: ~
+        database_users:
+            entity: { class: AppBundle:User, property: username }
 
     firewalls:
-        # disables authentication for assets and the profiler, adapt it according to your needs
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
+        secured_area:
+            pattern: ^/
 
-        main:
-            anonymous: ~
-            # activate different ways to authenticate
+            anonymous: true
 
-            # http_basic: ~
-            # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
+            form_login:
+                check_path: user_login
+                login_path: user_login
+                csrf_token_generator: security.csrf.token_manager
+                default_target_path: /
 
-            # form_login: ~
-            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+            logout:
+                # The route name the user can go to in order to logout
+                path: user_logout
+                # The name of the route to redirect to after logging out
+                target: homepage

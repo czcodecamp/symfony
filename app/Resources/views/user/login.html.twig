@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% if error %}
+        <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            {{ error.messageKey|trans(error.messageData, 'security') }}
+        </div>
+    {% endif %}
+
+
+    <form action="{{ path('user_login') }}" method="post" class="form-signin">
+        <label for="inputEmail" class="sr-only">E-mail</label>
+        <input type="email" id="inputEmail" class="form-control" placeholder="E-mail" name="_username" value="{{ last_username }}" required autofocus>
+        <label for="inputPassword" class="sr-only">Heslo</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Heslo" name="_password" required>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" value="remember-me"> Zapamatovat
+            </label>
+        </div>
+        {#
+            If you want to control the URL the user is redirected to on success (more details below)
+            <input type="hidden" name="_target_path" value="/account" />
+        #}
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Přihlásit</button>
+    </form>
+{% endblock %}
+

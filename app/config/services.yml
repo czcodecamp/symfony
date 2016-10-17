@@ -16,12 +16,20 @@ services:
     class: AppBundle\Controller\ProductController
     autowire: true
 
+  app.controller.user_controller:
+    class: AppBundle\Controller\UserController
+    autowire: true
+
   app.facade.category_facade:
     class: AppBundle\Facade\CategoryFacade
     autowire: true
 
   app.facade.product_facade:
     class: AppBundle\Facade\ProductFacade
+    autowire: true
+
+  app.facade.user_facade:
+    class: AppBundle\Facade\UserFacade
     autowire: true
 
   app.repository.category_repository:
@@ -33,3 +41,8 @@ services:
     class: AppBundle\Repository\ProductRepository
     factory:   ['@doctrine.orm.default_entity_manager', getRepository]
     arguments: ['AppBundle\Entity\Product']
+
+  encoder:
+    class: Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder
+    arguments:
+      - 13

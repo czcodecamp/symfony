@@ -8,6 +8,10 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
+/**
+ * @author Vašek Boch <vasek.boch@live.com>
+ * @author Jan Klat <jenik@klatys.cz>
+ */
 class ProductRepository extends EntityRepository
 {
 

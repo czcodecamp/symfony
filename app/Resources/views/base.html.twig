@@ -47,6 +47,15 @@
                     <a href="{{ path("homepage") }}">Domů</a>
                 </li>
             </ul>
+            <p class="navbar-text navbar-right">
+            {% if user is defined and user %}
+                <a href="#" class="navbar-link">{{ user.username }}</a>
+                | <a href="{{ path("user_logout") }}" class="navbar-link">Odhlásit</a>
+            {% else %}
+                <a href="{{ path("user_login") }}" class="navbar-link">Přihlásit</a>
+                | <a href="{{ path("user_registration") }}" class="navbar-link">Registrovat</a>
+            {% endif %}
+            </p>
         </div>
         <!-- /.navbar-collapse -->
     </div>
@@ -59,7 +68,6 @@
     <div class="row">
 
         <div class="col-md-3">
-            <p class="lead">Menu</p>
             {% include "components/menu.html.twig" %}
         </div>
 

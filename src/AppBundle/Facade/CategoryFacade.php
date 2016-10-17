@@ -5,6 +5,10 @@ namespace AppBundle\Facade;
 use AppBundle\Entity\Category;
 use AppBundle\Repository\CategoryRepository;
 
+/**
+ * @author Vašek Boch <vasek.boch@live.com>
+ * @author Jan Klat <jenik@klatys.cz>
+ */
 class CategoryFacade {
 
 	private $categoryRepository;

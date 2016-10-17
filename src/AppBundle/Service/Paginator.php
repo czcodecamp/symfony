@@ -2,6 +2,10 @@
 
 namespace AppBundle\Service;
 
+/**
+ * @author Vašek Boch <vasek.boch@live.com>
+ * @author Jan Klat <jenik@klatys.cz>
+ */
 class Paginator {
 
 	private $currentPage;
