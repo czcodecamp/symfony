@@ -4,6 +4,45 @@ parameters:
 #    parameter_name: value
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+  app.controller.category_controller:
+    class: AppBundle\Controller\CategoryController
+    autowire: true
+
+  app.controller.homepage_controller:
+    class: AppBundle\Controller\HomepageController
+    autowire: true
+
+  app.controller.product_controller:
+    class: AppBundle\Controller\ProductController
+    autowire: true
+
+  app.controller.user_controller:
+    class: AppBundle\Controller\UserController
+    autowire: true
+
+  app.facade.category_facade:
+    class: AppBundle\Facade\CategoryFacade
+    autowire: true
+
+  app.facade.product_facade:
+    class: AppBundle\Facade\ProductFacade
+    autowire: true
+
+  app.facade.user_facade:
+    class: AppBundle\Facade\UserFacade
+    autowire: true
+
+  app.repository.category_repository:
+    class: AppBundle\Repository\CategoryRepository
+    factory:   ['@doctrine.orm.default_entity_manager', getRepository]
+    arguments: ['AppBundle\Entity\Category']
+
+  app.repository.product_repository:
+    class: AppBundle\Repository\ProductRepository
+    factory:   ['@doctrine.orm.default_entity_manager', getRepository]
+    arguments: ['AppBundle\Entity\Product']
+
+  encoder:
+    class: Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder
+    arguments:
+      - 13

@@ -5,26 +5,38 @@ namespace AppBundle\Repository;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Product;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
+/**
+ * @author Vašek Boch <vasek.boch@live.com>
+ * @author Jan Klat <jenik@klatys.cz>
+ */
 class ProductRepository extends EntityRepository
 {
 
 	/**
 	 * @param Category $category
-	 * @return Product[]
+	 * @return QueryBuilder
 	 */
 	public function findByCategory(Category $category)
 	{
-		return $this->_em->createQuery('SELECT p
-			FROM AppBundle\Entity\Product p
-			JOIN AppBundle\Entity\ProductCategory pc WITH p = pc.product
-			JOIN AppBundle\Entity\Category c WITH pc.category = c
-			WHERE c.left >= :lft and c.right <= :rgt
-			GROUP BY p
-		')
+		$builder = $this->_em->createQueryBuilder()
+			->select('p')
+			->from('AppBundle\Entity\Product', 'p')
+			->join('AppBundle\Entity\ProductCategory', 'pc', 'WITH', 'p = pc.product')
+			->join('AppBundle\Entity\Category', 'c', 'WITH', 'pc.category = c')
+			->where('c.left >= :lft and c.right <= :rgt')
 			->setParameter("lft", $category->getLeft())
-			->setParameter("rgt", $category->getRight())
-			->getResult();
+			->setParameter("rgt", $category->getRight());
+		return $builder;
+	}
+
+	public function countAll() {
+		return $this->_em->createQueryBuilder()
+			->select('COUNT(p.id)')
+			->from('AppBundle\Entity\Product', 'p')
+			->getQuery()->getSingleScalarResult();
 	}
 
 }
