@@ -2,6 +2,7 @@
 namespace AppBundle\Controller;
 use AppBundle\Entity\User;
 use AppBundle\Facade\UserFacade;
+use AppBundle\FormType\PersonalInfoFormType;
 use AppBundle\FormType\RegistrationFormType;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -88,6 +89,42 @@ class UserController
 		return [
 			"last_username" => $this->userFacade->getLastUsername(),
 			"error" => $this->userFacade->getAuthenticationError(),
+		];
+	}
+
+	/**
+	 * @Route("/profile", name="user_profile")
+	 * @Template("user/profile.html.twig")
+	 *
+	 * @param Request $request
+	 * @return array|RedirectResponse
+	 */
+	public function profileAction(Request $request)
+	{
+		// 1) build the form
+		$user = $this->userFacade->getUser();
+		$form = $this->formFactory->create(PersonalInfoFormType::class, $user);
+
+		// 2) handle the submit (will only happen on POST)
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
+
+			if ($address = $user->getAddress()) {
+				$this->entityManager->persist($address);
+				$this->entityManager->flush($address);
+			}
+
+			$this->entityManager->persist($user);
+			$this->entityManager->flush($user);
+
+			// ... do any other work - like sending them an email, etc
+			// maybe set a "flash" success message for the user
+			return RedirectResponse::create($this->router->generate("homepage"));
+		}
+
+		return [
+			"user" => $this->userFacade->getUser(),
+			"form" => $form->createView(),
 		];
 	}
 
