@@ -3,7 +3,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\User;
 use AppBundle\Facade\UserFacade;
 use AppBundle\FormType\RegistrationFormType;
-use Doctrine\ORM\EntityManager;
+use AppBundle\FormType\UserEditFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormFactory;
@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
+use AppBundle\Service\UserService;
 
 
 /**
@@ -22,23 +22,20 @@ use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 class UserController
 {
 	private $userFacade;
-	private $formFactory;
-	private $passwordEncoder;
-	private $entityManager;
+	private $formFactory;	
 	private $router;
+	private $userService;
 
 	public function __construct(
 		UserFacade $userFacade,
-		FormFactory $formFactory,
-		PasswordEncoderInterface $passwordEncoder,
-		EntityManager $entityManager,
-		RouterInterface $router
+		FormFactory $formFactory,				
+		RouterInterface $router,
+		UserService $userService
 	) {
 		$this->userFacade = $userFacade;
-		$this->formFactory = $formFactory;
-		$this->passwordEncoder = $passwordEncoder;
-		$this->entityManager = $entityManager;
+		$this->formFactory = $formFactory;		
 		$this->router = $router;
+		$this->userService = $userService;
 	}
 
 	/**
@@ -56,19 +53,8 @@ class UserController
 
 		// 2) handle the submit (will only happen on POST)
 		$form->handleRequest($request);
-		if ($form->isSubmitted() && $form->isValid()) {
-
-			// 3) Encode the password (you could also do this via Doctrine listener)
-			$user->setPassword(
-				$this->passwordEncoder->encodePassword($user->getPlainPassword(), null)
-			);
-
-			// 4) save the User!
-			$this->entityManager->persist($user);
-			$this->entityManager->flush();
-
-			// ... do any other work - like sending them an email, etc
-			// maybe set a "flash" success message for the user
+		if ($form->isSubmitted() && $form->isValid()) {			
+			$this->userService->registerUser($user);		
 			return RedirectResponse::create($this->router->generate("homepage"));
 		}
 
@@ -88,6 +74,28 @@ class UserController
 		return [
 			"last_username" => $this->userFacade->getLastUsername(),
 			"error" => $this->userFacade->getAuthenticationError(),
+		];
+	}
+	
+	/**
+	 * @Route("/profil", name="user_profile")
+	 * @Template("user/profile.html.twig")
+	 */
+	public function profileAction(Request $request){
+	    
+	    $user = $this->userFacade->getUser();
+	    $form = $this->formFactory->create(UserEditFormType::class, $user);
+	    
+	    $form->handleRequest($request);
+	    
+	    if ($form->isSubmitted() && $form->isValid()) {
+		$this->userService->saveUser($user);
+		return RedirectResponse::create($this->router->generate("homepage"));
+	    }
+		
+	    return [
+			"form" => $form->createView(),
+			"user" => $this->userFacade->getUser(),
 		];
 	}
 
