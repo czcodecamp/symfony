@@ -36,7 +36,25 @@ class User implements UserInterface
 	private $password;
 
 	/**
-	 * @Assert\NotBlank()
+	 * @ORM\Column(type="string", length=255, name="name", nullable=true)
+	 * @Assert\Length(max=4096)
+	 */
+	private $name;
+
+	/**
+	 * @ORM\Column(type="string", length=20, name="phone", nullable=true)
+	 * @Assert\Length(max=4096)
+	 */
+	private $phone;
+
+	/**
+	 * @ORM\OneToOne(targetEntity="Address")
+	 * @ORM\JoinColumn(name="address_id", referencedColumnName="id")
+	 * @var Address
+	 */
+	private $address;
+
+	/**
 	 * @Assert\Length(max=4096)
 	 */
 	private $plainPassword;
@@ -129,4 +147,51 @@ class User implements UserInterface
 		return;
 	}
 
+	/**
+	 * @return mixed
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	/**
+	 * @param mixed $name
+	 */
+	public function setName($name)
+	{
+		$this->name = $name;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getPhone()
+	{
+		return $this->phone;
+	}
+
+	/**
+	 * @param mixed $phone
+	 */
+	public function setPhone($phone)
+	{
+		$this->phone = $phone;
+	}
+
+	/**
+	 * @return Address
+	 */
+	public function getAddress()
+	{
+		return $this->address;
+	}
+
+	/**
+	 * @param Address $address
+	 */
+	public function setAddress($address)
+	{
+		$this->address = $address;
+	}
 }

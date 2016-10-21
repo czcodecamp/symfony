@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.phone) }}
+    {{ form_row(form.username) }}
+    {{ form_row(form.address) }}
+    <br />
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Uložit</button>
+    {{ form_end(form) }}
+{% endblock %}
