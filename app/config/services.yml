@@ -31,10 +31,6 @@ services:
   app.facade.user_facade:
     class: AppBundle\Facade\UserFacade
     autowire: true
-    
-  app.service.user_model:
-    class: AppBundle\Model\UserModel
-    autowire: true
 
   app.repository.category_repository:
     class: AppBundle\Repository\CategoryRepository
