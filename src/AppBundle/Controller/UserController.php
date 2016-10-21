@@ -3,7 +3,6 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\User;
 use AppBundle\Facade\UserFacade;
 use AppBundle\FormType\RegistrationFormType;
-use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormFactory;
@@ -11,7 +10,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
+use AppBundle\Service\UserModel;
 
 
 /**
@@ -22,23 +21,20 @@ use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 class UserController
 {
 	private $userFacade;
-	private $formFactory;
-	private $passwordEncoder;
-	private $entityManager;
+	private $formFactory;	
 	private $router;
+	private $userModel;
 
 	public function __construct(
 		UserFacade $userFacade,
-		FormFactory $formFactory,
-		PasswordEncoderInterface $passwordEncoder,
-		EntityManager $entityManager,
-		RouterInterface $router
+		FormFactory $formFactory,				
+		RouterInterface $router,
+		UserModel $userModel
 	) {
 		$this->userFacade = $userFacade;
-		$this->formFactory = $formFactory;
-		$this->passwordEncoder = $passwordEncoder;
-		$this->entityManager = $entityManager;
+		$this->formFactory = $formFactory;		
 		$this->router = $router;
+		$this->userModel = $userModel;
 	}
 
 	/**
@@ -56,19 +52,8 @@ class UserController
 
 		// 2) handle the submit (will only happen on POST)
 		$form->handleRequest($request);
-		if ($form->isSubmitted() && $form->isValid()) {
-
-			// 3) Encode the password (you could also do this via Doctrine listener)
-			$user->setPassword(
-				$this->passwordEncoder->encodePassword($user->getPlainPassword(), null)
-			);
-
-			// 4) save the User!
-			$this->entityManager->persist($user);
-			$this->entityManager->flush();
-
-			// ... do any other work - like sending them an email, etc
-			// maybe set a "flash" success message for the user
+		if ($form->isSubmitted() && $form->isValid()) {			
+			$this->userModel->registerUser($user);		
 			return RedirectResponse::create($this->router->generate("homepage"));
 		}
 
