@@ -14,6 +14,8 @@ security:
 
             anonymous: true
 
+            provider: database_users
+
             form_login:
                 check_path: user_login
                 login_path: user_login
@@ -25,3 +27,6 @@ security:
                 path: user_logout
                 # The name of the route to redirect to after logging out
                 target: homepage
+
+    access_control:
+            - { path: ^/uzivatel, roles: IS_AUTHENTICATED_REMEMBERED }

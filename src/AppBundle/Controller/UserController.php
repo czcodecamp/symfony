@@ -2,6 +2,8 @@
 namespace AppBundle\Controller;
 use AppBundle\Entity\User;
 use AppBundle\Facade\UserFacade;
+use AppBundle\FormType\PasswordFormType;
+use AppBundle\FormType\ProfileFormType;
 use AppBundle\FormType\RegistrationFormType;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -12,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 
 /**
@@ -88,6 +91,93 @@ class UserController
 		return [
 			"last_username" => $this->userFacade->getLastUsername(),
 			"error" => $this->userFacade->getAuthenticationError(),
+		];
+	}
+
+	/**
+	 * @Route("/uzivatel/profil", name="user_profile")
+	 * @Template("user/profile.html.twig")
+	 *
+	 * @param Request $request
+	 * @return RedirectResponse|array
+	 */
+	public function profileAction(Request $request)
+	{
+		$user = $this->userFacade->getUser();
+
+		$form = $this->formFactory->create(ProfileFormType::class, $user);
+
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
+
+			$this->entityManager->persist($user);
+			$this->entityManager->flush();
+
+			return RedirectResponse::create($this->router->generate("homepage"));
+		}
+
+		return [
+			"form" => $form->createView(),
+			"user" => $this->userFacade->getUser(),
+		];
+	}
+
+	/**
+	 * @Route("/uzivatel/heslo", name="user_password")
+	 * @Template("user/password.html.twig")
+	 *
+	 * @param Request $request
+	 * @return RedirectResponse|array
+	 */
+	public function passwordAction(Request $request)
+	{
+		$user = $this->userFacade->getUser();
+
+		$form = $this->formFactory->create(PasswordFormType::class);
+
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
+			$oldPasswordPlain = $form->get('oldPassword')->getData();
+			$newPasswordPlain = $form->get('plainPassword')->getData();
+
+			if (empty(trim($oldPasswordPlain)) || empty(trim($newPasswordPlain))) {
+				$request->getSession()->getFlashBag()->add(
+					'error',
+					'Staré nebo nové heslo nebylo vyplněno..'
+				);
+				return [
+					"form" => $form->createView(),
+					"user" => $this->userFacade->getUser(),
+				];
+			}
+
+			if($this->passwordEncoder->isPasswordValid(
+				$user->getPassword(),
+				$oldPasswordPlain,
+				$user->getSalt()
+			)) {
+				$newPassword = $this->passwordEncoder->encodePassword($newPasswordPlain, $user->getSalt());
+				$user->setPassword($newPassword);
+
+				$this->entityManager->persist($user);
+				$this->entityManager->flush();
+				$request->getSession()->getFlashBag()->add(
+					'success',
+					'Vaše heslo bylo změněno!'
+				);
+			} else {
+				$request->getSession()->getFlashBag()->add(
+					'error',
+					'Vaše staré heslo se neshoduje. Zkuste to prosím znovu!'
+				);
+			}
+
+			return RedirectResponse::create($this->router->generate("user_password"));
+		}
+
+		return [
+			"form" => $form->createView(),
+			"user" => $this->userFacade->getUser(),
 		];
 	}
 

@@ -11,38 +11,11 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * @author Vašek Boch <vasek.boch@live.com>
- * @author Jan Klat <jenik@klatys.cz>
- */
-class RegistrationFormType extends AbstractType
+class ProfileFormType extends AbstractType
 {
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder
-			->add("username", TextType::class, [
-				"label" => "Uživatelské jméno *",
-				"attr" => [
-					"class" => "form-control",
-				],
-				"required" => true
-			])
-			->add("plainPassword", RepeatedType::class, [
-				"type" => PasswordType::class,
-				"first_options" => [
-					"label" => "Heslo *",
-					"attr" => [
-						"class" => "form-control",
-					],
-				],
-				"second_options" => [
-					"label" => "Heslo znovu *",
-					"attr" => [
-						"class" => "form-control",
-					],
-				],
-				"required" => true
-			])
 			->add("fullName", TextType::class, [
 				"label" => "Jméno",
 				"attr" => [
@@ -73,6 +46,7 @@ class RegistrationFormType extends AbstractType
 	{
 		$resolver->setDefaults(array(
 			"data_class" => User::class,
+			'validation_groups' => ['onlyProfile']
 		));
 	}
 }

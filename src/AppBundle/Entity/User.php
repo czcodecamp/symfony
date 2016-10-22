@@ -24,14 +24,15 @@ class User implements UserInterface
 	private $id;
 
 	/**
-	 * @ORM\Column(type="string", length=255, unique=true, name="email")
+	 * @ORM\Column(type="string", length=255, unique=true, name="username")
+	 * @Assert\Blank(groups={"onlyPassword"})
 	 * @Assert\NotBlank()
-	 * @Assert\Email()
 	 */
 	private $username;
 
 	/**
 	 * @ORM\Column(type="string", length=64)
+	 * @Assert\NotBlank(groups={"onlyProfile"})
 	 */
 	private $password;
 
@@ -40,6 +41,32 @@ class User implements UserInterface
 	 * @Assert\Length(max=4096)
 	 */
 	private $plainPassword;
+
+	/**
+	 * @ORM\Column(type="string", length=255, name="full_name", nullable=true)
+	 */
+	private $fullName;
+
+	/**
+	 * @ORM\Column(type="string", length=255, name="address", nullable=true)
+	 */
+	private $address;
+
+	/**
+	 * @ORM\Column(type="string", length=13, name="phone", nullable=true)
+	 * @Assert\Regex(
+	 *     pattern="/^(\+420)? ?[1-9][0-9]{2} ?[0-9]{3} ?[0-9]{3}$/i",
+	 *     htmlPattern="^(\+420)? ?[1-9][0-9]{2} ?[0-9]{3} ?[0-9]{3}$",
+	 *     message="Zkontrolujte formát telefonního čísla (+420 xxx xxx xxx)"
+	 * )
+	 */
+	private $phone;
+
+	/**
+	 * @ORM\Column(type="string", length=100, unique=true, name="email", nullable=true)
+	 * @Assert\Email()
+	 */
+	private $email;
 
 	/**
 	 * @return int
@@ -129,4 +156,100 @@ class User implements UserInterface
 		return;
 	}
 
+
+    /**
+     * Set fullName
+     *
+     * @param string $fullName
+     *
+     * @return User
+     */
+    public function setFullName($fullName)
+    {
+        $this->fullName = $fullName;
+
+        return $this;
+    }
+
+    /**
+     * Get fullName
+     *
+     * @return string
+     */
+    public function getFullName()
+    {
+        return $this->fullName;
+    }
+
+    /**
+     * Set phone
+     *
+     * @param string $phone
+     *
+     * @return User
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Get phone
+     *
+     * @return string
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     *
+     * @return User
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set address
+     *
+     * @param string $address
+     *
+     * @return User
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * Get address
+     *
+     * @return string
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
 }
