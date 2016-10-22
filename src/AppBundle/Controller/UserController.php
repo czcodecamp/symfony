@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 
 /**
@@ -93,7 +94,7 @@ class UserController
 	}
 
 	/**
-	 * @Route("/profil", name="user_profile")
+	 * @Route("/uzivatel/profil", name="user_profile")
 	 * @Template("user/profile.html.twig")
 	 *
 	 * @param Request $request
@@ -102,6 +103,7 @@ class UserController
 	public function profileAction(Request $request)
 	{
 		$user = $this->userFacade->getUser();
+
 		$form = $this->formFactory->create(ProfileFormType::class, $user);
 
 		$form->handleRequest($request);
