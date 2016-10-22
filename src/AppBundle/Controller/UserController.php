@@ -2,6 +2,7 @@
 namespace AppBundle\Controller;
 use AppBundle\Entity\User;
 use AppBundle\Facade\UserFacade;
+use AppBundle\FormType\PasswordFormType;
 use AppBundle\FormType\ProfileFormType;
 use AppBundle\FormType\RegistrationFormType;
 use Doctrine\ORM\EntityManager;
@@ -113,6 +114,65 @@ class UserController
 			$this->entityManager->flush();
 
 			return RedirectResponse::create($this->router->generate("homepage"));
+		}
+
+		return [
+			"form" => $form->createView(),
+			"user" => $this->userFacade->getUser(),
+		];
+	}
+
+	/**
+	 * @Route("/uzivatel/heslo", name="user_password")
+	 * @Template("user/password.html.twig")
+	 *
+	 * @param Request $request
+	 * @return RedirectResponse|array
+	 */
+	public function passwordAction(Request $request)
+	{
+		$user = $this->userFacade->getUser();
+
+		$form = $this->formFactory->create(PasswordFormType::class);
+
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
+			$oldPasswordPlain = $form->get('oldPassword')->getData();
+			$newPasswordPlain = $form->get('plainPassword')->getData();
+
+			if (empty(trim($oldPasswordPlain)) || empty(trim($newPasswordPlain))) {
+				$request->getSession()->getFlashBag()->add(
+					'error',
+					'Staré nebo nové heslo nebylo vyplněno..'
+				);
+				return [
+					"form" => $form->createView(),
+					"user" => $this->userFacade->getUser(),
+				];
+			}
+
+			if($this->passwordEncoder->isPasswordValid(
+				$user->getPassword(),
+				$oldPasswordPlain,
+				$user->getSalt()
+			)) {
+				$newPassword = $this->passwordEncoder->encodePassword($newPasswordPlain, $user->getSalt());
+				$user->setPassword($newPassword);
+
+				$this->entityManager->persist($user);
+				$this->entityManager->flush();
+				$request->getSession()->getFlashBag()->add(
+					'success',
+					'Vaše heslo bylo změněno!'
+				);
+			} else {
+				$request->getSession()->getFlashBag()->add(
+					'error',
+					'Vaše staré heslo se neshoduje. Zkuste to prosím znovu!'
+				);
+			}
+
+			return RedirectResponse::create($this->router->generate("user_password"));
 		}
 
 		return [

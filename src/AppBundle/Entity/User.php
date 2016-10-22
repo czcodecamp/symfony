@@ -25,6 +25,7 @@ class User implements UserInterface
 
 	/**
 	 * @ORM\Column(type="string", length=255, unique=true, name="username")
+	 * @Assert\Blank(groups={"onlyPassword"})
 	 * @Assert\NotBlank()
 	 */
 	private $username;
@@ -53,6 +54,11 @@ class User implements UserInterface
 
 	/**
 	 * @ORM\Column(type="string", length=13, name="phone", nullable=true)
+	 * @Assert\Regex(
+	 *     pattern="/^(\+420)? ?[1-9][0-9]{2} ?[0-9]{3} ?[0-9]{3}$/i",
+	 *     htmlPattern="^(\+420)? ?[1-9][0-9]{2} ?[0-9]{3} ?[0-9]{3}$",
+	 *     message="Zkontrolujte formát telefonního čísla (+420 xxx xxx xxx)"
+	 * )
 	 */
 	private $phone;
 
