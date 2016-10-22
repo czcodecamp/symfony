@@ -46,6 +46,11 @@ class User implements UserInterface
 	private $fullName;
 
 	/**
+	 * @ORM\Column(type="string", length=255, name="address", nullable=true)
+	 */
+	private $address;
+
+	/**
 	 * @ORM\Column(type="string", length=13, name="phone", nullable=true)
 	 */
 	private $phone;
@@ -215,5 +220,29 @@ class User implements UserInterface
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * Set address
+     *
+     * @param string $address
+     *
+     * @return User
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * Get address
+     *
+     * @return string
+     */
+    public function getAddress()
+    {
+        return $this->address;
     }
 }

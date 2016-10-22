@@ -92,6 +92,43 @@ class UserController
 	}
 
 	/**
+	 * @Route("/profil", name="user_profile")
+	 * @Template("user/profile.html.twig")
+	 *
+	 * @param Request $request
+	 * @return RedirectResponse|array
+	 */
+	public function profileAction(Request $request)
+	{
+		// 1) build the form
+		$user = $this->userFacade->getUser();
+		$form = $this->formFactory->create(RegistrationFormType::class, $user);
+
+		// 2) handle the submit (will only happen on POST)
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
+
+			// 3) Encode the password (you could also do this via Doctrine listener)
+			$user->setPassword(
+				$this->passwordEncoder->encodePassword($user->getPlainPassword(), null)
+			);
+
+			// 4) save the User!
+			$this->entityManager->persist($user);
+			$this->entityManager->flush();
+
+			// ... do any other work - like sending them an email, etc
+			// maybe set a "flash" success message for the user
+			return RedirectResponse::create($this->router->generate("homepage"));
+		}
+
+		return [
+			"form" => $form->createView(),
+			"user" => $this->userFacade->getUser(),
+		];
+	}
+
+	/**
 	 * @Route("/odhlasit", name="user_logout")
 	 */
 	public function logoutAction()
