@@ -1,10 +1,14 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {{ form_start(form) }}
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
         {{ form_row(form.username) }}
         {{ form_row(form.plainPassword.first) }}
         {{ form_row(form.plainPassword.second) }}
+        <br /><br />
+        {{ form_row(form.fullName) }}
+        {{ form_row(form.phone) }}
+        {{ form_row(form.email) }}
     <br />
     <button class="btn btn-lg btn-primary btn-block" type="submit">Registrovat!</button>
     {{ form_end(form) }}

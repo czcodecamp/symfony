@@ -24,9 +24,8 @@ class User implements UserInterface
 	private $id;
 
 	/**
-	 * @ORM\Column(type="string", length=255, unique=true, name="email")
+	 * @ORM\Column(type="string", length=255, unique=true, name="username")
 	 * @Assert\NotBlank()
-	 * @Assert\Email()
 	 */
 	private $username;
 
@@ -40,6 +39,22 @@ class User implements UserInterface
 	 * @Assert\Length(max=4096)
 	 */
 	private $plainPassword;
+
+	/**
+	 * @ORM\Column(type="string", length=255, name="full_name", nullable=true)
+	 */
+	private $fullName;
+
+	/**
+	 * @ORM\Column(type="string", length=13, name="phone", nullable=true)
+	 */
+	private $phone;
+
+	/**
+	 * @ORM\Column(type="string", length=100, unique=true, name="email", nullable=true)
+	 * @Assert\Email()
+	 */
+	private $email;
 
 	/**
 	 * @return int
@@ -129,4 +144,76 @@ class User implements UserInterface
 		return;
 	}
 
+
+    /**
+     * Set fullName
+     *
+     * @param string $fullName
+     *
+     * @return User
+     */
+    public function setFullName($fullName)
+    {
+        $this->fullName = $fullName;
+
+        return $this;
+    }
+
+    /**
+     * Get fullName
+     *
+     * @return string
+     */
+    public function getFullName()
+    {
+        return $this->fullName;
+    }
+
+    /**
+     * Set phone
+     *
+     * @param string $phone
+     *
+     * @return User
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Get phone
+     *
+     * @return string
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     *
+     * @return User
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
 }
