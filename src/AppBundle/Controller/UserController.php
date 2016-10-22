@@ -3,12 +3,14 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\User;
 use AppBundle\Facade\UserFacade;
 use AppBundle\FormType\RegistrationFormType;
+use AppBundle\FormType\ProfileFormType;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
@@ -96,6 +98,33 @@ class UserController
 	 */
 	public function logoutAction()
 	{}
+
+    /**
+     * @Route("/profil", name="user_profile")
+     * @Template("user/profile.html.twig")
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function profileAction(Request $request)
+    {
+        $user = $this->userFacade->getUser();
+        $form = $this->formFactory->create(ProfileFormType::class, $user);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+
+            $request->getSession()->getFlashBag()->add('success', 'Vaše údaje boli úspešne upravené');
+        }
+
+        return [
+            "form" => $form->createView(),
+            "user" => $this->userFacade->getUser(),
+        ];
+    }
 
 	/**
 	 * @Route("/uzivatel/super-tajna-stranka", name="supersecret")

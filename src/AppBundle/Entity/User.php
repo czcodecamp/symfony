@@ -41,6 +41,42 @@ class User implements UserInterface
 	 */
 	private $plainPassword;
 
+    /**
+     * @var string
+     * @ORM\Column(type="string")
+     */
+    private $name = '';
+
+    /**
+     * @var string
+     * @ORM\Column(type="string")
+     */
+    private $surname = '';
+
+    /**
+     * @var string
+     * @ORM\Column(type="string")
+     */
+    private $street = '';
+
+    /**
+     * @var string
+     * @ORM\Column(type="string")
+     */
+    private $city = '';
+
+    /**
+     * @var string
+     * @ORM\Column(type="string")
+     */
+    private $zip = '';
+
+    /**
+     * @var string
+     * @ORM\Column(type="string")
+     */
+    private $phone = '';
+
 	/**
 	 * @return int
 	 */
@@ -128,5 +164,113 @@ class User implements UserInterface
 		//nothing to do
 		return;
 	}
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param mixed $name
+     * @return self
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSurname()
+    {
+        return $this->surname;
+    }
+
+    /**
+     * @param mixed $surname
+     * @return self
+     */
+    public function setSurname($surname)
+    {
+        $this->surname = $surname;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStreet()
+    {
+        return $this->street;
+    }
+
+    /**
+     * @param mixed $street
+     * @return self
+     */
+    public function setStreet($street)
+    {
+        $this->street = $street;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * @param mixed $city
+     * @return self
+     */
+    public function setCity($city)
+    {
+        $this->city = $city;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getZip()
+    {
+        return $this->zip;
+    }
+
+    /**
+     * @param mixed $zip
+     * @return self
+     */
+    public function setZip($zip)
+    {
+        $this->zip = $zip;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param mixed $phone
+     * @return self
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+        return $this;
+    }
 
 }

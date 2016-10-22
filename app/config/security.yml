@@ -9,6 +9,22 @@ security:
             entity: { class: AppBundle:User, property: username }
 
     firewalls:
+        user_area:
+            pattern: ^/profil
+
+            anonymous: false
+
+            form_login:
+                check_path: user_login
+                login_path: user_login
+                csrf_token_generator: security.csrf.token_manager
+                default_target_path: /
+
+            logout:
+                # The route name the user can go to in order to logout
+                path: user_logout
+                # The name of the route to redirect to after logging out
+                target: homepage
         secured_area:
             pattern: ^/
 
