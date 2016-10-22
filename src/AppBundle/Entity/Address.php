@@ -5,12 +5,12 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Adress
+ * Address
  *
- * @ORM\Table(name="adress")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\AdressRepository")
+ * @ORM\Table(name="address")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\AddressRepository")
  */
-class Adress
+class Address
 {
     /**
      * @var int
@@ -50,7 +50,7 @@ class Adress
     private $country;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="adresses")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="addresses")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
@@ -70,7 +70,7 @@ class Adress
      *
      * @param string $street
      *
-     * @return Adress
+     * @return Address
      */
     public function setStreet($street)
     {
@@ -94,7 +94,7 @@ class Adress
      *
      * @param string $city
      *
-     * @return Adress
+     * @return Address
      */
     public function setCity($city)
     {
@@ -118,7 +118,7 @@ class Adress
      *
      * @param string $postcode
      *
-     * @return Adress
+     * @return Address
      */
     public function setPostcode($postcode)
     {
@@ -142,7 +142,7 @@ class Adress
      *
      * @param string $country
      *
-     * @return Adress
+     * @return Address
      */
     public function setCountry($country)
     {
@@ -166,7 +166,7 @@ class Adress
      *
      * @param \AppBundle\Entity\User $user
      *
-     * @return Adress
+     * @return Address
      */
     public function setUser(\AppBundle\Entity\User $user = null)
     {

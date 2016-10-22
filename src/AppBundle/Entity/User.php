@@ -5,6 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @author Vašek Boch <vasek.boch@live.com>
@@ -52,13 +53,13 @@ class User implements UserInterface
     private $phone;
 
     /**
-     * @ORM\OneToMany(targetEntity="Adress", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="Address", mappedBy="user")
      */
-    private $adresses;
+    private $addresses;
 
     public function __construct()
     {
-        $this->adresses = new ArrayCollection();
+        $this->addresses = new ArrayCollection();
     }
 
     /**
@@ -199,36 +200,36 @@ class User implements UserInterface
     }
 
     /**
-     * Add adress
+     * Add address
      *
-     * @param \AppBundle\Entity\Adress $adress
+     * @param \AppBundle\Entity\Address $address
      *
      * @return User
      */
-    public function addAdress(\AppBundle\Entity\Adress $adress)
+    public function addAddress(\AppBundle\Entity\Address $address)
     {
-        $this->adresses[] = $adress;
+        $this->addresses[] = $address;
 
         return $this;
     }
 
     /**
-     * Remove adress
+     * Remove address
      *
-     * @param \AppBundle\Entity\Adress $adress
+     * @param \AppBundle\Entity\Address $address
      */
-    public function removeAdress(\AppBundle\Entity\Adress $adress)
+    public function removeAddress(\AppBundle\Entity\Address $address)
     {
-        $this->adresses->removeElement($adress);
+        $this->addresses->removeElement($address);
     }
 
     /**
-     * Get adresses
+     * Get addresses
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getAdresses()
+    public function getAddresses()
     {
-        return $this->adresses;
+        return $this->addresses;
     }
 }

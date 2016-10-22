@@ -1,8 +1,11 @@
 <?php
 namespace AppBundle\Controller;
 use AppBundle\Entity\User;
+use AppBundle\Entity\Address;
 use AppBundle\Facade\UserFacade;
 use AppBundle\FormType\RegistrationFormType;
+use AppBundle\FormType\ProfileFormType;
+use AppBundle\FormType\AddressFormType;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -113,4 +116,61 @@ class UserController
 		];
 	}
 
+    /**
+     * @Route("/profil", name="user_profile")
+     * @Template("user/profile.html.twig")
+     *
+     * @param Request $request
+     * @return RedirectResponse|array
+     */
+    public function profileAction(Request $request)
+    {
+        $user = $this->userFacade->getUser();
+        $form = $this->formFactory->create(ProfileFormType::class, $user);
+        $addresses = $user->getAddresses();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+
+            return RedirectResponse::create($this->router->generate("user_profile"));
+        }
+
+        return [
+            "form" => $form->createView(),
+            "user" => $this->userFacade->getUser(),
+            "addresses" => $addresses,
+        ];
+    }
+
+    /**
+     * @Route("/pridat-adresu", name="add_address")
+     * @Template("user/addaddress.html.twig")
+     *
+     * @param Request $request
+     * @return RedirectResponse|array
+     */
+    public function addAddressAction(Request $request)
+    {
+        $user = $this->userFacade->getUser();
+        $address = new Address();
+        $form = $this->formFactory->create(AddressFormType::class, $address);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+
+            $address->setUser($user);
+
+            $this->entityManager->persist($address);
+            $this->entityManager->flush();
+
+            return RedirectResponse::create($this->router->generate("user_profile"));
+        }
+
+        return [
+            "form" => $form->createView(),
+        ];
+    }
 }

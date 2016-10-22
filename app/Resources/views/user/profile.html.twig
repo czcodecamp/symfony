@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-sm-6 col-lg-6 col-md-6">
+            <h3>Osobní údaje</h3>
+            {{ form_start(form) }}
+            {{ form_row(form.username) }}
+            {{ form_row(form.name) }}
+            {{ form_row(form.phone) }}
+            <br/>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Uložit</button>
+            {{ form_end(form) }}
+        </div>
+        <div class="col-sm-6 col-lg-6 col-md-6">
+            <h3>Adresy</h3>
+            {% for address in addresses %}
+                <div class="address">
+                    <p>{{ address.street }}, {{ address.postcode }} {{ address.city }}, {{ address.country }}</p>
+                </div>
+            {% endfor %}
+            <p><a href="{{ path("add_address") }}">Správa adres</a></p>
+        </div>
+    </div>
+{% endblock %}
