@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Controller;
 use AppBundle\Entity\User;
+use AppBundle\Facade\AddressFacade;
 use AppBundle\Facade\UserFacade;
 use AppBundle\FormType\PasswordFormType;
 use AppBundle\FormType\ProfileFormType;
@@ -24,6 +25,7 @@ use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 class UserController
 {
 	private $userFacade;
+	private $addressFacade;
 	private $formFactory;
 	private $passwordEncoder;
 	private $entityManager;
@@ -34,13 +36,15 @@ class UserController
 		FormFactory $formFactory,
 		PasswordEncoderInterface $passwordEncoder,
 		EntityManager $entityManager,
-		RouterInterface $router
+		RouterInterface $router,
+		AddressFacade $addressFacade
 	) {
 		$this->userFacade = $userFacade;
 		$this->formFactory = $formFactory;
 		$this->passwordEncoder = $passwordEncoder;
 		$this->entityManager = $entityManager;
 		$this->router = $router;
+		$this->addressFacade = $addressFacade;
 	}
 
 	/**
@@ -141,12 +145,12 @@ class UserController
 
 		return [
 			"form" => $form->createView(),
-			"user" => $this->userFacade->getUser(),
+			"user" => $user,
 		];
 	}
 
 	/**
-	 * @Route("/uzivatel/uprava-údajů", name="user_profile_edit")
+	 * @Route("/uzivatel/uprava-udaju", name="user_profile_edit")
 	 * @Template("user/profile_edit.html.twig")
 	 *
 	 * @return array
@@ -174,7 +178,7 @@ class UserController
 
 		return [
 			"form" => $form->createView(),
-			"user" => $this->userFacade->getUser()
+			"user" => $user,
 		];
 	}
 
@@ -192,8 +196,8 @@ class UserController
 		}
 
 		return [
-			"user" => $this->userFacade->getUser(),
-			"addresses" => []
+			"user" => $user,
+			"addresses" => $this->addressFacade->getAllUserAddresses($user),
 		];
 	}
 

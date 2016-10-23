@@ -17,7 +17,25 @@
         <li><a href="{{  path("address_add") }}" class="navbar-link">Přidat adresu</a></li>
     </ul>
 
-    {% for address in addresses %}
-        "OK"
-    {% endfor %}
+    {% if addresses is not empty %}
+        <h2>Adresy</h2>
+        <table class="table table-striped">
+        <tr>
+            <td></td>
+            <td>Název</td>
+            <td>Ulice</td>
+            <td>Město</td>
+            <td>PSČ</td>
+        </tr>
+        {% for address in addresses %}
+            <tr>
+                <td>{{ address.id }}</td>
+                <td>{{ address.name }}</td>
+                <td>{{ address.street }}</td>
+                <td>{{ address.city }}</td>
+                <td>{{ address.zip }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% endif %}
 {% endblock %}
