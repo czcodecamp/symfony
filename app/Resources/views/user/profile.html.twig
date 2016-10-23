@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <ul class="nav nav-tabs">
+        <li role="presentation" class="active"><a href="{{ path("user_profile") }}">Detail</a></li>
+        <li role="presentation"><a href="{{ path("user_password") }}">Heslo</a></li>
+        <li role="presentation"><a href="{{ path("user_address") }}">Adresa</a></li>
+    </ul>
+    <br />
+
+    {{ form_errors(form) }}
+
+    {{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.surname) }}
+    {{ form_row(form.phone) }}
+    <br />
+    {{ form_row(form.submit) }}
+    {{ form_end(form) }}
+
+{% endblock %}
+
