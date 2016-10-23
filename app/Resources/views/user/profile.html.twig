@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1> {{ user.username }}</h1>
+    <dl class="dl-horizontal">
+        <dt>Jméno a příjmení</dt>
+        <dd>{{ user.name }}</dd>
+        <dt>Email</dt>
+        <dd>{{ user.email }}</dd>
+        <dt>Telefoní číslo</dt>
+        <dd>{{ user.phone }}</dd>
+    </dl>
+
+    <ul class="nav nav-pills">
+        <li><a href="{{ path("user_profile_edit") }}" class="navbar-link">Úprava profilu</a></li>
+        <li><a href="{{  path("user_password") }}" class="navbar-link">Změna hesla</a></li>
+        <li><a href="{{  path("address_add") }}" class="navbar-link">Přidat adresu</a></li>
+    </ul>
+
+    {% if addresses is not empty %}
+        <h2>Adresy</h2>
+        <table class="table table-striped">
+        <tr>
+            <td></td>
+            <td>Název</td>
+            <td>Ulice</td>
+            <td>Město</td>
+            <td>PSČ</td>
+        </tr>
+        {% for address in addresses %}
+            <tr>
+                <td>{{ address.id }}</td>
+                <td>{{ address.name }}</td>
+                <td>{{ address.street }}</td>
+                <td>{{ address.city }}</td>
+                <td>{{ address.zip }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% endif %}
+{% endblock %}

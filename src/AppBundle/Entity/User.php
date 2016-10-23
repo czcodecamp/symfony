@@ -10,7 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @author Vašek Boch <vasek.boch@live.com>
  * @author Jan Klat <jenik@klatys.cz>
  * @ORM\Entity
- * @UniqueEntity(fields="username", message="Tento e-mail je již registrován")
+ * @UniqueEntity(fields="username", message="Toto uživatelské jméno je již registrováno")
  */
 class User implements UserInterface
 {
@@ -24,22 +24,45 @@ class User implements UserInterface
 	private $id;
 
 	/**
-	 * @ORM\Column(type="string", length=255, unique=true, name="email")
+	 * @var string
+	 * @ORM\Column(type="string", length=255, unique=true, name="username")
 	 * @Assert\NotBlank()
-	 * @Assert\Email()
 	 */
 	private $username;
 
 	/**
+	 * @var string
 	 * @ORM\Column(type="string", length=64)
+	 * @Assert\NotBlank()
 	 */
 	private $password;
 
 	/**
+	 * @var string
 	 * @Assert\NotBlank()
+	 * @Assert\Blank(groups={"profileSetup"})
 	 * @Assert\Length(max=4096)
 	 */
 	private $plainPassword;
+
+	/**
+	 * @var string
+	 * @ORM\Column(type="string", length=255, name="name", nullable=true)
+	 */
+	private $name;
+
+	/**
+	 * @var string
+	 * @ORM\Column(type="string", length=255, unique=true, name="email", nullable=true)
+	 * @Assert\Email()
+	 */
+	private $email;
+
+	/**
+	 * @var string
+	 * @ORM\Column(type="string", length=255, name="phone", nullable=true)
+	 */
+	private $phone;
 
 	/**
 	 * @return int
@@ -60,7 +83,7 @@ class User implements UserInterface
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
 	public function getUsername()
 	{
@@ -68,7 +91,7 @@ class User implements UserInterface
 	}
 
 	/**
-	 * @param mixed $username
+	 * @param string $username
 	 * @return self
 	 */
 	public function setUsername($username)
@@ -78,7 +101,7 @@ class User implements UserInterface
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
 	public function getPassword()
 	{
@@ -86,7 +109,7 @@ class User implements UserInterface
 	}
 
 	/**
-	 * @param mixed $password
+	 * @param string $password
 	 * @return self
 	 */
 	public function setPassword($password)
@@ -96,7 +119,7 @@ class User implements UserInterface
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
 	public function getPlainPassword()
 	{
@@ -104,7 +127,7 @@ class User implements UserInterface
 	}
 
 	/**
-	 * @param mixed $plainPassword
+	 * @param string $plainPassword
 	 * @return self
 	 */
 	public function setPlainPassword($plainPassword)
@@ -127,6 +150,62 @@ class User implements UserInterface
 	{
 		//nothing to do
 		return;
+	}
+
+	// profile specification
+
+	/**
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	/**
+	 * @param string $name
+	 * @return self
+	 */
+	public function setName($name)
+	{
+		$this->name = $name;
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getEmail()
+	{
+		return $this->email;
+	}
+
+	/**
+	 * @param string $email
+	 * @return self
+	 */
+	public function setEmail($email)
+	{
+		$this->email = $email;
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getPhone()
+	{
+		return $this->phone;
+	}
+
+	/**
+	 * @param string $phone
+	 * @return self
+	 */
+	public function setPhone($phone)
+	{
+		$this->phone = $phone;
+		return $this;
 	}
 
 }

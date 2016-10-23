@@ -20,6 +20,10 @@ services:
     class: AppBundle\Controller\UserController
     autowire: true
 
+  app.controller.address_controller:
+    class: AppBundle\Controller\AddressController
+    autowire: true
+
   app.facade.category_facade:
     class: AppBundle\Facade\CategoryFacade
     autowire: true
@@ -32,6 +36,10 @@ services:
     class: AppBundle\Facade\UserFacade
     autowire: true
 
+  app.facade.address_facade:
+    class: AppBundle\Facade\AddressFacade
+    autowire: true
+
   app.repository.category_repository:
     class: AppBundle\Repository\CategoryRepository
     factory:   ['@doctrine.orm.default_entity_manager', getRepository]
@@ -41,6 +49,16 @@ services:
     class: AppBundle\Repository\ProductRepository
     factory:   ['@doctrine.orm.default_entity_manager', getRepository]
     arguments: ['AppBundle\Entity\Product']
+
+  app.repository.address_repository:
+    class: AppBundle\Repository\AddressRepository
+    factory:   ['@doctrine.orm.default_entity_manager', getRepository]
+    arguments: ['AppBundle\Entity\Address']
+
+  app.repository.user_address_repository:
+    class: AppBundle\Repository\UserAddressRepository
+    factory:   ['@doctrine.orm.default_entity_manager', getRepository]
+    arguments: ['AppBundle\Entity\UserAddress']
 
   encoder:
     class: Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder

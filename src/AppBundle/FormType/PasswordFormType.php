@@ -12,16 +12,15 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @author Vašek Boch <vasek.boch@live.com>
- * @author Jan Klat <jenik@klatys.cz>
+ * @author Tomáš Linhart <lin.tomeus@gmail.com>
  */
-class RegistrationFormType extends AbstractType
+class PasswordFormType extends AbstractType
 {
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder
-			->add("username", TextType::class, [
-				"label" => "Uživatelské jméno",
+			->add("password", PasswordType::class, [
+				"label" => "Aktuální heslo",
 				"attr" => [
 					"class" => "form-control",
 				],
@@ -44,29 +43,8 @@ class RegistrationFormType extends AbstractType
 					"required" => true,
 				],
 			])
-			->add("name", TextType::class, [
-				"label" => "Jméno a příjmení",
-				"attr" => [
-					"class" => "form-control",
-				],
-				'required' => false,
-			])
-			->add("email", EmailType::class, [
-				"label" => "Email",
-				"attr" => [
-					"class" => "form-control",
-				],
-				'required' => false,
-			])
-			->add("phone", TextType::class, [
-				"label" => "Telefoní číslo",
-				"attr" => [
-					"class" => "form-control",
-				],
-				'required' => false,
-			])
 			->add("submit", SubmitType::class, [
-				"label" => "Registrovat!",
+				"label" => "Změnit heslo!",
 				"attr" => [
 					"class" => "btn btn-lg btn-primary btn-block",
 				],
@@ -77,6 +55,7 @@ class RegistrationFormType extends AbstractType
 	{
 		$resolver->setDefaults(array(
 			"data_class" => User::class,
+			"validation_groups" => ["passwordReset"],
 		));
 	}
 }

@@ -1,7 +1,10 @@
 <?php
 namespace AppBundle\Controller;
 use AppBundle\Entity\User;
+use AppBundle\Facade\AddressFacade;
 use AppBundle\Facade\UserFacade;
+use AppBundle\FormType\PasswordFormType;
+use AppBundle\FormType\ProfileFormType;
 use AppBundle\FormType\RegistrationFormType;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -22,6 +25,7 @@ use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 class UserController
 {
 	private $userFacade;
+	private $addressFacade;
 	private $formFactory;
 	private $passwordEncoder;
 	private $entityManager;
@@ -32,13 +36,15 @@ class UserController
 		FormFactory $formFactory,
 		PasswordEncoderInterface $passwordEncoder,
 		EntityManager $entityManager,
-		RouterInterface $router
+		RouterInterface $router,
+		AddressFacade $addressFacade
 	) {
 		$this->userFacade = $userFacade;
 		$this->formFactory = $formFactory;
 		$this->passwordEncoder = $passwordEncoder;
 		$this->entityManager = $entityManager;
 		$this->router = $router;
+		$this->addressFacade = $addressFacade;
 	}
 
 	/**
@@ -98,18 +104,100 @@ class UserController
 	{}
 
 	/**
-	 * @Route("/uzivatel/super-tajna-stranka", name="supersecret")
-	 * @Template("user/supersecret.html.twig")
+	 * @Route("/uzivatel/zmena-hesla", name="user_password")
+	 * @Template("user/password.html.twig")
 	 *
 	 * @return array
 	 */
-	public function superSecretAction()
+	public function passwordAction(Request $request)
 	{
-		if (!$this->userFacade->getUser()) {
+		$user = $this->userFacade->getUser();
+		if (!$user) {
 			throw new UnauthorizedHttpException("Přihlašte se");
 		}
+
+		$form = $this->formFactory->create(PasswordFormType::class, $user);
+
+		// 2) handle the submit (will only happen on POST)
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
+			if($this->passwordEncoder->isPasswordValid(
+				$user->getPassword(),
+				$form->get("password")->getData(),
+				$user->getSalt()
+			)) {
+				$newPassword = $this->passwordEncoder->encodePassword(
+					$form->get("plainPassword")->getData(),
+					$user->getSalt()
+				);
+				$user->setPassword($newPassword);
+
+				$this->entityManager->persist($user);
+				$this->entityManager->flush();
+
+				// TODO: message
+
+				return RedirectResponse::create($this->router->generate("user_profile"));
+			} else {
+				// TODO: message
+			}
+		}
+
 		return [
-			"user" => $this->userFacade->getUser(),
+			"form" => $form->createView(),
+			"user" => $user,
+		];
+	}
+
+	/**
+	 * @Route("/uzivatel/uprava-udaju", name="user_profile_edit")
+	 * @Template("user/profile_edit.html.twig")
+	 *
+	 * @return array
+	 */
+	public function profileEditAction(Request $request)
+	{
+		$user = $this->userFacade->getUser();
+		if (!$user) {
+			throw new UnauthorizedHttpException("Přihlašte se");
+		}
+
+		$form = $this->formFactory->create(ProfileFormType::class, $user);
+
+		// 2) handle the submit (will only happen on POST)
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
+
+			$this->entityManager->persist($user);
+			$this->entityManager->flush();
+
+			// TODO: message
+
+			return RedirectResponse::create($this->router->generate("user_profile"));
+		}
+
+		return [
+			"form" => $form->createView(),
+			"user" => $user,
+		];
+	}
+
+	/**
+	 * @Route("/uzivatel", name="user_profile")
+	 * @Template("user/profile.html.twig")
+	 *
+	 * @return array
+	 */
+	public function profileAction(Request $request)
+	{
+		$user = $this->userFacade->getUser();
+		if (!$user) {
+			throw new UnauthorizedHttpException("Přihlašte se");
+		}
+
+		return [
+			"user" => $user,
+			"addresses" => $this->addressFacade->getAllUserAddresses($user),
 		];
 	}
 
