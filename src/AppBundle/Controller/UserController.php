@@ -6,6 +6,7 @@ use AppBundle\Facade\UserFacade;
 use AppBundle\FormType\RegistrationFormType;
 use AppBundle\FormType\ProfileFormType;
 use AppBundle\FormType\AddressFormType;
+use AppBundle\FormType\ChangePasswordFormType;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -44,43 +45,74 @@ class UserController
 		$this->router = $router;
 	}
 
-	/**
-	 * @Route("/registrovat", name="user_registration")
-	 * @Template("user/registration.html.twig")
-	 *
-	 * @param Request $request
-	 * @return RedirectResponse|array
-	 */
-	public function registrationAction(Request $request)
-	{
-		// 1) build the form
-		$user = new User();
-		$form = $this->formFactory->create(RegistrationFormType::class, $user);
+    /**
+     * @Route("/registrovat", name="user_registration")
+     * @Template("user/registration.html.twig")
+     *
+     * @param Request $request
+     * @return RedirectResponse|array
+     */
+    public function registrationAction(Request $request)
+    {
+        // 1) build the form
+        $user = new User();
+        $form = $this->formFactory->create(RegistrationFormType::class, $user);
 
-		// 2) handle the submit (will only happen on POST)
-		$form->handleRequest($request);
-		if ($form->isSubmitted() && $form->isValid()) {
+        // 2) handle the submit (will only happen on POST)
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
 
-			// 3) Encode the password (you could also do this via Doctrine listener)
-			$user->setPassword(
-				$this->passwordEncoder->encodePassword($user->getPlainPassword(), null)
-			);
+            // 3) Encode the password (you could also do this via Doctrine listener)
+            $user->setPassword(
+                $this->passwordEncoder->encodePassword($user->getPlainPassword(), null)
+            );
 
-			// 4) save the User!
-			$this->entityManager->persist($user);
-			$this->entityManager->flush();
+            // 4) save the User!
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
 
-			// ... do any other work - like sending them an email, etc
-			// maybe set a "flash" success message for the user
-			return RedirectResponse::create($this->router->generate("homepage"));
-		}
+            // ... do any other work - like sending them an email, etc
+            // maybe set a "flash" success message for the user
+            return RedirectResponse::create($this->router->generate("homepage"));
+        }
 
-		return [
-			"form" => $form->createView(),
-		];
-	}
+        return [
+            "form" => $form->createView(),
+        ];
+    }
 
-	/**
+    /**
+     * @Route("/uzivatel/zmenit-heslo", name="user_changepassword")
+     * @Template("user/changepassword.html.twig")
+     *
+     * @param Request $request
+     * @return RedirectResponse|array
+     */
+    public function changepasswordAction(Request $request)
+    {
+        $user = $this->userFacade->getUser();
+        $form = $this->formFactory->create(ChangePasswordFormType::class, $user);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+
+            $user->setPassword(
+                $this->passwordEncoder->encodePassword($user->getPlainPassword(), null)
+            );
+
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+
+            return RedirectResponse::create($this->router->generate("user_profile"));
+        }
+
+        return [
+            "form" => $form->createView(),
+            "user" => $this->userFacade->getUser(),
+        ];
+    }
+
+    /**
 	 * @Route("/prihlasit", name="user_login")
 	 * @Template("user/login.html.twig")
 	 *
@@ -117,7 +149,7 @@ class UserController
 	}
 
     /**
-     * @Route("/profil", name="user_profile")
+     * @Route("/uzivatel/profil", name="user_profile")
      * @Template("user/profile.html.twig")
      *
      * @param Request $request
@@ -146,7 +178,7 @@ class UserController
     }
 
     /**
-     * @Route("/pridat-adresu", name="add_address")
+     * @Route("/uzivatel/pridat-adresu", name="add_address")
      * @Template("user/addaddress.html.twig")
      *
      * @param Request $request

@@ -4,6 +4,7 @@
     <div class="row">
         <div class="col-sm-6 col-lg-6 col-md-6">
             <h3>Osobní údaje</h3>
+            <p><a href="{{ path("user_changepassword") }}">Změnit heslo</a></p>
             {{ form_start(form) }}
             {{ form_row(form.username) }}
             {{ form_row(form.name) }}
