@@ -1,16 +1,19 @@
-<div class="list-group">
-{% if category is defined %}
-    {% if category.topCategory != category.parentCategory and category.topCategory != category and category.topCategory != null %}
-    <a href="{{ path("category_detail", {"slug": category.topCategory.slug }) }}" class="list-group-item">{{ category.topCategory.menuTitle }}</a>
+{% if categories is defined or category is defined%}
+    <p class="lead">Menu</p>
+    <div class="list-group">
+    {% if category is defined %}
+        {% if category.topCategory != category.parentCategory and category.topCategory != category and category.topCategory != null %}
+        <a href="{{ path("category_detail", {"slug": category.topCategory.slug }) }}" class="list-group-item">{{ category.topCategory.menuTitle }}</a>
+        {% endif %}
+        {% if category.parentCategory != null %}
+            <a href="{{ path("category_detail", {"slug": category.parentCategory.slug }) }}" class="list-group-item">{{ category.parentCategory.menuTitle }}</a>
+        {% endif %}
+        <a href="{{ path("category_detail", {"slug": category.slug }) }}" class="list-group-item"><strong>{{ category.menuTitle }}</strong></a>
+    {%  endif %}
+    {% if categories is defined %}
+            {% for category in categories %}
+                    <a href="{{ path("category_detail", {"slug": category.slug }) }}" class="list-group-item">{{ category.menuTitle }}</a>
+            {% endfor %}
     {% endif %}
-    {% if category.parentCategory != null %}
-        <a href="{{ path("category_detail", {"slug": category.parentCategory.slug }) }}" class="list-group-item">{{ category.parentCategory.menuTitle }}</a>
-    {% endif %}
-    <a href="{{ path("category_detail", {"slug": category.slug }) }}" class="list-group-item"><strong>{{ category.menuTitle }}</strong></a>
-{%  endif %}
-{% if categories is defined %}
-        {% for category in categories %}
-                <a href="{{ path("category_detail", {"slug": category.slug }) }}" class="list-group-item">{{ category.menuTitle }}</a>
-        {% endfor %}
+    </div>
 {% endif %}
-</div>
