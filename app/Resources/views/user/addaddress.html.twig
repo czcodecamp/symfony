@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-sm-6 col-lg-6 col-md-6">
+            {{ form_start(form) }}
+            {{ form_row(form.street) }}
+            {{ form_row(form.city) }}
+            {{ form_row(form.postcode) }}
+            {{ form_row(form.country) }}
+            <br/>
+            <button class="btn btn-lg btn-primary" type="submit">Vytvořit novou adresu</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}
