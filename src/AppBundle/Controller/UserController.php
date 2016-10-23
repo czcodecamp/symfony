@@ -1,8 +1,10 @@
 <?php
 namespace AppBundle\Controller;
 use AppBundle\Entity\User;
+use AppBundle\Entity\Address;
 use AppBundle\Facade\UserFacade;
 use AppBundle\FormType\RegistrationFormType;
+use AppBundle\FormType\UserEditFormType;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -41,41 +43,41 @@ class UserController
 		$this->router = $router;
 	}
 
-	/**
-	 * @Route("/registrovat", name="user_registration")
-	 * @Template("user/registration.html.twig")
-	 *
-	 * @param Request $request
-	 * @return RedirectResponse|array
-	 */
-	public function registrationAction(Request $request)
-	{
-		// 1) build the form
-		$user = new User();
-		$form = $this->formFactory->create(RegistrationFormType::class, $user);
+    /**
+     * @Route("/registrovat", name="user_registration")
+     * @Template("user/registration.html.twig")
+     *
+     * @param Request $request
+     * @return RedirectResponse|array
+     */
+    public function registrationAction(Request $request)
+    {
+        // 1) build the form
+        $user = new User();
+        $form = $this->formFactory->create(RegistrationFormType::class, $user);
 
-		// 2) handle the submit (will only happen on POST)
-		$form->handleRequest($request);
-		if ($form->isSubmitted() && $form->isValid()) {
+        // 2) handle the submit (will only happen on POST)
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
 
-			// 3) Encode the password (you could also do this via Doctrine listener)
-			$user->setPassword(
-				$this->passwordEncoder->encodePassword($user->getPlainPassword(), null)
-			);
+            // 3) Encode the password (you could also do this via Doctrine listener)
+            $user->setPassword(
+                $this->passwordEncoder->encodePassword($user->getPlainPassword(), null)
+            );
 
-			// 4) save the User!
-			$this->entityManager->persist($user);
-			$this->entityManager->flush();
+            // 4) save the User!
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
 
-			// ... do any other work - like sending them an email, etc
-			// maybe set a "flash" success message for the user
-			return RedirectResponse::create($this->router->generate("homepage"));
-		}
+            // ... do any other work - like sending them an email, etc
+            // maybe set a "flash" success message for the user
+            return RedirectResponse::create($this->router->generate("homepage"));
+        }
 
-		return [
-			"form" => $form->createView(),
-		];
-	}
+        return [
+            "form" => $form->createView(),
+        ];
+    }
 
 	/**
 	 * @Route("/prihlasit", name="user_login")
@@ -112,5 +114,37 @@ class UserController
 			"user" => $this->userFacade->getUser(),
 		];
 	}
+
+    /**
+     * @Route("/uzivatel/edit", name="user_edit")
+     * @Template("user/user_edit.html.twig")
+     *
+     * @param Request $request
+     * @return RedirectResponse|array
+     */
+    public function editAction(Request $request)
+    {
+        if (!$this->userFacade->getUser()) {
+            throw new UnauthorizedHttpException("Přihlašte se");
+        }
+
+        $address = new Address();
+        $form = $this->formFactory->create(UserEditFormType::class, $address);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $this->entityManager->persist($address);
+            $this->entityManager->flush();
+
+            return RedirectResponse::create($this->router->generate("homepage"));
+        }
+
+        return [
+            "form" => $form->createView(),
+            "user" => $this->userFacade->getUser(),
+        ];
+
+    }
 
 }
