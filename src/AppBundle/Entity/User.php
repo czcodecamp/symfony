@@ -60,8 +60,7 @@ class User implements UserInterface
 
 	/**
 	 * @var string
-	 * @ORM\Column(type="string", length=255, unique=true, name="phone", nullable=true)
-	 * @Assert\Email()
+	 * @ORM\Column(type="string", length=255, name="phone", nullable=true)
 	 */
 	private $phone;
 
