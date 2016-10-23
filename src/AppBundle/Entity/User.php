@@ -27,20 +27,20 @@ class User implements UserInterface
 	 * @var string
 	 * @ORM\Column(type="string", length=255, unique=true, name="username")
 	 * @Assert\NotBlank()
-	 * @Assert\Blank(groups={"passwordReset"})
 	 */
 	private $username;
 
 	/**
 	 * @var string
 	 * @ORM\Column(type="string", length=64)
-	 * @Assert\NotBlank(groups={"profileSetup"})
+	 * @Assert\NotBlank()
 	 */
 	private $password;
 
 	/**
 	 * @var string
 	 * @Assert\NotBlank()
+	 * @Assert\Blank(groups={"profileSetup"})
 	 * @Assert\Length(max=4096)
 	 */
 	private $plainPassword;

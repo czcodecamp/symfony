@@ -11,8 +11,8 @@
 
 
     <form action="{{ path('user_login') }}" method="post" class="form-signin">
-        <label for="inputEmail" class="sr-only">Uživatelské jméno</label>
-        <input type="username" id="inputEmail" class="form-control" placeholder="Uživatelské jméno" name="_username" value="{{ last_username }}" required autofocus>
+        <label for="inputUsername" class="sr-only">Uživatelské jméno</label>
+        <input type="text" id="inputUsername" class="form-control" placeholder="Uživatelské jméno" name="_username" value="{{ last_username }}" required autofocus>
         <label for="inputPassword" class="sr-only">Heslo</label>
         <input type="password" id="inputPassword" class="form-control" placeholder="Heslo" name="_password" required>
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
