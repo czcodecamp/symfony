@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ form_start(form) }}
+        {{ form_row(form.firstName) }}
+        {{ form_row(form.lastName) }}
+        {{ form_row(form.phone) }}
+        <br />
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Uložit</button>
+    {{ form_end(form) }}
+
+    <h2>Adresy</h2>
+    <p>
+    {% if user.addresses|length > 0 %}
+        <ul>
+        {% for address in user.addresses %}
+            <li>
+                    <strong>
+                        {{ address.firstName }}
+                        {{ address.lastName }}
+                    </strong>
+                    {{ address.street }},
+                    {{ address.city }}
+                <a href="{{ path("edit_address", {"id": address.id}) }}">
+                    (upravit)
+                </a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <strong>Nemáte žádné adresy</strong>
+    {% endif %}
+    </p>
+
+{% endblock %}
+

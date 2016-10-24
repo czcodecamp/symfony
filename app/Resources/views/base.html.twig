@@ -49,7 +49,7 @@
             </ul>
             <p class="navbar-text navbar-right">
             {% if user is defined and user %}
-                <a href="#" class="navbar-link">{{ user.username }}</a>
+                <a href="{{ path("user_settings") }}" class="navbar-link">{{ user.username }}</a>
                 | <a href="{{ path("user_logout") }}" class="navbar-link">Odhlásit</a>
             {% else %}
                 <a href="{{ path("user_login") }}" class="navbar-link">Přihlásit</a>

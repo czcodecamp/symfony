@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -40,6 +41,35 @@ class User implements UserInterface
 	 * @Assert\Length(max=4096)
 	 */
 	private $plainPassword;
+
+	/**
+	 * @var string
+	 * @ORM\Column(type="string")
+	 */
+	private $firstName;
+
+	/**
+	 * @var string
+	 * @ORM\Column(type="string")
+	 */
+	private $lastName;
+
+	/**
+	 * @var string
+	 * @ORM\Column(type="string")
+	 */
+	private $phone;
+
+	/**
+	 * @var Address[]
+	 * @ORM\OneToMany(targetEntity="Address", mappedBy="user")
+	 */
+	private $addresses;
+
+	public function __construct()
+	{
+		$this->addresses = new ArrayCollection();
+	}
 
 	/**
 	 * @return int
@@ -113,9 +143,81 @@ class User implements UserInterface
 		return $this;
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getFirstName()
+	{
+		return $this->firstName;
+	}
+
+	/**
+	 * @param string $firstName
+	 * @return self
+	 */
+	public function setFirstName($firstName)
+	{
+		$this->firstName = $firstName;
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getLastName()
+	{
+		return $this->lastName;
+	}
+
+	/**
+	 * @param string $lastName
+	 * @return self
+	 */
+	public function setLastName($lastName)
+	{
+		$this->lastName = $lastName;
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getPhone()
+	{
+		return $this->phone;
+	}
+
+	/**
+	 * @param string $phone
+	 * @return self
+	 */
+	public function setPhone($phone)
+	{
+		$this->phone = $phone;
+		return $this;
+	}
+
+	/**
+	 * @return Address[]
+	 */
+	public function getAddresses()
+	{
+		return $this->addresses;
+	}
+
+	/**
+	 * @param Address[] $addresses
+	 * @return self
+	 */
+	public function setAddresses($addresses)
+	{
+		$this->addresses = $addresses;
+		return $this;
+	}
+
 	public function getRoles()
 	{
-		return [];
+		return ["ROLE_USER"];
 	}
 
 	public function getSalt()

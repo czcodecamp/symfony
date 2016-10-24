@@ -2,7 +2,10 @@
 namespace AppBundle\Controller;
 use AppBundle\Entity\User;
 use AppBundle\Facade\UserFacade;
+use AppBundle\FormType\AddressFormType;
 use AppBundle\FormType\RegistrationFormType;
+use AppBundle\FormType\UserSettingsFormType;
+use AppBundle\FormType\VO\UserSettingsVO;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -65,7 +68,7 @@ class UserController
 
 			// 4) save the User!
 			$this->entityManager->persist($user);
-			$this->entityManager->flush();
+			$this->entityManager->flush([$user]);
 
 			// ... do any other work - like sending them an email, etc
 			// maybe set a "flash" success message for the user
@@ -92,24 +95,64 @@ class UserController
 	}
 
 	/**
-	 * @Route("/odhlasit", name="user_logout")
-	 */
-	public function logoutAction()
-	{}
-
-	/**
-	 * @Route("/uzivatel/super-tajna-stranka", name="supersecret")
-	 * @Template("user/supersecret.html.twig")
+	 * @Route("/nastaveni", name="user_settings")
+	 * @Template("user/settings.html.twig")
 	 *
+	 * @param Request $request
 	 * @return array
 	 */
-	public function superSecretAction()
+	public function userDetailsAction(Request $request)
 	{
 		if (!$this->userFacade->getUser()) {
-			throw new UnauthorizedHttpException("Přihlašte se");
+			throw new UnauthorizedHttpException("Přihlašte se prosím");
 		}
+
+		$settingsVO = UserSettingsVO::createFromUser($this->userFacade->getUser());
+
+		$form = $this->formFactory->create(UserSettingsFormType::class, $settingsVO);
+
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
+			$this->userFacade->saveUserSettings($settingsVO);
+		}
+
 		return [
+			"form" => $form->createView(),
 			"user" => $this->userFacade->getUser(),
+		];
+	}
+
+	/**
+	 * @Route("/adresa/{id}", name="edit_address")
+	 * @Template("user/address_edit.html.twig")
+	 *
+	 * @param Request $request
+	 * @return array|RedirectResponse
+	 */
+	public function editAddressAction(Request $request)
+	{
+		$user = $this->userFacade->getUser();
+		$editAddress = false;
+		foreach ($user->getAddresses() as $address) {
+			if($address->getId() == $request->attributes->get("id")) {
+				$editAddress = $address;
+				break;
+			}
+		}
+		if (!$user || !$editAddress) {
+			throw new UnauthorizedHttpException("Stránku nelze zobrazit");
+		}
+
+		$form = $this->formFactory->create(AddressFormType::class, $editAddress);
+
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
+			$this->userFacade->saveAddress($editAddress);
+			return RedirectResponse::create($this->router->generate("user_settings"));
+		}
+
+		return [
+			"form" => $form->createView(),
 		];
 	}
 
