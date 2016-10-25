@@ -24,30 +24,30 @@ class UserEditFormType extends AbstractType
 					"class" => "form-control",
 				],
 			])
-            ->add("surName", EmailType::class, [
-                "label" => "Příjmení",
-                "attr" => [
-                    "class" => "form-control",
-                ],
-            ])
-            ->add("street", EmailType::class, [
-                "label" => "Ulice",
-                "attr" => [
-                    "class" => "form-control",
-                ],
-            ])
-            ->add("city", EmailType::class, [
-                "label" => "Město",
-                "attr" => [
-                    "class" => "form-control",
-                ],
-            ])
-            ->add("zip", EmailType::class, [
-                "label" => "PSČ",
-                "attr" => [
-                    "class" => "form-control",
-                ],
-            ]);
+			->add("surName", EmailType::class, [
+				"label" => "Příjmení",
+				"attr" => [
+					"class" => "form-control",
+				],
+			])
+			->add("street", EmailType::class, [
+				"label" => "Ulice",
+				"attr" => [
+					"class" => "form-control",
+				],
+			])
+			->add("city", EmailType::class, [
+				"label" => "Město",
+				"attr" => [
+					"class" => "form-control",
+				],
+			])
+			->add("zip", EmailType::class, [
+				"label" => "PSČ",
+				"attr" => [
+					"class" => "form-control",
+				],
+			]);
 	}
 
 	public function configureOptions(OptionsResolver $resolver)
