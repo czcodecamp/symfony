@@ -30,10 +30,10 @@ class Address
 	private $firstName;
 
 	/**
-     * @ORM\Column(type="string", length=255, unique=false, name="surName")
+     * @ORM\Column(type="string", length=255, unique=false, name="lastName")
      * @Assert\NotBlank()
 	 */
-	private $surName;
+	private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255, unique=false, name="street")
@@ -80,9 +80,9 @@ class Address
     /**
      * @return mixed
      */
-    public function getSurName()
+    public function getLastName()
     {
-        return $this->surName;
+        return $this->lastName;
     }
 
     /**
@@ -126,11 +126,11 @@ class Address
     }
 
     /**
-     * @param mixed $surName
+     * @param mixed $lastName
      */
-    public function setSurName($surName)
+    public function setLastName($lastName)
     {
-        $this->surName = $surName;
+        $this->lastName = $lastName;
     }
 
     /**
