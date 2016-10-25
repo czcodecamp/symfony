@@ -23,11 +23,11 @@ class User implements UserInterface
 	 */
 	private $id;
 
-    /**
-     * @var Address
-     * @ORM\ManyToOne(targetEntity="Address")
-     */
-    private $address;
+	/**
+	 * @var Address
+	 * @ORM\OneToMany(targetEntity="Address")
+	 */
+	private $address;
 
 	/**
 	 * @ORM\Column(type="string", length=255, unique=true, name="email")
@@ -135,11 +135,11 @@ class User implements UserInterface
 		return;
 	}
 
-    /**
-     * @param Address $address
-     */
-    public function setAddress($address)
-    {
-        $this->address = $address;
-    }
+	/**
+	 * @param Address $address
+	 */
+	public function setAddress($address)
+	{
+		$this->address = $address;
+	}
 }
