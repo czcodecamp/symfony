@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Adresa uživatele</h1>
+    <h1>Přidat adresu uživatele</h1>
     {{ form_start(form) }}
     {{ form_row(form.firstName) }}
     {{ form_row(form.surName) }}
@@ -9,6 +9,6 @@
     {{ form_row(form.city) }}
     {{ form_row(form.zip) }}
     <br />
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Upravit</button>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Přidat</button>
     {{ form_end(form) }}
 {% endblock %}

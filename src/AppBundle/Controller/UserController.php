@@ -116,13 +116,13 @@ class UserController
 	}
 
 	/**
-	 * @Route("/uzivatel/edit", name="user_edit")
-	 * @Template("user/user_edit.html.twig")
+	 * @Route("/uzivatel/pridat-adresu", name="add_address")
+	 * @Template("user/add_address.html.twig")
 	 *
 	 * @param Request $request
 	 * @return RedirectResponse|array
 	 */
-	public function editAction(Request $request)
+	public function addAddressAction(Request $request)
 	{
 		if (!$this->userFacade->getUser()) {
 			throw new UnauthorizedHttpException("Přihlašte se");
