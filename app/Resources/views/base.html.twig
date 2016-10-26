@@ -46,6 +46,9 @@
                 <li>
                     <a href="{{ path("homepage") }}">Domů</a>
                 </li>
+                <li>
+                    <a href="{{ path("message_add") }}">Kontakt</a>
+                </li>
             </ul>
             <p class="navbar-text navbar-right">
             {% if user is defined and user %}
@@ -72,6 +75,14 @@
         </div>
 
         <div class="col-md-9">
+            {% if app.session.flashBag.has('success') %}
+                <div class="alert alert-success">
+                    {% for msg in app.session.flashBag.get('success') %}
+                        {{ msg }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
             {% block body %}
             {% endblock %}
         </div>

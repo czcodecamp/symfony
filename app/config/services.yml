@@ -20,6 +20,10 @@ services:
     class: AppBundle\Controller\UserController
     autowire: true
 
+  app.controller.message_controller:
+    class: AppBundle\Controller\MessageController
+    autowire: true
+
   app.facade.category_facade:
     class: AppBundle\Facade\CategoryFacade
     autowire: true
@@ -32,6 +36,10 @@ services:
     class: AppBundle\Facade\UserFacade
     autowire: true
 
+  app.facade.message_facade:
+    class: AppBundle\Facade\MessageFacade
+    autowire: true
+
   app.repository.category_repository:
     class: AppBundle\Repository\CategoryRepository
     factory:   ['@doctrine.orm.default_entity_manager', getRepository]
@@ -41,6 +49,11 @@ services:
     class: AppBundle\Repository\ProductRepository
     factory:   ['@doctrine.orm.default_entity_manager', getRepository]
     arguments: ['AppBundle\Entity\Product']
+
+  app.repository.message_repository:
+    class: AppBundle\Repository\MessageRepository
+    factory:   ['@doctrine.orm.default_entity_manager', getRepository]
+    arguments: ['AppBundle\Entity\Message']
 
   encoder:
     class: Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder
