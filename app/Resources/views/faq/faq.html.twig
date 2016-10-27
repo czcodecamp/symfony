@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}    
+    {% if faqs is null or faqs is empty %}
+        <h2>Žádné zajímevé otázky a odpovědi</h2>
+    {% else %}
+        {% for faq in faqs %}
+            <h2>{{ faq.question|raw }}</h2>
+            <p>{{ faq.answer|raw }}</p>
+            <hr>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
