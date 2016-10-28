@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_row(form.firstName) }}
+    {{ form_row(form.lastName) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.question) }}
+    <br />
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Odeslat dotaz</button>
+    {{ form_end(form) }}
+{% endblock %}
+

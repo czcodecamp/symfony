@@ -6,7 +6,6 @@ use AppBundle\Entity\Category;
 use AppBundle\Entity\Product;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * @author Vašek Boch <vasek.boch@live.com>
