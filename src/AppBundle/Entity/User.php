@@ -44,19 +44,19 @@ class User implements UserInterface
 
 	/**
 	 * @var string
-	 * @ORM\Column(type="string")
+	 * @ORM\Column(type="string", nullable=true)
 	 */
 	private $firstName;
 
 	/**
 	 * @var string
-	 * @ORM\Column(type="string")
+	 * @ORM\Column(type="string", nullable=true)
 	 */
 	private $lastName;
 
 	/**
 	 * @var string
-	 * @ORM\Column(type="string")
+	 * @ORM\Column(type="string", nullable=true)
 	 */
 	private $phone;
 
@@ -231,4 +231,27 @@ class User implements UserInterface
 		return;
 	}
 
+    /**
+     * Add address
+     *
+     * @param \AppBundle\Entity\Address $address
+     *
+     * @return User
+     */
+    public function addAddress(\AppBundle\Entity\Address $address)
+    {
+        $this->addresses[] = $address;
+
+        return $this;
+    }
+
+    /**
+     * Remove address
+     *
+     * @param \AppBundle\Entity\Address $address
+     */
+    public function removeAddress(\AppBundle\Entity\Address $address)
+    {
+        $this->addresses->removeElement($address);
+    }
 }
