@@ -230,5 +230,4 @@ class User implements UserInterface
 		//nothing to do
 		return;
 	}
-
 }

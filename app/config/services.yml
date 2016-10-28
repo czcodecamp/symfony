@@ -23,6 +23,10 @@ services:
   app.controller.faq_controller:
     class: AppBundle\Controller\FaqController
     autowire: true
+    
+  app.controller.contact_controller:
+    class: AppBundle\Controller\ContactController
+    autowire: true
 
   app.facade.category_facade:
     class: AppBundle\Facade\CategoryFacade
@@ -40,6 +44,10 @@ services:
     class: AppBundle\Facade\FaqFacade
     autowire: true
 
+  app.facade.contact_facade:
+    class: AppBundle\Facade\ContactFacade
+    autowire: true
+    
   app.repository.category_repository:
     class: AppBundle\Repository\CategoryRepository
     factory:   ['@doctrine.orm.default_entity_manager', getRepository]
@@ -49,6 +57,11 @@ services:
     class: AppBundle\Repository\FaqRepository
     factory:   ['@doctrine.orm.default_entity_manager', getRepository]
     arguments: ['AppBundle\Entity\Faq']
+    
+  app.repository.contact_msg_repository:
+    class: AppBundle\Repository\ContactMsgRepository
+    factory:   ['@doctrine.orm.default_entity_manager', getRepository]
+    arguments: ['AppBundle\Entity\ContactMsg']
 
   app.repository.product_repository:
     class: AppBundle\Repository\ProductRepository
