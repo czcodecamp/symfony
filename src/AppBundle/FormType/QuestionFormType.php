@@ -50,7 +50,7 @@ class QuestionFormType extends AbstractType
 				"class" => "form-control",
 			],
 			"constraints" => [
-				new NotBlank(["message" => "Prosím vyplňte Vaši ulici"]),
+				new NotBlank(["message" => "Prosím vyplňte Vaši otázku"]),
 			],
 		]);
 	}

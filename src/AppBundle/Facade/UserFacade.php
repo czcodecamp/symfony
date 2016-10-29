@@ -3,6 +3,7 @@ namespace AppBundle\Facade;
 use AppBundle\Entity\Address;
 use AppBundle\Entity\User;
 use AppBundle\FormType\VO\UserSettingsVO;
+use AppBundle\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
@@ -24,16 +25,23 @@ class UserFacade
 	private $authenticationUtils;
 	private $entityManager;
 
+	/**
+	 * @var UserRepository
+	 */
+	private $userRepository;
+
 	public function __construct(
 		TokenStorage $tokenStorage,
 		AuthenticationUtils $authenticationUtils,
 		EntityManager $entityManager,
-		AuthenticationProviderManager $authenticationManager
+		AuthenticationProviderManager $authenticationManager,
+		UserRepository $userRepository
 	) {
 		$this->tokenStorage = $tokenStorage;
 		$this->authenticationUtils = $authenticationUtils;
 		$this->entityManager = $entityManager;
 		$this->authenticationManager = $authenticationManager;
+		$this->userRepository = $userRepository;
 	}
 
 	/**
@@ -86,10 +94,35 @@ class UserFacade
 		$this->entityManager->flush([$user]);
 	}
 
+	public function saveUser(User $user)
+	{
+		$this->entityManager->persist($user);
+		$this->entityManager->flush([$user]);
+	}
+
 	public function saveAddress(Address $address)
 	{
 		$this->entityManager->persist($address);
 		$this->entityManager->flush([$address]);
+	}
+
+	/**
+	 * @return User[]
+	 */
+	public function getUsers()
+	{
+		return $this->userRepository->findBy([], ["id" => "desc"]);
+	}
+
+	/**
+	 * @param int $userId
+	 * @return null|object
+	 */
+	public function getUserById($userId)
+	{
+		return $this->userRepository->findOneBy([
+			"id" => $userId
+		]);
 	}
 
 }

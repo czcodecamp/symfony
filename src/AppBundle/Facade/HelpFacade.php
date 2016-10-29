@@ -3,6 +3,7 @@
 namespace AppBundle\Facade;
 
 use AppBundle\Entity\Category;
+use AppBundle\Entity\Faq;
 use AppBundle\Entity\Question;
 use AppBundle\Repository\FaqRepository;
 use AppBundle\Repository\QuestionRepository;
@@ -48,6 +49,41 @@ class HelpFacade {
 	public function saveQuestion(Question $question) {
 		$this->entityManager->persist($question);
 		$this->entityManager->flush($question);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function findAllFaq()
+	{
+		return $this->faqRepository->findBy([], ["id" => "asc"]);
+	}
+
+	/**
+	 * @param int $id
+	 * @return Faq|null
+	 */
+	public function findFaqById($id)
+	{
+		return $this->faqRepository->findOneBy(["id" => $id]);
+	}
+
+	/**
+	 * @param Faq $faq
+	 */
+	public function saveFaq(Faq $faq)
+	{
+		$this->entityManager->persist($faq);
+		$this->entityManager->flush($faq);
+	}
+
+	/**
+	 * @param Faq $faq
+	 */
+	public function deleteFaq(Faq $faq)
+	{
+		$this->entityManager->remove($faq);
+		$this->entityManager->flush($faq);
 	}
 
 }

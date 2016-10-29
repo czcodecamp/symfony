@@ -42,23 +42,7 @@
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li>
-                    <a href="{{ path("homepage") }}">Domů</a>
-                </li>
-                <li>
-                    <a href="{{ path("faq") }}">FAQ</a>
-                </li>
-            </ul>
-            <p class="navbar-text navbar-right">
-            {% if user is defined and user %}
-                <a href="{{ path("user_settings") }}" class="navbar-link">{{ user.username }}</a>
-                | <a href="{{ path("user_logout") }}" class="navbar-link">Odhlásit</a>
-            {% else %}
-                <a href="{{ path("user_login") }}" class="navbar-link">Přihlásit</a>
-                | <a href="{{ path("user_registration") }}" class="navbar-link">Registrovat</a>
-            {% endif %}
-            </p>
+            {% include "components/navbar_menu.html.twig" %}
         </div>
         <!-- /.navbar-collapse -->
     </div>

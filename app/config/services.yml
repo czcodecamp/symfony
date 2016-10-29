@@ -60,6 +60,11 @@ services:
     factory:   ['@doctrine.orm.default_entity_manager', getRepository]
     arguments: ['AppBundle\Entity\Question']
 
+  app.repository.user_repository:
+    class: AppBundle\Repository\UserRepository
+    factory:   ['@doctrine.orm.default_entity_manager', getRepository]
+    arguments: ['AppBundle\Entity\User']
+
   encoder:
     class: Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder
     arguments:

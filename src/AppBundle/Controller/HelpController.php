@@ -2,10 +2,12 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Category;
+use AppBundle\Entity\Faq;
 use AppBundle\Entity\Question;
 use AppBundle\Facade\CategoryFacade;
 use AppBundle\Facade\HelpFacade;
 use AppBundle\Facade\UserFacade;
+use AppBundle\FormType\FaqFormType;
 use AppBundle\FormType\QuestionFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -83,6 +85,54 @@ class HelpController
 			$return["faqs"] = $this->helpFacade->findTopFaq(10);
 		}
 		return $return;
+	}
+
+
+	/**
+	 * @Route("/admin/faq/{id}", name="edit_faq")
+	 * @Route("/admin/faq", name="list_faq")
+	 * @Template("help/list_faq.html.twig")
+	 */
+	public function faqEditAction(Request $request, $id = null)
+	{
+		if ($id) {
+			$faq = $this->helpFacade->findFaqById($id);
+			if (!$faq) {
+				// todo: message not found
+				return RedirectResponse::create($this->router->generate("list_faq"));
+			}
+		} else {
+			$faq = new Faq();
+		}
+		$form = $this->formFactory->create(FaqFormType::class, $faq);
+		// 2) handle the submit (will only happen on POST)
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
+			$this->helpFacade->saveFaq($faq);
+			// TODO: message
+			return RedirectResponse::create($this->router->generate("list_faq"));
+		}
+		return [
+			"form" => $form->createView(),
+			"faqs" => $this->helpFacade->findAllFaq(),
+		];
+	}
+
+	/**
+	 * @Route("admin/faq/{id}/smazat", name="del_faq")
+	 * @param int $id
+	 * @return array
+	 */
+	public function delFaqAction($id)
+	{
+		$faq = $this->helpFacade->findFaqById($id);
+		if (!$faq) {
+			// todo: message not found
+			return RedirectResponse::create($this->router->generate("list_faq"));
+		}
+		$this->helpFacade->deleteFaq($faq);
+		// todo: message
+		return RedirectResponse::create($this->router->generate("list_faq"));
 	}
 
 	/**
