@@ -1,0 +1,10 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+    {{ include('::alert.html.twig') }}
+<h1>Kontaktujte nás</h1>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Odeslat!</button>
+    {{ form_end(form) }}
+{% endblock %}
