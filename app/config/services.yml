@@ -24,6 +24,10 @@ services:
     class: AppBundle\Controller\FaqController
     autowire: true
 
+  app.controller.contact_controller:
+    class: AppBundle\Controller\ContactController
+    autowire: true
+
   app.facade.category_facade:
     class: AppBundle\Facade\CategoryFacade
     autowire: true
@@ -42,6 +46,10 @@ services:
 
   app.facade.question_facade:
     class: AppBundle\Facade\QuestionFacade
+    autowire: true
+
+  app.facade.message_facade:
+    class: AppBundle\Facade\MessageFacade
     autowire: true
 
   app.repository.category_repository:
