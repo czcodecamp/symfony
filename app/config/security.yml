@@ -1,10 +1,22 @@
 security:
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_USER
+
     encoders:
+        Symfony\Component\Security\Core\User\User: plaintext
         AppBundle\Entity\User:
             algorithm: bcrypt
             cost: 13 #cost is 13 by default, just so you know why and how to set it
 
     providers:
+        chain_provider:
+            chain:
+                providers: [in_memory, database_users]
+        in_memory:
+            memory:
+                users:
+                    - { name: admin@shop.cz, password: admin, roles: 'ROLE_ADMIN' }
+
         database_users:
             entity: { class: AppBundle:User, property: username }
 
@@ -25,3 +37,5 @@ security:
                 path: user_logout
                 # The name of the route to redirect to after logging out
                 target: homepage
+    access_control:
+        - { path: ^/faq/, roles: ROLE_ADMIN }

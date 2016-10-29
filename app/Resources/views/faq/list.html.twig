@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <a href="{{ path("faq_add") }}">Přidat</a>
+    {% for question in questions %}
+        <div class="col-sm-12 col-lg-12 col-md-12">
+            <h3>{{ question.text }} <a href="{{ path("faq_edit", {"id": question.id }) }}">Upravit</a></h3>
+
+            {{ answers[question.id].text }}
+        </div>
+    {% endfor %}
+{% endblock %}
+

@@ -46,6 +46,12 @@
                 <li>
                     <a href="{{ path("homepage") }}">Domů</a>
                 </li>
+                <li>
+                    <a href="{{ path("faq") }}">FAQ</a>
+                </li>
+                <li>
+                    <a href="{{ path("contact") }}">Kontakt</a>
+                </li>
             </ul>
             <p class="navbar-text navbar-right">
             {% if user is defined and user %}
@@ -72,6 +78,15 @@
         </div>
 
         <div class="col-md-9">
+
+            {% for flash_message in app.session.flashBag.get('notice') %}
+
+
+                <div class="alert alert-info">
+                    {{ flash_message }}
+                </div>
+            {% endfor %}
+
             {% block body %}
             {% endblock %}
         </div>
