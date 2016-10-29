@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -26,16 +27,21 @@ class ContactController
 	/** @var RouterInterface */
 	private $router;
 
+	/** @var FlashBag */
+	private $flashBag;
+
 	/**
 	 * @param FormFactory $formFactory
 	 * @param MessageFacade $messageFacade
 	 * @param RouterInterface $router
+	 * @param FlashBag $flashBag
 	 */
-	public function __construct(FormFactory $formFactory, MessageFacade $messageFacade, RouterInterface $router)
+	public function __construct(FormFactory $formFactory, MessageFacade $messageFacade, RouterInterface $router, FlashBag $flashBag)
 	{
 		$this->formFactory = $formFactory;
 		$this->messageFacade = $messageFacade;
 		$this->router = $router;
+		$this->flashBag = $flashBag;
 	}
 
 	/**
@@ -50,6 +56,8 @@ class ContactController
 		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {
 			$this->messageFacade->save($messageVO);
+
+			$this->flashBag->add('notice', 'Message send.');
 
 			return RedirectResponse::create($this->router->generate("contact"));
 		}

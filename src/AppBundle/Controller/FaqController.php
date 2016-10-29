@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -34,20 +35,25 @@ class FaqController
 	/** @var RouterInterface */
 	private $router;
 
+	/** @var FlashBag */
+	private $flashBag;
+
 	/**
 	 * @param FormFactory $formFactory
 	 * @param QuestionFacade $questionFacade
 	 * @param AnswerFacade $answerFacade
 	 * @param FaqFacade $faqFacade
 	 * @param RouterInterface $router
+	 * @param FlashBag $flashBag
 	 */
-	public function __construct(FormFactory $formFactory, QuestionFacade $questionFacade, AnswerFacade $answerFacade, FaqFacade $faqFacade, RouterInterface $router)
+	public function __construct(FormFactory $formFactory, QuestionFacade $questionFacade, AnswerFacade $answerFacade, FaqFacade $faqFacade, RouterInterface $router, FlashBag $flashBag)
 	{
 		$this->formFactory = $formFactory;
 		$this->questionFacade = $questionFacade;
 		$this->answerFacade = $answerFacade;
 		$this->faqFacade = $faqFacade;
 		$this->router = $router;
+		$this->flashBag = $flashBag;
 	}
 
 	/**
@@ -95,6 +101,8 @@ class FaqController
 		if ($form->isSubmitted() && $form->isValid()) {
 			$this->faqFacade->insert($faqVO);
 
+			$this->flashBag->add('notice', 'Question added.');
+
 			return RedirectResponse::create($this->router->generate("faq_list"));
 		}
 
@@ -121,6 +129,8 @@ class FaqController
 		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {
 			$this->faqFacade->update($question, $answer, $faqVO);
+
+			$this->flashBag->add('notice', 'Question uppdated.');
 
 			return RedirectResponse::create($this->router->generate("faq_list"));
 		}
