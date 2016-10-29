@@ -20,6 +20,10 @@ services:
     class: AppBundle\Controller\UserController
     autowire: true
 
+  app.controller.faq_controller:
+    class: AppBundle\Controller\FaqController
+    autowire: true
+
   app.facade.category_facade:
     class: AppBundle\Facade\CategoryFacade
     autowire: true
@@ -32,6 +36,14 @@ services:
     class: AppBundle\Facade\UserFacade
     autowire: true
 
+  app.facade.answer_facade:
+    class: AppBundle\Facade\AnswerFacade
+    autowire: true
+
+  app.facade.question_facade:
+    class: AppBundle\Facade\QuestionFacade
+    autowire: true
+
   app.repository.category_repository:
     class: AppBundle\Repository\CategoryRepository
     factory:   ['@doctrine.orm.default_entity_manager', getRepository]
@@ -41,6 +53,16 @@ services:
     class: AppBundle\Repository\ProductRepository
     factory:   ['@doctrine.orm.default_entity_manager', getRepository]
     arguments: ['AppBundle\Entity\Product']
+
+  app.repository.answer_repository:
+    class: AppBundle\Repository\AnswerRepository
+    factory:   ['@doctrine.orm.default_entity_manager', getRepository]
+    arguments: ['AppBundle\Entity\Answer']
+
+  app.repository.question_repository:
+    class: AppBundle\Repository\QuestionRepository
+    factory:   ['@doctrine.orm.default_entity_manager', getRepository]
+    arguments: ['AppBundle\Entity\Question']
 
   encoder:
     class: Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder
