@@ -16,3 +16,4 @@
 /vendor/
 /web/bundles/
 composer.lock
+composer.phar

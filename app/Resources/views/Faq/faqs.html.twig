@@ -1,0 +1,26 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+<h1>Frequently Asked Questions</h1>
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    {% for faq in allFaqs %}
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading{{ loop.index }}">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ loop.index }}"
+                   aria-expanded="true" aria-controls="collapse{{ loop.index }}">
+                    {{ faq.question }}
+                </a>
+            </h4>
+        </div>
+        <div id="collapse{{ loop.index }}" class="panel-collapse collapse {% if loop.first %}in{% endif %}"
+             role="tabpanel"
+             aria-labelledby="heading{{ loop.index }}">
+            <div class="panel-body">
+                {{ faq.response }}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
