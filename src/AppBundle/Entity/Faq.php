@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Entity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -25,12 +26,13 @@ class Faq
      * @var string
      *
      * @ORM\Column(name="question", type="text")
+     * @Assert\NotBlank()
      */
     private $question;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="response", type="text")
      */
     private $response;
