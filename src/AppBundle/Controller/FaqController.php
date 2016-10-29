@@ -10,7 +10,9 @@ use AppBundle\FormType\VO\FaqVO;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @Route(service="app.controller.faq_controller")
@@ -29,18 +31,23 @@ class FaqController
 	/** @var FaqFacade */
 	private $faqFacade;
 
+	/** @var RouterInterface */
+	private $router;
+
 	/**
 	 * @param FormFactory $formFactory
 	 * @param QuestionFacade $questionFacade
 	 * @param AnswerFacade $answerFacade
 	 * @param FaqFacade $faqFacade
+	 * @param RouterInterface $router
 	 */
-	public function __construct(FormFactory $formFactory, QuestionFacade $questionFacade, AnswerFacade $answerFacade, FaqFacade $faqFacade)
+	public function __construct(FormFactory $formFactory, QuestionFacade $questionFacade, AnswerFacade $answerFacade, FaqFacade $faqFacade, RouterInterface $router)
 	{
 		$this->formFactory = $formFactory;
 		$this->questionFacade = $questionFacade;
 		$this->answerFacade = $answerFacade;
 		$this->faqFacade = $faqFacade;
+		$this->router = $router;
 	}
 
 	/**
@@ -87,6 +94,8 @@ class FaqController
 		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {
 			$this->faqFacade->insert($faqVO);
+
+			return RedirectResponse::create($this->router->generate("faq_list"));
 		}
 
 		return [
@@ -112,6 +121,8 @@ class FaqController
 		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {
 			$this->faqFacade->update($question, $answer, $faqVO);
+
+			return RedirectResponse::create($this->router->generate("faq_list"));
 		}
 
 		return [

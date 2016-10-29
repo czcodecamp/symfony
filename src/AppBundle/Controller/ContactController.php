@@ -8,7 +8,9 @@ use AppBundle\FormType\VO\MessageVO;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @Route(service="app.controller.contact_controller")
@@ -21,14 +23,19 @@ class ContactController
 	/** @var MessageFacade */
 	private $messageFacade;
 
+	/** @var RouterInterface */
+	private $router;
+
 	/**
 	 * @param FormFactory $formFactory
 	 * @param MessageFacade $messageFacade
+	 * @param RouterInterface $router
 	 */
-	public function __construct(FormFactory $formFactory, MessageFacade $messageFacade)
+	public function __construct(FormFactory $formFactory, MessageFacade $messageFacade, RouterInterface $router)
 	{
 		$this->formFactory = $formFactory;
 		$this->messageFacade = $messageFacade;
+		$this->router = $router;
 	}
 
 	/**
@@ -43,6 +50,8 @@ class ContactController
 		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {
 			$this->messageFacade->save($messageVO);
+
+			return RedirectResponse::create($this->router->generate("contact"));
 		}
 
 		return [
