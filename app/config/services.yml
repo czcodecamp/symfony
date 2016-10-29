@@ -52,6 +52,10 @@ services:
     class: AppBundle\Facade\MessageFacade
     autowire: true
 
+  app.facade.faq_facade:
+    class: AppBundle\Facade\FaqFacade
+    autowire: true
+
   app.repository.category_repository:
     class: AppBundle\Repository\CategoryRepository
     factory:   ['@doctrine.orm.default_entity_manager', getRepository]

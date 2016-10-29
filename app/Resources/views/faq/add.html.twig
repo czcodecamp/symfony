@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_row(form.question) }}
+    {{ form_row(form.answer) }}
+    <br />
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Přidat</button>
+    {{ form_end(form) }}
+{% endblock %}
+
