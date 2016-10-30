@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Faq - Časté dotazy</h1>
+
+    {{ form_start(form) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.question) }}
+    <br />
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Vložit dotaz</button>
+    {{ form_end(form) }}
+
+    <div class="row">
+        {% include 'components/list_faq.html.twig' %}
+    </div>
+    {% include ":components:paginator.html.twig" %}
+{% endblock %}
