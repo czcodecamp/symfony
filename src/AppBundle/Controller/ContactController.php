@@ -31,7 +31,7 @@ class ContactController {
         }
 
         /**
-         * @Route("/", name="contact")
+         * @Route("/contact", name="contact")
          * @Template("contact/contact.html.twig")
          * 
 	 * @param Request $request

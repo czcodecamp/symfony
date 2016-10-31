@@ -20,7 +20,7 @@ class FaqController {
         }
 
         /**
-         * @Route("/", name="faq")
+         * @Route("/faq", name="faq")
          * @Template("faq/faq.html.twig")
          */
         public function faqAction() {
