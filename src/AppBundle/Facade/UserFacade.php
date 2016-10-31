@@ -4,6 +4,7 @@ use AppBundle\Entity\Address;
 use AppBundle\Entity\User;
 use AppBundle\FormType\VO\UserSettingsVO;
 use AppBundle\Repository\UserRepository;
+use AppBundle\Repository\AddressRepository;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
@@ -24,6 +25,8 @@ class UserFacade
 	private $tokenStorage;
 	private $authenticationUtils;
 	private $entityManager;
+	private $authenticationManager;
+	private $addressRepository;
 
 	/**
 	 * @var UserRepository
@@ -35,13 +38,15 @@ class UserFacade
 		AuthenticationUtils $authenticationUtils,
 		EntityManager $entityManager,
 		AuthenticationProviderManager $authenticationManager,
-		UserRepository $userRepository
+		UserRepository $userRepository,
+		AddressRepository $addressRepository
 	) {
 		$this->tokenStorage = $tokenStorage;
 		$this->authenticationUtils = $authenticationUtils;
 		$this->entityManager = $entityManager;
 		$this->authenticationManager = $authenticationManager;
 		$this->userRepository = $userRepository;
+		$this->addressRepository = $addressRepository;
 	}
 
 	/**
@@ -122,6 +127,19 @@ class UserFacade
 	{
 		return $this->userRepository->findOneBy([
 			"id" => $userId
+		]);
+	}
+
+	/**
+	 * @param User $user
+	 * @param int $addressId
+	 * @return null|Address
+	 */
+	public function getUserAddress(User $user, $addressId)
+	{
+		return $this->addressRepository->findOneBy([
+			"user" => $user,
+			"id" => $addressId,
 		]);
 	}
 

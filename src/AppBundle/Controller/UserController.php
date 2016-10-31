@@ -66,12 +66,8 @@ class UserController
 				$this->passwordEncoder->encodePassword($user->getPlainPassword(), null)
 			);
 
-			// 4) save the User!
-			$this->entityManager->persist($user);
-			$this->entityManager->flush([$user]);
+			$this->userFacade->saveUser($user);
 
-			// ... do any other work - like sending them an email, etc
-			// maybe set a "flash" success message for the user
 			return RedirectResponse::create($this->router->generate("homepage"));
 		}
 
@@ -132,13 +128,9 @@ class UserController
 	public function editAddressAction(Request $request)
 	{
 		$user = $this->userFacade->getUser();
-		$editAddress = false;
-		foreach ($user->getAddresses() as $address) {
-			if($address->getId() == $request->attributes->get("id")) {
-				$editAddress = $address;
-				break;
-			}
-		}
+
+		$editAddress = $this->userFacade->getUserAddress($user, $request->attributes->get("id"));
+
 		if (!$user || !$editAddress) {
 			throw new UnauthorizedHttpException("Stránku nelze zobrazit");
 		}
