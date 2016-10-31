@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Jméno</th>
+            <th>Příjmení</th>
+            <th>Telefon</th>
+            <th>Role</th>
+            <th>Akce</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.firstName }}</td>
+                <td>{{ user.lastName }}</td>
+                <td>{{ user.phone }}</td>
+                <td>{{ user.roles|join(', ') }}</td>
+                <td>
+                    <ul class="list-group list-inline">
+                        {% for role in roles %}
+                            {% if role in user.roles %}
+                                <li class="list-group-item-danger">
+                                <a href="{{ path("user_role_del", {"userId": user.id, "role": role}) }}" class="navbar-link">Odebrat {{ role }}</a>
+                            {% else %}
+                                <li class="list-group-item-success">
+                                <a href="{{ path("user_role_add", {"userId": user.id, "role": role}) }}" class="navbar-link">Přidat {{ role }}</a>
+                            {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+

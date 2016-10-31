@@ -8,6 +8,10 @@ services:
     class: AppBundle\Controller\CategoryController
     autowire: true
 
+  app.controller.help_controller:
+    class: AppBundle\Controller\HelpController
+    autowire: true
+
   app.controller.homepage_controller:
     class: AppBundle\Controller\HomepageController
     autowire: true
@@ -22,6 +26,10 @@ services:
 
   app.facade.category_facade:
     class: AppBundle\Facade\CategoryFacade
+    autowire: true
+
+  app.facade.help_facade:
+    class: AppBundle\Facade\HelpFacade
     autowire: true
 
   app.facade.product_facade:
@@ -42,10 +50,25 @@ services:
     factory:   ['@doctrine.orm.default_entity_manager', getRepository]
     arguments: ['AppBundle\Entity\Category']
 
+  app.repository.faq_repository:
+    class: AppBundle\Repository\FaqRepository
+    factory:   ['@doctrine.orm.default_entity_manager', getRepository]
+    arguments: ['AppBundle\Entity\Faq']
+
   app.repository.product_repository:
     class: AppBundle\Repository\ProductRepository
     factory:   ['@doctrine.orm.default_entity_manager', getRepository]
     arguments: ['AppBundle\Entity\Product']
+
+  app.repository.question_repository:
+    class: AppBundle\Repository\QuestionRepository
+    factory:   ['@doctrine.orm.default_entity_manager', getRepository]
+    arguments: ['AppBundle\Entity\Question']
+
+  app.repository.user_repository:
+    class: AppBundle\Repository\UserRepository
+    factory:   ['@doctrine.orm.default_entity_manager', getRepository]
+    arguments: ['AppBundle\Entity\User']
 
   encoder:
     class: Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder

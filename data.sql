@@ -26,26 +26,30 @@
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
 
-INSERT INTO `category` (`id`, `parent_category_id`, `top_category_id`, `title`, `slug`, `rank`, `left`, `right`, `level`)
+INSERT INTO `category` (`id`, `parent_category_id`, `top_category_id`, `title`, `slug`, `rank`, `left`, `right`, `level`, `type`)
 VALUES
-	(1,NULL,1,'Nábytek','nabytek',853,0,13,0),
-	(2,1,1,'Sedací soupravy','sedaci-soupravy',370,1,6,1),
-	(3,2,1,'Sedací vaky','sedaci-vaky',289,2,3,2),
-	(4,2,1,'Televizní křesla','televizni-kresla',334,4,5,2),
-	(5,1,1,'Stoly','stoly',804,7,12,1),
-	(6,5,1,'Televizní stolky','televizni-stolky',18,8,9,2),
-	(7,5,1,'Pracovní stoly','pracovni-stoly',679,10,11,2),
-	(8,NULL,8,'Mobilní telefony','mobilni-telefony',339,14,27,0),
-	(9,8,8,'Mobily','mobily',659,15,20,1),
-	(10,9,8,'Android','android',278,16,17,2),
-	(11,9,8,'iPhone','iphone',412,18,19,2),
-	(12,8,8,'Příslušenství','mobily-prislusenstvi',226,21,26,1),
-	(13,12,8,'Selfie tyče','selfie-tyce',894,22,23,2),
-	(14,12,8,'Pouzda na mobily','pouzdra-na-mobily',792,24,25,2),
-	(15,NULL,15,'TV, audio, video','tv-audio-video',279,28,35,0),
-	(16,15,15,'Televize','televize',20,29,30,1),
-	(17,15,15,'Hifi věže','hifi-veze',261,31,32,1),
-	(18,15,15,'Blu-ray přehrávače','blu-ray-prehravace',245,33,34,1);
+	(1,NULL,1,'Nábytek','nabytek',853,0,13,0, 'product'),
+	(2,1,1,'Sedací soupravy','sedaci-soupravy',370,1,6,1, 'product'),
+	(3,2,1,'Sedací vaky','sedaci-vaky',289,2,3,2, 'product'),
+	(4,2,1,'Televizní křesla','televizni-kresla',334,4,5,2, 'product'),
+	(5,1,1,'Stoly','stoly',804,7,12,1, 'product'),
+	(6,5,1,'Televizní stolky','televizni-stolky',18,8,9,2, 'product'),
+	(7,5,1,'Pracovní stoly','pracovni-stoly',679,10,11,2, 'product'),
+	(8,NULL,8,'Mobilní telefony','mobilni-telefony',339,14,27,0, 'product'),
+	(9,8,8,'Mobily','mobily',659,15,20,1, 'product'),
+	(10,9,8,'Android','android',278,16,17,2, 'product'),
+	(11,9,8,'iPhone','iphone',412,18,19,2, 'product'),
+	(12,8,8,'Příslušenství','mobily-prislusenstvi',226,21,26,1, 'product'),
+	(13,12,8,'Selfie tyče','selfie-tyce',894,22,23,2, 'product'),
+	(14,12,8,'Pouzda na mobily','pouzdra-na-mobily',792,24,25,2, 'product'),
+	(15,NULL,15,'TV, audio, video','tv-audio-video',279,28,35,0, 'product'),
+	(16,15,15,'Televize','televize',20,29,30,1, 'product'),
+	(17,15,15,'Hifi věže','hifi-veze',261,31,32,1, 'product'),
+	(18,15,15,'Blu-ray přehrávače','blu-ray-prehravace',245,33,34,1, 'product'),
+	(19,NULL,1,'Registrace','registrace',100,0,1,0, 'FAQ'),
+	(20,NULL,1,'Jak objednat','objednavka',90,2,3,0, 'FAQ'),
+	(21,NULL,1,'Servis a služby','servis-sluzby',80,4,5,0, 'FAQ'),
+	(22,NULL,1,'Reklamace','reklamace',10,6,7,0, 'FAQ');
 
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;

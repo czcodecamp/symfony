@@ -3,6 +3,7 @@ namespace AppBundle\Facade;
 use AppBundle\Entity\Address;
 use AppBundle\Entity\User;
 use AppBundle\FormType\VO\UserSettingsVO;
+use AppBundle\Repository\UserRepository;
 use AppBundle\Repository\AddressRepository;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -27,17 +28,24 @@ class UserFacade
 	private $authenticationManager;
 	private $addressRepository;
 
+	/**
+	 * @var UserRepository
+	 */
+	private $userRepository;
+
 	public function __construct(
 		TokenStorage $tokenStorage,
 		AuthenticationUtils $authenticationUtils,
 		EntityManager $entityManager,
 		AuthenticationProviderManager $authenticationManager,
+		UserRepository $userRepository,
 		AddressRepository $addressRepository
 	) {
 		$this->tokenStorage = $tokenStorage;
 		$this->authenticationUtils = $authenticationUtils;
 		$this->entityManager = $entityManager;
 		$this->authenticationManager = $authenticationManager;
+		$this->userRepository = $userRepository;
 		$this->addressRepository = $addressRepository;
 	}
 
@@ -91,6 +99,12 @@ class UserFacade
 		$this->entityManager->flush([$user]);
 	}
 
+	public function saveUser(User $user)
+	{
+		$this->entityManager->persist($user);
+		$this->entityManager->flush([$user]);
+	}
+
 	public function saveAddress(Address $address)
 	{
 		$this->entityManager->persist($address);
@@ -98,12 +112,22 @@ class UserFacade
 	}
 
 	/**
-	 * @param User $user
+	 * @return User[]
 	 */
-	public function saveUser(User $user)
+	public function getUsers()
 	{
-		$this->entityManager->persist($user);
-		$this->entityManager->flush([$user]);
+		return $this->userRepository->findBy([], ["id" => "desc"]);
+	}
+
+	/**
+	 * @param int $userId
+	 * @return null|object
+	 */
+	public function getUserById($userId)
+	{
+		return $this->userRepository->findOneBy([
+			"id" => $userId
+		]);
 	}
 
 	/**
@@ -118,6 +142,5 @@ class UserFacade
 			"id" => $addressId,
 		]);
 	}
-
 
 }

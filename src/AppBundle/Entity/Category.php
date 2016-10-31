@@ -2,15 +2,19 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * @author Vašek Boch <vasek.boch@live.com>
  * @author Jan Klat <jenik@klatys.cz>
  *
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CategoryRepository")
+ * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(name="unique_idx", columns={"type", "slug"})})
  */
 class Category
 {
+	const TYPE_PRODUCT = "product";
+	const TYPE_FAQ = "FAQ";
 
 	/**
 	 * @var int
@@ -19,6 +23,12 @@ class Category
 	 * @ORM\Column(type="integer")
 	 */
 	private $id;
+
+	/**
+	 * @var string
+	 * @ORM\Column(type="string")
+	 */
+	private $type;
 
 	/**
 	 * @var string
@@ -74,6 +84,27 @@ class Category
 	public function getId()
 	{
 		return $this->id;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getType()
+	{
+		return $this->type;
+	}
+
+	/**
+	 * @param string $type
+	 * @return self
+	 */
+	public function setType($type)
+	{
+		if (!in_array($type, array(self::TYPE_PRODUCT, self::TYPE_FAQ))) {
+			throw new InvalidArgumentException("Invalid type");
+		}
+		$this->type = $type;
+		return $this;
 	}
 
 	/**

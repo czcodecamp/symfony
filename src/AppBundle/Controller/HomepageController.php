@@ -1,5 +1,6 @@
 <?php
 namespace AppBundle\Controller;
+use AppBundle\Entity\Category;
 use AppBundle\Facade\CategoryFacade;
 use AppBundle\Facade\ProductFacade;
 use AppBundle\Facade\UserFacade;
@@ -44,7 +45,7 @@ class HomepageController
 
 		return [
 			"products" => $this->productFacade->getAll($paginator->getLimit(), $paginator->getOffset()),
-			"categories" => $this->categoryFacade->getTopLevelCategories(),
+			"categories" => $this->categoryFacade->getTopLevelCategories(Category::TYPE_PRODUCT),
 			"currentPage" => $page,
 			"totalPages" => $paginator->getTotalPageCount(),
 			"pageRange" => $paginator->getPageRange(5),
