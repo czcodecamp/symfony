@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+{% for faq_item in faq %}
+    <div class="col-sm-12 col-lg-12 col-md-12">
+        <div class="question">
+            <h3>{{ faq_item.question }}</h3>
+        </div>
+        <div class="answer">
+            {{ faq_item.answer }}
+        </div>
+        <hr/>
+    </div>
+{% endfor %}
+{% endblock %}
