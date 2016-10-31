@@ -6,7 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @author Vašek Boch <vasek.boch@live.com>
  * @author Jan Klat <jenik@klatys.cz>
- * @ORM\Entity
+ *
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\AddressRepository")
  */
 class Address
 {
@@ -202,24 +203,6 @@ class Address
 	public function setPhone($phone)
 	{
 		$this->phone = $phone;
-		return $this;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getNote()
-	{
-		return $this->note;
-	}
-
-	/**
-	 * @param string $note
-	 * @return self
-	 */
-	public function setNote($note)
-	{
-		$this->note = $note;
 		return $this;
 	}
 

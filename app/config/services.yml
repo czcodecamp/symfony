@@ -32,6 +32,11 @@ services:
     class: AppBundle\Facade\UserFacade
     autowire: true
 
+  app.repository.address_repository:
+    class: AppBundle\Repository\AddressRepository
+    factory:   ['@doctrine.orm.default_entity_manager', getRepository]
+    arguments: ['AppBundle\Entity\Address']
+
   app.repository.category_repository:
     class: AppBundle\Repository\CategoryRepository
     factory:   ['@doctrine.orm.default_entity_manager', getRepository]
