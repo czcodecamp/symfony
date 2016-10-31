@@ -20,6 +20,10 @@ services:
     class: AppBundle\Controller\UserController
     autowire: true
 
+  app.controller.faq_controller:
+    class: AppBundle\Controller\FaqController
+    autowire: true
+    
   app.facade.category_facade:
     class: AppBundle\Facade\CategoryFacade
     autowire: true
@@ -31,7 +35,11 @@ services:
   app.facade.user_facade:
     class: AppBundle\Facade\UserFacade
     autowire: true
-
+    
+  app.facade.faq_facade:
+    class: AppBundle\Facade\FaqFacade
+    autowire: true
+    
   app.repository.category_repository:
     class: AppBundle\Repository\CategoryRepository
     factory:   ['@doctrine.orm.default_entity_manager', getRepository]
@@ -42,6 +50,11 @@ services:
     factory:   ['@doctrine.orm.default_entity_manager', getRepository]
     arguments: ['AppBundle\Entity\Product']
 
+  app.repository.faq_repository:
+    class: AppBundle\Repository\FaqRepository
+    factory:   ['@doctrine.orm.default_entity_manager', getRepository]
+    arguments: ['AppBundle\Entity\Faq']
+    
   encoder:
     class: Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder
     arguments:

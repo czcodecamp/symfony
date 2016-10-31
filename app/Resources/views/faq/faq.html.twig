@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="accordion" id="accordion2">
+        {% for f in faq %}
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse{{ f.id }}">
+                        {{ f.question }}
+                    </a>
+                </div>
+                <div id="collapse{{ f.id }}" class="accordion-body collapse">
+                    <div class="accordion-inner">
+                        {{ f.reply }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
