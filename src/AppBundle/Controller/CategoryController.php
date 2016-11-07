@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Category;
 use AppBundle\Facade\CategoryFacade;
 use AppBundle\Facade\ProductFacade;
 use AppBundle\Service\Paginator;
@@ -34,7 +33,7 @@ class CategoryController
 	 */
 	public function categoryDetail($slug, $page)
 	{
-		$category = $this->categoryFacade->getBySlug(Category::TYPE_PRODUCT, $slug);
+		$category = $this->categoryFacade->getBySlug($slug);
 
 		if (!$category) {
 			throw new NotFoundHttpException("Kategorie neexistuje");

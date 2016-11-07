@@ -1,37 +1,12 @@
 security:
     encoders:
-        # in memory provider
-        Symfony\Component\Security\Core\User\User:
-            algorithm: bcrypt
-            cost: 13 #cost is 13 by default, just so you know why and how to set it
-        # database provider
         AppBundle\Entity\User:
             algorithm: bcrypt
             cost: 13 #cost is 13 by default, just so you know why and how to set it
 
-    role_hierarchy:
-        ROLE_ADMIN:       ROLE_USER
-        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
-
     providers:
-        chain_provider:
-            # list of user providers for authentification
-            chain:
-                providers: [in_memory, database_users]
-        # first provider for super admins
-        in_memory:
-            memory:
-                users:
-                    admin@cc16.cz:
-                        password: $2y$13$eH./X5Bsn78kK72hLc4NMeqL5RneihrZvFiVsyZcWbTZzth9vYJ96
-                        roles: 'ROLE_SUPER_ADMIN'
-        # second provider for others users
         database_users:
             entity: { class: AppBundle:User, property: username }
-
-    access_control:
-        - { path: ^/admin/users, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/admin, roles: ROLE_ADMIN }
 
     firewalls:
         secured_area:
