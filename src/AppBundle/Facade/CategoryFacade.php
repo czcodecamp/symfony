@@ -18,9 +18,8 @@ class CategoryFacade {
 	}
 
 	/** @return Category */
-	public function getBySlug($type, $slug) {
+	public function getBySlug($slug) {
 		return $this->categoryRepository->findOneBy([
-			"type" => $type,
 			"slug" => $slug,
 		]);
 
@@ -39,10 +38,9 @@ class CategoryFacade {
 	}
 
 	/** @return Category[] */
-	public function getTopLevelCategories($type) {
+	public function getTopLevelCategories() {
 		return $this->categoryRepository->findBy(
 			[
-				"type" => $type,
 				"level" => 0,
 			],
 			[

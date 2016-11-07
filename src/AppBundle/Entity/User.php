@@ -3,7 +3,6 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use InvalidArgumentException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -11,7 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @author Vašek Boch <vasek.boch@live.com>
  * @author Jan Klat <jenik@klatys.cz>
- * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ * @ORM\Entity
  * @UniqueEntity(fields="username", message="Tento e-mail je již registrován")
  */
 class User implements UserInterface
@@ -66,12 +65,6 @@ class User implements UserInterface
 	 * @ORM\OneToMany(targetEntity="Address", mappedBy="user")
 	 */
 	private $addresses;
-
-	/**
-	 * @var array
-	 * @ORM\Column(type="string")
-	 */
-	private $roles;
 
 	public function __construct()
 	{
@@ -222,57 +215,9 @@ class User implements UserInterface
 		return $this;
 	}
 
-	/**
-	 * @return array
-	 */
 	public function getRoles()
 	{
-		if (empty($this->roles) || empty(json_decode($this->roles))) {
-			return self::rolesDefaultArray();
-		}
-		return json_decode($this->roles, true);
-	}
-
-	/**
-	 * @param array $roles
-	 * @return self
-	 */
-	public function setRoles(array $roles)
-	{
-		if (empty($roles)) {
-			$this->roles = json_encode(self::rolesDefaultArray());
-		} else {
-			foreach ($roles as $role) {
-				if (!in_array($role, self::rolesArray())) {
-					throw new InvalidArgumentException("");
-				}
-			}
-			$this->roles = json_encode($roles);
-		}
-		return $this;
-	}
-
-	/**
-	 * Roles for users from DB
-	 * @return array
-	 */
-	public static function rolesArray()
-	{
-		return [
-			"ROLE_USER",
-			"ROLE_ADMIN",
-		];
-	}
-
-	/**
-	 * Roles default for users from DB
-	 * @return array
-	 */
-	public static function rolesDefaultArray()
-	{
-		return [
-			"ROLE_USER",
-		];
+		return ["ROLE_USER"];
 	}
 
 	public function getSalt()
