@@ -12,6 +12,10 @@ services:
     class: AppBundle\Controller\HomepageController
     autowire: true
 
+  app.controller.help_controller:
+    class: AppBundle\Controller\HelpController
+    autowire: true
+
   app.controller.product_controller:
     class: AppBundle\Controller\ProductController
     autowire: true
@@ -41,6 +45,11 @@ services:
     class: AppBundle\Repository\CategoryRepository
     factory:   ['@doctrine.orm.default_entity_manager', getRepository]
     arguments: ['AppBundle\Entity\Category']
+
+  app.repository.faq_repository:
+    class: AppBundle\Repository\FaqRepository
+    factory:   ['@doctrine.orm.default_entity_manager', getRepository]
+    arguments: ['AppBundle\Entity\Faq']
 
   app.repository.product_repository:
     class: AppBundle\Repository\ProductRepository

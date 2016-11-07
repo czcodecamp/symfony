@@ -98,6 +98,14 @@ class User implements UserInterface
 	}
 
 	/**
+	 * @return mixed
+	 */
+	public function getEmail()
+	{
+		return $this->getUsername();
+	}
+
+	/**
 	 * @param mixed $username
 	 * @return self
 	 */

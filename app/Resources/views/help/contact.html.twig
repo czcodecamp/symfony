@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Kontakt</h1>
+    <h2>CodecampShop, a.s.</h2>
+    <p>
+        Vymyšlená 1337,<br />
+        123 45, Praha 32
+    </p>
+
+    <h2>Máte dotaz? Napište nám</h2>
+    <p>
+        <a href="{{ path("faq") }}">
+            Často kladené dotazy naleznete zde
+        </a>
+    </p>
+    <p>
+        {% if saved %}
+            <h3>Vašemu dotazu se budeme věnovat co nejdříve, děkujeme za strpení</h3>
+
+        {% else %}
+            {{ form_start(form) }}
+            {{ form_row(form.name) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.text) }}
+            <br />
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Odeslat</button>
+            {{ form_end(form) }}
+        {% endif %}
+    </p>
+{% endblock %}
+

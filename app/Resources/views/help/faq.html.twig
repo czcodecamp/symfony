@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>FAQ - často kladené dotazy</h1>
+    {% if faqs|length > 0 %}
+        {% for faq in faqs %}
+            <p>
+            <h3>{{ faq.question }}</h3>
+            <em>{{ faq.answer }}</em>
+            </p>
+        {% endfor %}
+    {% endif %}
+    <p>
+        Nenašli jste co hledáte? <a href="{{ path("contact") }}">Napište nám</a>
+    </p>
+{% endblock %}
